@@ -1,25 +1,8 @@
 services:
   - type: web
-    name: youareplan-easytax-api-v8
+    name: tax-ai
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
-    envVars:
-      - key: APP_NAME
-        value: YouArePlan EasyTax v8 - AI 세무 코파일럿
-      - key: APP_VERSION
-        value: v8.0.0
-      - key: ENVIRONMENT
-        value: production
-      - key: DATABASE_URL
-        value: sqlite:///./youareplan_tax_ai.db
-      - key: SECRET_KEY
-        value: youareplan-easytax-v8-production-secret-key-a7b3c9f8e2d4c1a6b9f3e8c5d2a7b4c9f6e1d8c3a5b7f2e9c4d6a1b8f5e3c7a9
-      - key: ALLOWED_ORIGINS
-        value: "*"
-      - key: LOG_LEVEL
-        value: INFO
-      - key: OPENAI_API_KEY
-        value: sk-proj-demo-test-key-for-development-only
