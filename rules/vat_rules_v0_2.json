@@ -1,0 +1,77 @@
+{
+  "version": "0.2",
+  "non_deductible": {
+    "keywords": {
+      "hospitality": [
+        "접대",
+        "선물",
+        "판촉선물",
+        "식사접대"
+      ],
+      "employee_welfare": [
+        "간식",
+        "커피",
+        "다과",
+        "복리후생"
+      ],
+      "personal": [
+        "개인용",
+        "사적",
+        "가정용"
+      ]
+    },
+    "reason_map": {
+      "hospitality": "접대비는 원칙적으로 불공제",
+      "employee_welfare": "복리후생비는 부가세 불공제",
+      "personal": "사업과 직접 관련 없는 지출은 불공제"
+    }
+  },
+  "classify_hints": {
+    "sales_keywords": [
+      "매출",
+      "용역수입",
+      "판매",
+      "세금계산서(매출)"
+    ],
+    "purchase_keywords": [
+      "매입",
+      "소모품",
+      "사무용품",
+      "원재료",
+      "세금계산서(매입)"
+    ],
+    "zero_rated_keywords": [
+      "영세",
+      "수출",
+      "대행수수료(영세)"
+    ],
+    "exempt_keywords": [
+      "면세",
+      "교육",
+      "의료",
+      "금융"
+    ]
+  },
+  "vat_rates": {
+    "default": 0.1,
+    "zero_rated": 0.0,
+    "exempt": null
+  },
+  "vendor_hints": {
+    "스타벅스": {
+      "default_account": "복리후생",
+      "default_tax_type": "불공제"
+    },
+    "이마트": {
+      "default_account": "소모품비",
+      "default_tax_type": "과세"
+    }
+  },
+  "account_mapping": {
+    "간식": "복리후생",
+    "커피": "복리후생",
+    "소모품": "소모품비",
+    "사무용품": "소모품비",
+    "접대": "접대비"
+  }
+}

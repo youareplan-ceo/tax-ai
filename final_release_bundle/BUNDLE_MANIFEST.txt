@@ -1,0 +1,15 @@
+total 12768
+drwxr-xr-x  14 youareplan  staff   448B  9 11 12:23 .
+drwx------@ 36 youareplan  staff   1.1K  9 11 12:23 ..
+-rw-r--r--   1 youareplan  staff     0B  9 11 12:23 BUNDLE_MANIFEST.txt
+-rw-r--r--   1 youareplan  staff   3.1K  9 11 12:23 CHANGELOG.md
+-rw-r--r--@  1 youareplan  staff   1.8K  9 11 12:23 env_template.txt
+-rw-r--r--@  1 youareplan  staff    12K  9 11 12:23 latest_report.html
+-rw-r--r--@  1 youareplan  staff   4.1K  9 11 12:23 latest_report.json
+-rw-r--r--@  1 youareplan  staff   5.6K  9 11 12:23 llm_enhancement_report.html
+-rw-r--r--@  1 youareplan  staff    12K  9 11 12:23 llm_enhancement_report.json
+-rw-r--r--@  1 youareplan  staff    12K  9 11 12:23 llm_qos_metrics.json
+-rw-r--r--   1 youareplan  staff    10K  9 11 12:23 production_stabilized_report.md
+-rw-r--r--   1 youareplan  staff   6.5K  9 11 12:23 RELEASE_NOTES.md
+-rw-r--r--@  1 youareplan  staff   6.1M  9 11 12:23 security_final.json
+-rw-r--r--@  1 youareplan  staff    12K  9 11 12:23 ui_final_branding.html

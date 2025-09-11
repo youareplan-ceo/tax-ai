@@ -1,0 +1,87 @@
+# YouArePlan EasyTax v8 - Docker Compose 설정
+version: '3.8'
+
+services:
+  # FastAPI 백엔드
+  youareplan-api:
+    build: .
+    container_name: youareplan-easytax-api
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_NAME=YouArePlan EasyTax - 세무 AI 코파일럿
+      - APP_VERSION=v8
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql://youareplan:secure_password@postgres:5432/youareplan_tax_ai
+      - SECRET_KEY=youareplan-production-secret-key
+      - LOG_LEVEL=INFO
+      # OpenAI API 키는 .env 파일에서 설정
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL 데이터베이스
+  postgres:
+    image: postgres:15-alpine
+    container_name: youareplan-easytax-db
+    environment:
+      POSTGRES_DB: youareplan_tax_ai
+      POSTGRES_USER: youareplan
+      POSTGRES_PASSWORD: secure_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U youareplan -d youareplan_tax_ai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Nginx 리버스 프록시 (UI 정적 서빙 + API 프록시)
+  nginx:
+    image: nginx:alpine
+    container_name: youareplan-easytax-web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ui:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro  # SSL 인증서 (옵션)
+    depends_on:
+      - youareplan-api
+    restart: unless-stopped
+
+  # Redis 캐시 (옵션)
+  redis:
+    image: redis:alpine
+    container_name: youareplan-easytax-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: youareplan-easytax-network

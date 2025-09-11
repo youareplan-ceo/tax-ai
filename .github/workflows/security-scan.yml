@@ -1,0 +1,295 @@
+# YouArePlan EasyTax v8 - 보안 스캔 워크플로우
+# 정기적인 보안 취약점 검사 및 의존성 업데이트
+name: Security Scan
+
+on:
+  schedule:
+    # 매일 오전 2시 (UTC) 실행
+    - cron: '0 2 * * *'
+  push:
+    branches: [ main ]
+    paths:
+      - 'requirements.txt'
+      - '.github/workflows/security-scan.yml'
+  workflow_dispatch: # 수동 실행
+
+jobs:
+  # 의존성 보안 스캔
+  dependency-scan:
+    runs-on: ubuntu-latest
+    name: 의존성 보안 스캔
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: Python 환경 설정
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+        
+    - name: 보안 도구 설치
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety bandit semgrep pip-audit
+        pip install -r requirements.txt
+        
+    - name: Safety 취약점 스캔
+      run: |
+        echo "🔍 Safety로 알려진 취약점 스캔 중..."
+        safety check --json --output safety-report.json || true
+        echo "✅ Safety 스캔 완료"
+        
+    - name: Pip-audit 의존성 스캔
+      run: |
+        echo "🔍 pip-audit로 의존성 취약점 스캔 중..."
+        pip-audit --format=json --output=pip-audit-report.json || true
+        echo "✅ Pip-audit 스캔 완료"
+        
+    - name: Bandit 보안 스캔
+      run: |
+        echo "🔍 Bandit으로 코드 보안 스캔 중..."
+        bandit -r . -f json -o bandit-report.json -x .venv,tests || true
+        echo "✅ Bandit 스캔 완료"
+        
+    - name: 커스텀 보안 감사
+      run: |
+        echo "🔍 YouArePlan 커스텀 보안 감사 실행 중..."
+        python security_audit.py --format json --output security-audit-report.json
+        echo "✅ 커스텀 보안 감사 완료"
+        
+    - name: 보안 리포트 업로드
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-reports
+        path: |
+          *-report.json
+          reports/
+        retention-days: 90
+        
+    - name: 보안 알림 생성
+      run: |
+        echo "📊 보안 스캔 결과 요약 생성 중..."
+        python -c "
+        import json
+        import os
+        
+        # 보안 리포트 파일들 확인
+        reports = {}
+        for file in ['safety-report.json', 'pip-audit-report.json', 'bandit-report.json', 'security-audit-report.json']:
+            if os.path.exists(file):
+                try:
+                    with open(file, 'r', encoding='utf-8') as f:
+                        reports[file] = json.load(f)
+                except:
+                    reports[file] = {'error': 'Failed to parse'}
+        
+        # 요약 생성
+        total_issues = 0
+        high_severity = 0
+        
+        print('🛡️ YouArePlan EasyTax v8 보안 스캔 요약')
+        print('=' * 50)
+        
+        for report_name, data in reports.items():
+            print(f'📋 {report_name}:')
+            if 'error' in data:
+                print(f'  ❌ 파싱 오류')
+            elif report_name == 'security-audit-report.json':
+                if 'summary' in data:
+                    issues = data['summary'].get('total_issues', 0)
+                    high = data['summary'].get('severity_breakdown', {}).get('HIGH', 0)
+                    total_issues += issues
+                    high_severity += high
+                    print(f'  📊 총 이슈: {issues}개')
+                    print(f'  🚨 HIGH 위험: {high}개')
+            print()
+        
+        print(f'🎯 전체 요약:')
+        print(f'  총 보안 이슈: {total_issues}개')
+        print(f'  고위험 이슈: {high_severity}개')
+        
+        # GitHub 환경 변수로 설정
+        with open(os.environ['GITHUB_ENV'], 'a') as f:
+            f.write(f'TOTAL_SECURITY_ISSUES={total_issues}\\n')
+            f.write(f'HIGH_SEVERITY_ISSUES={high_severity}\\n')
+        "
+
+  # 코드 품질 스캔
+  code-quality-scan:
+    runs-on: ubuntu-latest
+    name: 코드 품질 스캔
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: Semgrep 보안 스캔
+      uses: returntocorp/semgrep-action@v1
+      with:
+        config: >-
+          p/security-audit
+          p/python
+          p/django
+        generateSarif: "1"
+        
+    - name: SARIF 결과 업로드
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: semgrep.sarif
+      if: always()
+
+  # Secrets 스캔
+  secrets-scan:
+    runs-on: ubuntu-latest
+    name: 시크릿 키 스캔
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # 전체 히스토리 가져오기
+        
+    - name: TruffleHog 시크릿 스캔
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: main
+        head: HEAD
+        extra_args: --debug --only-verified
+
+  # 보안 알림 및 이슈 생성
+  security-notification:
+    needs: [dependency-scan, code-quality-scan, secrets-scan]
+    runs-on: ubuntu-latest
+    name: 보안 알림
+    if: always()
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: 보안 리포트 다운로드
+      uses: actions/download-artifact@v3
+      with:
+        name: security-reports
+        path: ./security-reports/
+      continue-on-error: true
+      
+    - name: 고위험 이슈 확인
+      id: check-issues
+      run: |
+        # 환경 변수에서 보안 이슈 수 확인
+        TOTAL_ISSUES=${TOTAL_SECURITY_ISSUES:-0}
+        HIGH_ISSUES=${HIGH_SEVERITY_ISSUES:-0}
+        
+        echo "total_issues=${TOTAL_ISSUES}" >> $GITHUB_OUTPUT
+        echo "high_issues=${HIGH_ISSUES}" >> $GITHUB_OUTPUT
+        
+        if [ "${HIGH_ISSUES}" -gt 0 ]; then
+          echo "create_issue=true" >> $GITHUB_OUTPUT
+          echo "🚨 고위험 보안 이슈 감지: ${HIGH_ISSUES}개"
+        else
+          echo "create_issue=false" >> $GITHUB_OUTPUT
+          echo "✅ 고위험 보안 이슈 없음"
+        fi
+        
+    - name: 보안 이슈 자동 생성
+      if: steps.check-issues.outputs.create_issue == 'true'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const { data: issues } = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: 'security,high-priority',
+            state: 'open'
+          });
+          
+          // 중복 이슈 방지
+          const existingIssue = issues.find(issue => 
+            issue.title.includes('🚨 고위험 보안 취약점 발견')
+          );
+          
+          if (!existingIssue) {
+            const issueBody = `
+          ## 🚨 고위험 보안 취약점 발견
+          
+          **스캔 일시**: ${new Date().toISOString()}
+          **커밋**: ${context.sha}
+          **고위험 이슈**: ${process.env.HIGH_SEVERITY_ISSUES}개
+          **총 이슈**: ${process.env.TOTAL_SECURITY_ISSUES}개
+          
+          ### 📋 즉시 조치사항
+          
+          1. [ ] 보안 리포트 검토
+          2. [ ] 고위험 취약점 패치 적용
+          3. [ ] 의존성 업데이트
+          4. [ ] 보안 테스트 재실행
+          
+          ### 📊 상세 리포트
+          
+          Actions 탭에서 [Security Scan 워크플로우](${context.payload.repository.html_url}/actions) 결과를 확인하세요.
+          
+          **자동 생성 이슈** - 해결 후 수동으로 닫아주세요.
+          `;
+          
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 고위험 보안 취약점 발견 - 즉시 조치 필요',
+              body: issueBody,
+              labels: ['security', 'high-priority', 'bug'],
+              assignees: [context.actor]
+            });
+            
+            console.log('✅ 보안 이슈 자동 생성 완료');
+          } else {
+            console.log('⏭️ 기존 보안 이슈가 열려있어 새 이슈 생성 생략');
+          }
+        
+    - name: Slack 보안 알림
+      uses: 8398a7/action-slack@v3
+      with:
+        status: custom
+        channel: '#security-alerts'
+        custom_payload: |
+          {
+            "text": "🛡️ YouArePlan EasyTax v8 보안 스캔 완료",
+            "attachments": [
+              {
+                "color": "${{ steps.check-issues.outputs.high_issues > 0 && 'danger' || 'good' }}",
+                "fields": [
+                  {
+                    "title": "총 보안 이슈",
+                    "value": "${{ steps.check-issues.outputs.total_issues }}개",
+                    "short": true
+                  },
+                  {
+                    "title": "고위험 이슈",
+                    "value": "${{ steps.check-issues.outputs.high_issues }}개",
+                    "short": true
+                  },
+                  {
+                    "title": "스캔 시간",
+                    "value": "${{ github.event.head_commit.timestamp }}",
+                    "short": true
+                  },
+                  {
+                    "title": "커밋",
+                    "value": "<${{ github.event.head_commit.url }}|${{ github.sha }}>",
+                    "short": true
+                  }
+                ]
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: always()
+
+# 워크플로우 권한 설정
+permissions:
+  contents: read
+  security-events: write
+  issues: write

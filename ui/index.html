@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouArePlan EasyTax v8 - AI 세무 코파일럿</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        .version {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        .api-link {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            display: inline-block;
+            margin: 0.5rem;
+            transition: background 0.3s;
+        }
+        .api-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .status {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🧮 YouArePlan EasyTax</div>
+        <div class="subtitle">AI 세무 코파일럿</div>
+        <div class="version">v8.0.0 - 프로덕션 릴리스</div>
+        
+        <div>
+            <a href="https://youareplan-easytax-api-v8.onrender.com/health" class="api-link">
+                🔍 API Health Check
+            </a>
+            <a href="https://youareplan-easytax-api-v8.onrender.com/api/status" class="api-link">
+                🤖 AI API Status
+            </a>
+            <a href="/reports/latest_report.html" class="api-link">
+                📊 Test Reports
+            </a>
+        </div>
+        
+        <div class="status">
+            <h3>🚀 배포 상태</h3>
+            <p>✅ API 서버: Render.com</p>
+            <p>✅ UI 배포: Vercel</p>
+            <p>✅ 릴리스: v8.0.0</p>
+            <p>📞 문의: contact@youareplan.co.kr</p>
+        </div>
+    </div>
+    
+    <script>
+        // API 상태 확인
+        fetch('https://youareplan-easytax-api-v8.onrender.com/health')
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Health:', data);
+                if (data.ok) {
+                    document.querySelector('.status').innerHTML += '<p>🟢 API 서버 정상 작동</p>';
+                }
+            })
+            .catch(error => {
+                console.error('API Error:', error);
+                document.querySelector('.status').innerHTML += '<p>🔴 API 서버 연결 오류</p>';
+            });
+    </script>
+</body>
+</html>

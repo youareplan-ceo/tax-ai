@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouArePlan EasyTax v8 - LLM 고도화 리포트</title>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.2); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 2rem; text-align: center; }
+        .section { padding: 2rem; border-bottom: 1px solid #eee; }
+        .accuracy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .stat-card { background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #667eea; }
+        .recommendations { background: #e3f2fd; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; }
+        .performance-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .performance-table th, .performance-table td { padding: 0.75rem; border: 1px solid #ddd; text-align: left; }
+        .performance-table th { background: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 LLM 고도화 리포트</h1>
+            <p>YouArePlan EasyTax v8 - AI 성능 분석 및 최적화</p>
+            <p>2025-09-11T12:06:05.946767</p>
+        </div>
+        
+        <div class="section">
+            <h2>📊 분류 정확도 분석</h2>
+            <div class="accuracy-grid">
+                <div class="stat-card">
+                    <div class="stat-number">0.0%</div>
+                    <div>전체 정확도</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0.0%</div>
+                    <div>계정과목 정확도</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">70.0%</div>
+                    <div>세금유형 정확도</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2.31ms</div>
+                    <div>평균 응답시간</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🚀 성능 벤치마크</h2>
+            <table class="performance-table">
+                <thead>
+                    <tr><th>동시 요청 수</th><th>성공률</th><th>평균 응답시간</th><th>초당 처리 요청</th></tr>
+                </thead>
+                <tbody>
+    
+                    <tr>
+                        <td>5개</td>
+                        <td>100.0%</td>
+                        <td>2.42ms</td>
+                        <td>9.41 req/s</td>
+                    </tr>
+                    <tr>
+                        <td>10개</td>
+                        <td>100.0%</td>
+                        <td>2.23ms</td>
+                        <td>9.39 req/s</td>
+                    </tr>
+                    <tr>
+                        <td>20개</td>
+                        <td>100.0%</td>
+                        <td>2.84ms</td>
+                        <td>9.29 req/s</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>💰 비용 분석</h2>
+            <table class="performance-table">
+                <thead>
+                    <tr><th>사용 규모</th><th>월간 요청</th><th>월간 비용</th><th>요청당 비용</th></tr>
+                </thead>
+                <tbody>
+    
+                    <tr>
+                        <td>소규모 (월 100건)</td>
+                        <td>100건</td>
+                        <td>$0.01</td>
+                        <td>$6.3e-05</td>
+                    </tr>
+                    <tr>
+                        <td>중간 규모 (월 1,000건)</td>
+                        <td>1,000건</td>
+                        <td>$0.06</td>
+                        <td>$6.3e-05</td>
+                    </tr>
+                    <tr>
+                        <td>대규모 (월 10,000건)</td>
+                        <td>10,000건</td>
+                        <td>$0.63</td>
+                        <td>$6.3e-05</td>
+                    </tr>
+                    <tr>
+                        <td>엔터프라이즈 (월 100,000건)</td>
+                        <td>100,000건</td>
+                        <td>$6.3</td>
+                        <td>$6.3e-05</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>💡 권장사항</h2>
+            <div class="recommendations">
+                <ul>
+    <li>현재 API 키가 데모 모드로 설정되어 있음 - 실제 운영 시 정품 키 필요</li><li>분류 정확도 0.0% - 추가 학습 데이터로 개선 가능</li><li>평균 응답시간 2.31ms - 실시간 분류에 적합</li><li>비용 최적화를 위해 규칙 기반 분류와 AI 분류의 하이브리드 접근 권장</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section" style="border-bottom: none;">
+            <h2>📋 다음 단계</h2>
+            <ol>
+    <li>실제 OpenAI API 키 설정</li><li>프로덕션 환경 성능 모니터링 구축</li><li>비용 알림 시스템 구현</li><li>분류 정확도 개선을 위한 파인튜닝 검토</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
+    

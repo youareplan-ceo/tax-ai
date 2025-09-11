@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouArePlan EasyTax v8 - 자동 테스트 리포트</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .header .subtitle {
+            margin-top: 0.5rem;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        .stats {
+            padding: 2rem;
+            background: #f8f9fa;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        .success { border-left-color: #28a745; }
+        .success .stat-number { color: #28a745; }
+        .failure { border-left-color: #dc3545; }  
+        .failure .stat-number { color: #dc3545; }
+        .warning { border-left-color: #ffc107; }
+        .warning .stat-number { color: #ffc107; }
+        .tests {
+            padding: 2rem;
+        }
+        .test-item {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+        .test-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .test-pass {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        .test-fail {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+        .test-skip {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .test-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .test-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .status-pass {
+            background: #28a745;
+            color: white;
+        }
+        .status-fail {
+            background: #dc3545;
+            color: white;
+        }
+        .status-skip {
+            background: #ffc107;
+            color: #212529;
+        }
+        .test-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .error-message {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            color: #dc3545;
+            margin-top: 1rem;
+            white-space: pre-wrap;
+            border-left: 4px solid #dc3545;
+        }
+        .response-data {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            .test-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>YouArePlan EasyTax v8</h1>
+            <div class="subtitle">자동 테스트 리포트 • 2025-09-11 12:01:47</div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">총 테스트</div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-number">6</div>
+                <div class="stat-label">성공</div>
+            </div>
+            <div class="stat-card failure">
+                <div class="stat-number">2</div>
+                <div class="stat-label">실패</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-number">75.0%</div>
+                <div class="stat-label">성공률</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0.03s</div>
+                <div class="stat-label">총 소요시간</div>
+            </div>
+        </div>
+        
+        <div class="tests">
+            <h2>🧪 테스트 결과 상세</h2>
+        
+            <div class="test-item test-pass">
+                <div class="test-header">
+                    <div class="test-name">서버 헬스 체크</div>
+                    <div class="test-status status-pass">성공</div>
+                </div>
+                <div class="test-details">
+                    <div><strong>소요시간:</strong> 4.45ms</div>
+                    <div><strong>실행시간:</strong> 2025-09-11T03:01:47.921672+00:00</div>
+                </div>
+            <div class="response-data">📊 응답 데이터:
+{
+  "status_code": 200,
+  "response": {
+    "ok": true
+  }
+}</div></div>
+            <div class="test-item test-pass">
+                <div class="test-header">
+                    <div class="test-name">AI API 상태 확인</div>
+                    <div class="test-status status-pass">성공</div>
+                </div>
+                <div class="test-details">
+                    <div><strong>소요시간:</strong> 1.49ms</div>
+                    <div><strong>실행시간:</strong> 2025-09-11T03:01:47.923568+00:00</div>
+                </div>
+            <div class="error-message">❌ 오류: 데모 모드로 작동 중 - 실제 API 키 필요</div><div class="response-data">📊 응답 데이터:
+{
+  "api_key_configured": false,
+  "api_key_valid": false,
+  "demo_mode": false,
+  "sdk_available": true,
+  "models": {
+    "classify": "gpt-4o-mini",
+    "analysis": "gpt-4o"
+  },
+  "settings": {
+    "max_tokens": 1000,
+    "temperature": 0.3
+  },
+  "validation_result": {
+    "valid": false,
+    "error": "API 키가 설정되지 않았거나 테스트 키입니다",
+    "message": "실제 OpenAI API 키를 .env 파일에 설정해주세요"
+  }
+}</div></div>
+            <div class="test-item test-fail">
+                <div class="test-header">
+                    <div class="test-name">CSV 파일 업로드</div>
+                    <div class="test-status status-fail">실패</div>
+                </div>
+                <div class="test-details">
+                    <div><strong>소요시간:</strong> 4.70ms</div>
+                    <div><strong>실행시간:</strong> 2025-09-11T03:01:47.928286+00:00</div>
+                </div>
+            <div class="error-message">❌ 오류: HTTP 500: Internal Server Error</div></div>
+            <div class="test-item test-fail">
+                <div class="test-header">
+                    <div class="test-name">거래내역 목록 조회</div>
+                    <div class="test-status status-fail">실패</div>
+                </div>
+                <div class="test-details">
+                    <div><strong>소요시간:</strong> 2.87ms</div>
+                    <div><strong>실행시간:</strong> 2025-09-11T03:01:47.931178+00:00</div>
+                </div>
+            <div class="error-message">❌ 오류: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))</div></div>
+            <div class="test-item test-pass">
+                <div class="test-header">
+                    <div class="test-name">세액 추정 계산</div>
+                    <div class="test-status status-pass">성공</div>
+                </div>
+                <div class="test-details">
+                    <div><strong>소요시간:</strong> 3.56ms</div>
+                    <div><strong>실행시간:</strong> 2025-09-11T03:01:47.934762+00:00</div>
+                </div>
+            <div class="response-data">📊 응답 데이터:
+{
+  "ok": true,
+  "period": "2025-09",
+  "sales_vat": 40000.0,
+  "purchase_vat": 46000.0,
+  "non_deductible_vat": 800.0,
+  "estimated_due_vat": 0.0
+}</div></div>
+            <div class="test-item test-pass">
+                <div class="test-header">
+                    <div class="test-name">체크리스트 생성</div>
+                    <div class="test-status status-pass">성공</div>
+                </div>
+                <div class="test-details">
+                    <div><strong>소요시간:</strong> 4.80ms</div>
+                    <div><strong>실행시간:</strong> 2025-09-11T03:01:47.939596+00:00</div>
+                </div>
+            <div class="response-data">📊 응답 데이터:
+{
+  "ok": true,
+  "generated": 2,
+  "signals": [
+    {
+      "code": "NO_CASH_RECEIPT",
+      "desc": "현금영수증 내역 없음"
+    },
+    {
+      "code": "PERIOD_MISMATCH",
+      "desc": "선택한 과세기간과 다른 월 자료 포함 가능"
+    }
+  ]
+}</div></div>
+            <div class="test-item test-pass">
+                <div class="test-header">
+                    <div class="test-name">AI 거래내역 분류</div>
+                    <div class="test-status status-pass">성공</div>
+                </div>
+                <div class="test-details">
+                    <div><strong>소요시간:</strong> 1.55ms</div>
+                    <div><strong>실행시간:</strong> 2025-09-11T03:01:47.941176+00:00</div>
+                </div>
+            <div class="response-data">📊 응답 데이터:
+{
+  "test_input": {
+    "text_context": "거래처: 스타벅스 코리아, 금액: 15,000원, 메모: 팀 회의용 커피",
+    "use_llm": true,
+    "need_reasoning": true
+  },
+  "classification_result": {
+    "account_code": "기타비용",
+    "tax_type": "과세",
+    "confidence": 0.5,
+    "reason": "AI 응답 파싱 실패로 기본 분류 적용",
+    "rule_flags": [
+      "AI_분류"
+    ],
+    "demo_mode": false
+  },
+  "expected": {
+    "account_code": "복리후생비",
+    "tax_type": "불공제"
+  }
+}</div></div>
+            <div class="test-item test-pass">
+                <div class="test-header">
+                    <div class="test-name">성능 벤치마크</div>
+                    <div class="test-status status-pass">성공</div>
+                </div>
+                <div class="test-details">
+                    <div><strong>소요시간:</strong> 8.28ms</div>
+                    <div><strong>실행시간:</strong> 2025-09-11T03:01:47.949467+00:00</div>
+                </div>
+            <div class="response-data">📊 응답 데이터:
+{
+  "concurrent_requests": 10,
+  "successful_requests": 10,
+  "success_rate": 100.0,
+  "avg_response_time_ms": 0.8275032043457031,
+  "total_duration_ms": 8.275032043457031
+}</div></div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>YouArePlan EasyTax v8</strong> - AI 세무 코파일럿</p>
+            <p>© 2025 유아플랜 컨설팅 | 자동화된 품질 보증 리포트</p>
+        </div>
+    </div>
+</body>
+</html>
+        

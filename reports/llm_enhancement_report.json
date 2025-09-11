@@ -1,0 +1,413 @@
+{
+  "llm_enhancement_report": {
+    "timestamp": "2025-09-11T12:06:05.946767",
+    "version": "v8",
+    "api_status": {
+      "api_key_configured": false,
+      "api_key_valid": false,
+      "demo_mode": false,
+      "sdk_available": true,
+      "models": {
+        "classify": "gpt-4o-mini",
+        "analysis": "gpt-4o"
+      },
+      "settings": {
+        "max_tokens": 1000,
+        "temperature": 0.3
+      },
+      "validation_result": {
+        "valid": false,
+        "error": "API 키가 설정되지 않았거나 테스트 키입니다",
+        "message": "실제 OpenAI API 키를 .env 파일에 설정해주세요"
+      }
+    },
+    "accuracy_analysis": {
+      "test_summary": {
+        "total_tests": 10,
+        "account_accuracy": 0.0,
+        "tax_accuracy": 70.0,
+        "overall_accuracy": 0.0,
+        "avg_response_time_ms": 2.31,
+        "median_response_time_ms": 2.13,
+        "total_cost_usd": 0.000525,
+        "estimated_monthly_cost_usd": 1.57
+      },
+      "detailed_results": [
+        {
+          "test_case": "커피 - 복리후생비/불공제",
+          "input": {
+            "vendor": "스타벅스 코리아",
+            "amount": 15000,
+            "memo": "팀 회의용 커피"
+          },
+          "expected": {
+            "account_code": "복리후생비",
+            "tax_type": "불공제"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 2.315998077392578,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": false,
+            "both_match": false
+          }
+        },
+        {
+          "test_case": "클라우드 서비스 - 통신비/과세",
+          "input": {
+            "vendor": "네이버 클라우드",
+            "amount": 45000,
+            "memo": "서버 호스팅 비용"
+          },
+          "expected": {
+            "account_code": "통신비",
+            "tax_type": "과세"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 2.028942108154297,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": true,
+            "both_match": false
+          }
+        },
+        {
+          "test_case": "사무용품 - 소모품비/과세",
+          "input": {
+            "vendor": "오피스디포",
+            "amount": 8500,
+            "memo": "A4 용지 구매"
+          },
+          "expected": {
+            "account_code": "소모품비",
+            "tax_type": "과세"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 2.2399425506591797,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": true,
+            "both_match": false
+          }
+        },
+        {
+          "test_case": "접대비 - 불공제",
+          "input": {
+            "vendor": "현대카드",
+            "amount": 150000,
+            "memo": "고객 접대 식사"
+          },
+          "expected": {
+            "account_code": "접대비",
+            "tax_type": "불공제"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 2.0568370819091797,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": false,
+            "both_match": false
+          }
+        },
+        {
+          "test_case": "청소용품 - 소모품비/과세",
+          "input": {
+            "vendor": "롯데마트",
+            "amount": 25000,
+            "memo": "사무실 청소용품"
+          },
+          "expected": {
+            "account_code": "소모품비",
+            "tax_type": "과세"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 2.105236053466797,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": true,
+            "both_match": false
+          }
+        },
+        {
+          "test_case": "통신 서비스 - 통신비/과세",
+          "input": {
+            "vendor": "KT",
+            "amount": 89000,
+            "memo": "사무실 인터넷"
+          },
+          "expected": {
+            "account_code": "통신비",
+            "tax_type": "과세"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 2.5370121002197266,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": true,
+            "both_match": false
+          }
+        },
+        {
+          "test_case": "도서 구매 - 도서인쇄비/과세",
+          "input": {
+            "vendor": "교보문고",
+            "amount": 35000,
+            "memo": "업무 관련 도서"
+          },
+          "expected": {
+            "account_code": "도서인쇄비",
+            "tax_type": "과세"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 2.004861831665039,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": true,
+            "both_match": false
+          }
+        },
+        {
+          "test_case": "은행 수수료 - 지급수수료/과세",
+          "input": {
+            "vendor": "신한은행",
+            "amount": 3000,
+            "memo": "계좌이체 수수료"
+          },
+          "expected": {
+            "account_code": "지급수수료",
+            "tax_type": "과세"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 2.156972885131836,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": true,
+            "both_match": false
+          }
+        },
+        {
+          "test_case": "사무용 비품 - 비품/과세",
+          "input": {
+            "vendor": "LG전자",
+            "amount": 1200000,
+            "memo": "사무실 에어컨"
+          },
+          "expected": {
+            "account_code": "비품",
+            "tax_type": "과세"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 3.7691593170166016,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": true,
+            "both_match": false
+          }
+        },
+        {
+          "test_case": "세금 납부 - 조세공과/불공제",
+          "input": {
+            "vendor": "국세청",
+            "amount": 50000,
+            "memo": "부가세 납부"
+          },
+          "expected": {
+            "account_code": "조세공과",
+            "tax_type": "불공제"
+          },
+          "actual": {
+            "account_code": "기타비용",
+            "tax_type": "과세",
+            "confidence": 0.5,
+            "reasoning": "AI 응답 파싱 실패로 기본 분류 적용"
+          },
+          "performance": {
+            "response_time_ms": 1.8770694732666016,
+            "cost_usd": 5.2499999999999995e-05,
+            "tokens_used": 200
+          },
+          "accuracy": {
+            "account_match": false,
+            "tax_match": false,
+            "both_match": false
+          }
+        }
+      ],
+      "test_timestamp": "2025-09-11T12:06:02.196886"
+    },
+    "performance_benchmark": {
+      "concurrent_5": {
+        "requests": 5,
+        "successful": 5,
+        "success_rate": 100.0,
+        "total_time_ms": 531.23,
+        "avg_response_time_ms": 2.42,
+        "requests_per_second": 9.41
+      },
+      "concurrent_10": {
+        "requests": 10,
+        "successful": 10,
+        "success_rate": 100.0,
+        "total_time_ms": 1065.28,
+        "avg_response_time_ms": 2.23,
+        "requests_per_second": 9.39
+      },
+      "concurrent_20": {
+        "requests": 20,
+        "successful": 20,
+        "success_rate": 100.0,
+        "total_time_ms": 2153.1,
+        "avg_response_time_ms": 2.84,
+        "requests_per_second": 9.29
+      }
+    },
+    "cost_monitoring": {
+      "cost_projections": [
+        {
+          "scenario": "소규모 (월 100건)",
+          "monthly_requests": 100,
+          "monthly_cost_usd": 0.01,
+          "yearly_cost_usd": 0.08,
+          "cost_per_request_usd": 6.3e-05,
+          "tokens_per_month": 24000
+        },
+        {
+          "scenario": "중간 규모 (월 1,000건)",
+          "monthly_requests": 1000,
+          "monthly_cost_usd": 0.06,
+          "yearly_cost_usd": 0.76,
+          "cost_per_request_usd": 6.3e-05,
+          "tokens_per_month": 240000
+        },
+        {
+          "scenario": "대규모 (월 10,000건)",
+          "monthly_requests": 10000,
+          "monthly_cost_usd": 0.63,
+          "yearly_cost_usd": 7.56,
+          "cost_per_request_usd": 6.3e-05,
+          "tokens_per_month": 2400000
+        },
+        {
+          "scenario": "엔터프라이즈 (월 100,000건)",
+          "monthly_requests": 100000,
+          "monthly_cost_usd": 6.3,
+          "yearly_cost_usd": 75.6,
+          "cost_per_request_usd": 6.3e-05,
+          "tokens_per_month": 24000000
+        }
+      ],
+      "monitoring_config": {
+        "cost_alerts": {
+          "daily_limit_usd": 10.0,
+          "monthly_limit_usd": 200.0,
+          "alert_threshold_percent": 80
+        },
+        "optimization_tips": [
+          "use_llm=False로 규칙 기반 분류 우선 사용",
+          "need_reasoning=False로 간단한 분류에서 토큰 절약",
+          "배치 처리로 API 호출 횟수 최적화",
+          "캐싱으로 중복 분류 요청 방지"
+        ]
+      },
+      "model_pricing": {
+        "gpt_4o_mini": {
+          "input_per_1m_tokens": 0.15,
+          "output_per_1m_tokens": 0.6
+        }
+      }
+    },
+    "recommendations": [
+      "현재 API 키가 데모 모드로 설정되어 있음 - 실제 운영 시 정품 키 필요",
+      "분류 정확도 0.0% - 추가 학습 데이터로 개선 가능",
+      "평균 응답시간 2.31ms - 실시간 분류에 적합",
+      "비용 최적화를 위해 규칙 기반 분류와 AI 분류의 하이브리드 접근 권장"
+    ],
+    "next_steps": [
+      "실제 OpenAI API 키 설정",
+      "프로덕션 환경 성능 모니터링 구축",
+      "비용 알림 시스템 구현",
+      "분류 정확도 개선을 위한 파인튜닝 검토"
+    ]
+  }
+}

@@ -1,0 +1,347 @@
+# YouArePlan EasyTax v8 - CI/CD 파이프라인
+# 자동 테스트, 빌드, 배포 워크플로우
+name: YouArePlan EasyTax v8 CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # 수동 실행 가능
+
+env:
+  PYTHON_VERSION: '3.13'
+  NODE_VERSION: '18'
+
+jobs:
+  # 1단계: 코드 품질 검사
+  code-quality:
+    runs-on: ubuntu-latest
+    name: 코드 품질 검사
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: Python 환경 설정
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: 의존성 캐시
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          
+    - name: 의존성 설치
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install flake8 black isort bandit
+        
+    - name: 코드 포맷팅 검사 (Black)
+      run: black --check --diff .
+      continue-on-error: true
+      
+    - name: Import 정렬 검사 (isort)
+      run: isort --check-only --diff .
+      continue-on-error: true
+      
+    - name: 린팅 검사 (Flake8)
+      run: flake8 . --max-line-length=100 --exclude=.venv,__pycache__
+      continue-on-error: true
+      
+    - name: 보안 취약점 스캔 (Bandit)
+      run: bandit -r . -x .venv,tests
+      continue-on-error: true
+
+  # 2단계: 자동 테스트
+  test:
+    needs: code-quality
+    runs-on: ubuntu-latest
+    name: 자동 테스트 실행
+    
+    services:
+      # PostgreSQL 테스트 데이터베이스
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_youareplan_tax_ai
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: Python 환경 설정
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: 의존성 설치
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio pytest-cov
+        
+    - name: 환경 변수 설정
+      run: |
+        echo "APP_NAME=YouArePlan EasyTax Test" >> $GITHUB_ENV
+        echo "APP_VERSION=v8-ci" >> $GITHUB_ENV
+        echo "ENVIRONMENT=test" >> $GITHUB_ENV
+        echo "DATABASE_URL=postgresql://test_user:test_password@localhost:5432/test_youareplan_tax_ai" >> $GITHUB_ENV
+        echo "SECRET_KEY=test-secret-key" >> $GITHUB_ENV
+        echo "OPENAI_API_KEY=sk-test-demo-key" >> $GITHUB_ENV
+        echo "LOG_LEVEL=DEBUG" >> $GITHUB_ENV
+        
+    - name: 데이터베이스 마이그레이션
+      run: |
+        python -c "
+        from api.database import engine, Base
+        Base.metadata.create_all(bind=engine)
+        print('✅ 데이터베이스 테이블 생성 완료')
+        "
+        
+    - name: FastAPI 서버 시작 (백그라운드)
+      run: |
+        uvicorn api.main:app --host 0.0.0.0 --port 8081 &
+        sleep 10  # 서버 시작 대기
+        curl -f http://localhost:8081/health || exit 1
+        echo "✅ 테스트 서버 정상 시작"
+      env:
+        PYTHONPATH: .
+        
+    - name: 자동 테스트 실행
+      run: |
+        python automated_test_reporter.py --url http://localhost:8081 --format json
+        echo "✅ 자동 테스트 완료"
+        
+    - name: 보안 감사 실행
+      run: |
+        python security_audit.py --format json --output reports/security_audit_ci.json
+        echo "✅ 보안 감사 완료"
+        
+    - name: 테스트 결과 업로드
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-reports
+        path: |
+          reports/
+          logs/
+        retention-days: 30
+
+  # 3단계: Docker 빌드
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    name: Docker 이미지 빌드
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: Docker Buildx 설정
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Docker Hub 로그인
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+      if: github.event_name != 'pull_request'
+      
+    - name: 메타데이터 추출
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: youareplan/easytax
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix=v8-
+          type=raw,value=latest,enable={{is_default_branch}}
+          
+    - name: Docker 이미지 빌드 및 푸시
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  # 4단계: Render.com 배포 (main 브랜치만)
+  deploy-render:
+    needs: [test, build]
+    runs-on: ubuntu-latest
+    name: Render.com 배포
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: Render 배포 트리거
+      run: |
+        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "branch": "main",
+            "commitId": "${{ github.sha }}",
+            "commitMessage": "${{ github.event.head_commit.message }}"
+          }'
+        echo "✅ Render.com 배포 트리거 완료"
+        
+    - name: 배포 상태 확인
+      run: |
+        echo "🚀 배포 진행 중..."
+        sleep 120  # 2분 대기
+        
+        # 헬스체크로 배포 성공 확인
+        for i in {1..10}; do
+          if curl -f https://youareplan-easytax-api.onrender.com/health; then
+            echo "✅ 배포 성공 확인!"
+            break
+          fi
+          echo "⏳ 배포 대기 중... ($i/10)"
+          sleep 30
+        done
+
+  # 5단계: Vercel 배포 (UI)
+  deploy-vercel:
+    needs: test
+    runs-on: ubuntu-latest
+    name: Vercel UI 배포
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: Node.js 환경 설정
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Vercel CLI 설치
+      run: npm install -g vercel@latest
+      
+    - name: Vercel 프로젝트 링크
+      run: vercel --token ${{ secrets.VERCEL_TOKEN }} --yes
+      
+    - name: Vercel 배포 (프로덕션)
+      run: |
+        vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+        echo "✅ Vercel 배포 완료"
+
+  # 6단계: 배포 후 검증
+  post-deploy-verification:
+    needs: [deploy-render, deploy-vercel]
+    runs-on: ubuntu-latest
+    name: 배포 후 검증
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: 코드 체크아웃
+      uses: actions/checkout@v4
+      
+    - name: Python 환경 설정
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: 의존성 설치
+      run: |
+        pip install requests
+        
+    - name: 프로덕션 API 테스트
+      run: |
+        python -c "
+        import requests
+        import time
+        
+        # Render API 테스트
+        try:
+            response = requests.get('https://youareplan-easytax-api.onrender.com/health', timeout=30)
+            if response.status_code == 200:
+                print('✅ Render API 정상 작동')
+            else:
+                print(f'❌ Render API 오류: {response.status_code}')
+                exit(1)
+        except Exception as e:
+            print(f'❌ Render API 연결 실패: {e}')
+            exit(1)
+            
+        # AI API 상태 확인
+        try:
+            response = requests.get('https://youareplan-easytax-api.onrender.com/api/status', timeout=30)
+            if response.status_code == 200:
+                print('✅ AI API 상태 확인 성공')
+            else:
+                print(f'⚠️ AI API 상태 확인 실패: {response.status_code}')
+        except Exception as e:
+            print(f'⚠️ AI API 상태 확인 오류: {e}')
+        "
+        
+    - name: Slack 배포 알림
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        channel: '#dev-alerts'
+        text: |
+          🎉 YouArePlan EasyTax v8 배포 완료!
+          📊 커밋: ${{ github.sha }}
+          🚀 Render: https://youareplan-easytax-api.onrender.com
+          🌐 Vercel: https://youareplan-easytax.vercel.app
+          ⏰ 배포 시간: ${{ github.event.head_commit.timestamp }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: always()
+
+  # 7단계: 롤백 준비 (실패 시)
+  rollback:
+    needs: [deploy-render, deploy-vercel, post-deploy-verification]
+    runs-on: ubuntu-latest
+    name: 롤백 준비
+    if: failure() && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 롤백 알림
+      run: |
+        echo "🚨 배포 실패 감지 - 롤백 절차 시작"
+        echo "📋 롤백 체크리스트:"
+        echo "1. 이전 버전으로 Docker 이미지 롤백"
+        echo "2. Render.com 이전 배포로 복원"
+        echo "3. 데이터베이스 백업 확인"
+        echo "4. 모니터링 시스템 알림"
+        
+    - name: Slack 실패 알림
+      uses: 8398a7/action-slack@v3
+      with:
+        status: failure
+        channel: '#dev-alerts'
+        text: |
+          🚨 YouArePlan EasyTax v8 배포 실패!
+          📊 커밋: ${{ github.sha }}
+          ❌ 실패 단계: ${{ github.job }}
+          🔄 롤백 절차를 수동으로 진행해주세요
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+# 워크플로우 성능 최적화
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true

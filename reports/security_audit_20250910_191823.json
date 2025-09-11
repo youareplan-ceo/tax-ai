@@ -1,0 +1,512 @@
+{
+  "scan_timestamp": "2025-09-10T10:18:23.070079+00:00",
+  "project_path": "/Users/youareplan/Desktop/YouaPlan_EasyTax_ProjectBundle_v8/tax-mvp-spec-v8",
+  "summary": {
+    "total_issues": 48,
+    "severity_breakdown": {
+      "HIGH": 4,
+      "MEDIUM": 42,
+      "LOW": 0,
+      "INFO": 2
+    },
+    "category_breakdown": {
+      "SECRET": 6,
+      "INJECTION": 1,
+      "CONFIG": 40,
+      "PERMISSIONS": 1
+    },
+    "security_score": 0,
+    "security_grade": "F (위험)"
+  },
+  "issues": [
+    {
+      "severity": "HIGH",
+      "category": "SECRET",
+      "file_path": "deployment_guide.md",
+      "line_number": 69,
+      "description": "API_KEY 감지: 민감한 정보가 하드코딩되어 있습니다",
+      "recommendation": "환경 변수나 보안 저장소를 사용하여 민감한 정보를 관리하세요",
+      "code_snippet": "echo \"OPENAI_API_KEY=your_api_key_here\" >> .env",
+      "timestamp": "2025-09-10T10:18:22.543331+00:00"
+    },
+    {
+      "severity": "HIGH",
+      "category": "SECRET",
+      "file_path": "deployment_guide.md",
+      "line_number": 143,
+      "description": "DATABASE_URL 감지: 민감한 정보가 하드코딩되어 있습니다",
+      "recommendation": "환경 변수나 보안 저장소를 사용하여 민감한 정보를 관리하세요",
+      "code_snippet": "DATABASE_URL=postgresql://user:password@host:port/database",
+      "timestamp": "2025-09-10T10:18:22.543901+00:00"
+    },
+    {
+      "severity": "HIGH",
+      "category": "SECRET",
+      "file_path": "deployment_guide.md",
+      "line_number": 248,
+      "description": "DATABASE_URL 감지: 민감한 정보가 하드코딩되어 있습니다",
+      "recommendation": "환경 변수나 보안 저장소를 사용하여 민감한 정보를 관리하세요",
+      "code_snippet": "DATABASE_URL = \"postgresql://...?pool_size=20&max_overflow=0\"",
+      "timestamp": "2025-09-10T10:18:22.543930+00:00"
+    },
+    {
+      "severity": "HIGH",
+      "category": "SECRET",
+      "file_path": "docker-compose.yml",
+      "line_number": 15,
+      "description": "DATABASE_URL 감지: 민감한 정보가 하드코딩되어 있습니다",
+      "recommendation": "환경 변수나 보안 저장소를 사용하여 민감한 정보를 관리하세요",
+      "code_snippet": "- DATABASE_URL=postgresql://youareplan:secure_password@postgres:5432/youareplan_tax_ai",
+      "timestamp": "2025-09-10T10:18:22.546429+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "PERMISSIONS",
+      "file_path": ".env",
+      "line_number": 0,
+      "description": "환경 파일 권한이 과도합니다 (현재: 644)",
+      "recommendation": "chmod 600으로 환경 파일의 권한을 제한하세요",
+      "code_snippet": null,
+      "timestamp": "2025-09-10T10:18:22.824680+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "api/routers/prep.py",
+      "line_number": 25,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "signals_text = \"\\n\".join([f\"- {s['code']}: {s['desc']}\" for s in signals]) or \"- NONE\"",
+      "timestamp": "2025-09-10T10:18:22.764217+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "api/routers/prep.py",
+      "line_number": 29,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "pi = PrepItem(period=period, type=s[\"code\"], target_ref=\"\", status=\"OPEN\", fix_hint=s[\"desc\"])",
+      "timestamp": "2025-09-10T10:18:22.764231+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "api/services/prep.py",
+      "line_number": 9,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "signals.append({\"code\":\"NO_CASH_RECEIPT\",\"desc\":\"현금영수증 내역 없음\"})",
+      "timestamp": "2025-09-10T10:18:22.765572+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "api/services/prep.py",
+      "line_number": 13,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "signals.append({\"code\":\"PERIOD_MISMATCH\",\"desc\":\"선택한 과세기간과 다른 월 자료 포함 가능\"})",
+      "timestamp": "2025-09-10T10:18:22.765585+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "automated_test_reporter.py",
+      "line_number": 777,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "parser = argparse.ArgumentParser(description=\"YouArePlan EasyTax v8 자동 테스트 리포터\")",
+      "timestamp": "2025-09-10T10:18:22.756950+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "benchmark.py",
+      "line_number": 134,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "status_codes = {}",
+      "timestamp": "2025-09-10T10:18:22.753333+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "benchmark.py",
+      "line_number": 137,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "status_codes[code] = status_codes.get(code, 0) + 1",
+      "timestamp": "2025-09-10T10:18:22.753345+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "benchmark.py",
+      "line_number": 157,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"http_status_codes\": status_codes,",
+      "timestamp": "2025-09-10T10:18:22.753371+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "benchmark.py",
+      "line_number": 294,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "for code, count in analysis.get('http_status_codes', {}).items():",
+      "timestamp": "2025-09-10T10:18:22.753522+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "benchmark.py",
+      "line_number": 331,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "parser = argparse.ArgumentParser(description='YouArePlan EasyTax v8 성능 벤치마크')",
+      "timestamp": "2025-09-10T10:18:22.753562+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "e2e_test.py",
+      "line_number": 388,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "parser = argparse.ArgumentParser(description='YouArePlan EasyTax v8 E2E 테스트')",
+      "timestamp": "2025-09-10T10:18:22.752311+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "reports/latest_report.html",
+      "line_number": 481,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"desc\": \"현금영수증 내역 없음\"",
+      "timestamp": "2025-09-10T10:18:22.762515+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "reports/latest_report.html",
+      "line_number": 485,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"desc\": \"선택한 과세기간과 다른 월 자료 포함 가능\"",
+      "timestamp": "2025-09-10T10:18:22.762523+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "reports/latest_report.json",
+      "line_number": 263,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"desc\": \"현금영수증 내역 없음\"",
+      "timestamp": "2025-09-10T10:18:22.761634+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "reports/latest_report.json",
+      "line_number": 267,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"desc\": \"선택한 과세기간과 다른 월 자료 포함 가능\"",
+      "timestamp": "2025-09-10T10:18:22.761643+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "reports/test_report_20250910_191639.html",
+      "line_number": 481,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"desc\": \"현금영수증 내역 없음\"",
+      "timestamp": "2025-09-10T10:18:22.763449+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "reports/test_report_20250910_191639.html",
+      "line_number": 485,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"desc\": \"선택한 과세기간과 다른 월 자료 포함 가능\"",
+      "timestamp": "2025-09-10T10:18:22.763457+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "reports/test_report_20250910_191639.json",
+      "line_number": 263,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"desc\": \"현금영수증 내역 없음\"",
+      "timestamp": "2025-09-10T10:18:22.761083+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "reports/test_report_20250910_191639.json",
+      "line_number": 267,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"desc\": \"선택한 과세기간과 다른 월 자료 포함 가능\"",
+      "timestamp": "2025-09-10T10:18:22.761093+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 21,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "description: str, recommendation: str, code_snippet: Optional[str] = None):",
+      "timestamp": "2025-09-10T10:18:22.754477+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 26,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "self.description = description",
+      "timestamp": "2025-09-10T10:18:22.754488+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "INJECTION",
+      "file_path": "security_audit.py",
+      "line_number": 53,
+      "description": "XSS_RISK 위험: 인젝션 공격에 취약할 수 있습니다",
+      "recommendation": "매개변수화된 쿼리나 안전한 API를 사용하세요",
+      "code_snippet": "\"XSS_RISK\": r'(?i)(\\.innerHTML|\\.outerHTML|document\\.write|eval\\s*\\()',",
+      "timestamp": "2025-09-10T10:18:22.681206+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 60,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"WEAK_CIPHER\": r'(?i)(des|md5|sha1|rc4)',",
+      "timestamp": "2025-09-10T10:18:22.754529+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 125,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "description=f\"{pattern_name} 감지: 민감한 정보가 하드코딩되어 있습니다\",",
+      "timestamp": "2025-09-10T10:18:22.754592+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 160,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "description=f\"{pattern_name} 위험: 인젝션 공격에 취약할 수 있습니다\",",
+      "timestamp": "2025-09-10T10:18:22.754630+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 195,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "description=f\"{pattern_name}: 보안에 취약한 설정이 감지되었습니다\",",
+      "timestamp": "2025-09-10T10:18:22.754667+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 233,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "description=f\"환경 파일 권한이 과도합니다 (현재: {mode})\",",
+      "timestamp": "2025-09-10T10:18:22.754711+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 284,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "description=f\"{pkg_name} {current}은 보안 취약점이 있을 수 있습니다\",",
+      "timestamp": "2025-09-10T10:18:22.754764+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 325,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "description=\"인증이 없는 민감한 API 엔드포인트가 발견되었습니다\",",
+      "timestamp": "2025-09-10T10:18:22.754809+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 382,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"description\": issue.description,",
+      "timestamp": "2025-09-10T10:18:22.754861+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "security_audit.py",
+      "line_number": 467,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "parser = argparse.ArgumentParser(description=\"YouArePlan EasyTax v8 보안 감사 도구\")",
+      "timestamp": "2025-09-10T10:18:22.754941+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "ui/app.js",
+      "line_number": 199,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"🔍 발견된 주의사항\": result.signals?.map(s => `• ${s.code}: ${s.desc}`).join('\\n') || '없음'",
+      "timestamp": "2025-09-10T10:18:22.759985+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "ui/index.html",
+      "line_number": 13,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "<meta name=\"description\" content=\"YouArePlan EasyTax - 세무 AI 코파일럿 v8 | 전문 세무 자동화 솔루션\">",
+      "timestamp": "2025-09-10T10:18:22.758470+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "ui/index.html",
+      "line_number": 107,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "<p class=\"section-desc\">CSV 파일을 업로드하여 거래내역을 시스템에 등록합니다.</p>",
+      "timestamp": "2025-09-10T10:18:22.758594+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "ui/index.html",
+      "line_number": 113,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "<p class=\"section-desc\">AI가 자동으로 거래내역을 분류한 결과를 확인합니다.</p>",
+      "timestamp": "2025-09-10T10:18:22.758610+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "ui/index.html",
+      "line_number": 121,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "<p class=\"section-desc\">분류된 거래내역을 바탕으로 부가세를 자동 계산합니다.</p>",
+      "timestamp": "2025-09-10T10:18:22.758629+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "ui/index.html",
+      "line_number": 130,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "<p class=\"section-desc\">세무 신고를 위한 맞춤형 체크리스트를 생성합니다.</p>",
+      "timestamp": "2025-09-10T10:18:22.758645+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "ui/styles.css",
+      "line_number": 286,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": ".section-desc {",
+      "timestamp": "2025-09-10T10:18:22.759282+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "vercel.json",
+      "line_number": 20,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"dest\": \"/api/main.py\"",
+      "timestamp": "2025-09-10T10:18:22.753817+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "vercel.json",
+      "line_number": 24,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"dest\": \"/ui/$1\"",
+      "timestamp": "2025-09-10T10:18:22.753825+00:00"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "CONFIG",
+      "file_path": "vercel.json",
+      "line_number": 72,
+      "description": "WEAK_CIPHER: 보안에 취약한 설정이 감지되었습니다",
+      "recommendation": "더 강력한 암호화 알고리즘(AES, SHA-256)을 사용하세요",
+      "code_snippet": "\"destination\": \"/ui/index.html\",",
+      "timestamp": "2025-09-10T10:18:22.753857+00:00"
+    },
+    {
+      "severity": "INFO",
+      "category": "SECRET",
+      "file_path": ".env",
+      "line_number": 6,
+      "description": "API_KEY 감지: 민감한 정보가 하드코딩되어 있습니다",
+      "recommendation": "환경 변수나 보안 저장소를 사용하여 민감한 정보를 관리하세요",
+      "code_snippet": "OPENAI_API_KEY=sk-proj-demo-test-key-for-development-only",
+      "timestamp": "2025-09-10T10:18:22.544284+00:00"
+    },
+    {
+      "severity": "INFO",
+      "category": "SECRET",
+      "file_path": "deployment_guide.md",
+      "line_number": 135,
+      "description": "API_KEY 감지: 민감한 정보가 하드코딩되어 있습니다",
+      "recommendation": "환경 변수나 보안 저장소를 사용하여 민감한 정보를 관리하세요",
+      "code_snippet": "OPENAI_API_KEY=sk-your-api-key-here",
+      "timestamp": "2025-09-10T10:18:22.543676+00:00"
+    }
+  ],
+  "recommendations": [
+    "🚨 HIGH 위험도 이슈를 즉시 해결하세요",
+    "🔐 민감한 정보를 환경 변수나 보안 저장소로 이동하세요",
+    "💉 SQL 인젝션 방지를 위해 매개변수화된 쿼리를 사용하세요",
+    "⚙️ 프로덕션 환경에서 보안 설정을 강화하세요",
+    "📚 보안 코딩 가이드라인을 팀원들과 공유하세요",
+    "🔄 정기적인 보안 감사를 수행하세요",
+    "🛡️ 프로덕션 배포 전 보안 검토를 의무화하세요"
+  ]
+}

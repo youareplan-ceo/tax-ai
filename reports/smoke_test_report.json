@@ -1,0 +1,55 @@
+{
+  "smoke_test_summary": {
+    "timestamp": "2025-09-11T12:40:33.015136",
+    "target_url": "http://localhost:8081",
+    "total_tests": 5,
+    "successful_tests": 5,
+    "failed_tests": 0,
+    "success_rate_percent": 100.0,
+    "total_duration_ms": 2579.83,
+    "overall_status": "✅ 성공",
+    "deployment_ready": true
+  },
+  "detailed_results": [
+    {
+      "test": "헬스체크",
+      "success": true,
+      "duration_ms": 15.67,
+      "timestamp": "2025-09-11T12:40:30.450864",
+      "details": "서버 정상 작동",
+      "error": null
+    },
+    {
+      "test": "AI 분류",
+      "success": true,
+      "duration_ms": 8.03,
+      "timestamp": "2025-09-11T12:40:30.959033",
+      "details": "계정: 기타비용",
+      "error": null
+    },
+    {
+      "test": "세액 추정",
+      "success": true,
+      "duration_ms": 19.07,
+      "timestamp": "2025-09-11T12:40:31.483261",
+      "details": "예상 세액: 0.0원",
+      "error": null
+    },
+    {
+      "test": "체크리스트 생성",
+      "success": true,
+      "duration_ms": 11.36,
+      "timestamp": "2025-09-11T12:40:31.999106",
+      "details": "2개 항목 생성",
+      "error": null
+    },
+    {
+      "test": "파일 업로드",
+      "success": true,
+      "duration_ms": 8.64,
+      "timestamp": "2025-09-11T12:40:32.512819",
+      "details": "CSV 파일 처리 성공",
+      "error": null
+    }
+  ]
+}

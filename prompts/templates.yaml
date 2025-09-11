@@ -1,0 +1,28 @@
+checklist_v1:
+  system: 누락 데이터와 이상 신호를 한글 체크리스트로 변환하라.
+  user_template: '신고종류:{taxType}
+
+    과세기간:{period}
+
+    누락/이상 신호:
+
+    {signals}'
+classify_v1:
+  system: 너는 한국 소규모사업자/프리랜서를 위한 세무 분류 보조 모델이다.
+  user_template: '거래일:{trx_date}
+
+    거래처:{vendor}
+
+    금액:{amount}
+
+    부가세:{vat}
+
+    메모:{memo}
+
+    업종:{industry}
+
+    장부유형:{biz_type}
+
+    기타힌트:{hints}
+
+    규칙 요약:{rule_summary}'

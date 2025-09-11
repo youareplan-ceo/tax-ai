@@ -1,0 +1,451 @@
+{
+  "test_info": {
+    "timestamp": "2025-09-11T12:19:44.449271",
+    "total_samples": 20,
+    "test_duration_seconds": 4.058575630187988,
+    "api_endpoint": "http://localhost:8081/ai/classify-entry"
+  },
+  "performance_metrics": {
+    "success_rate_percent": 100.0,
+    "successful_requests": 20,
+    "failed_requests": 0,
+    "avg_response_time_ms": 2.93,
+    "min_response_time_ms": 1.94,
+    "max_response_time_ms": 15.81,
+    "total_cost_usd": 0.00314,
+    "cost_per_request_usd": 0.000157
+  },
+  "cost_analysis": {
+    "demo_mode": true,
+    "estimated_monthly_cost_1000_requests": 0.16,
+    "estimated_yearly_cost_12000_requests": 1.88,
+    "cost_efficiency_rating": "매우 경제적"
+  },
+  "quality_metrics": {
+    "reliability_score": 100.0,
+    "performance_grade": "A",
+    "consistency_score": 52.6
+  },
+  "detailed_results": [
+    {
+      "success": true,
+      "input": {
+        "vendor": "스타벅스 코리아",
+        "amount": 15000,
+        "memo": "팀 회의용 커피",
+        "category": "복리후생"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 15.807867050170898,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "네이버 클라우드",
+        "amount": 45000,
+        "memo": "서버 호스팅 비용",
+        "category": "통신비"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.3522377014160156,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "오피스디포",
+        "amount": 8500,
+        "memo": "A4 용지 구매",
+        "category": "소모품비"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.0360946655273438,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "현대카드",
+        "amount": 150000,
+        "memo": "고객 접대 식사",
+        "category": "접대비"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.2559165954589844,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "롯데마트",
+        "amount": 25000,
+        "memo": "사무실 청소용품",
+        "category": "소모품비"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.1169185638427734,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "KT",
+        "amount": 89000,
+        "memo": "사무실 인터넷",
+        "category": "통신비"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.1810531616210938,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "교보문고",
+        "amount": 35000,
+        "memo": "업무 관련 도서",
+        "category": "도서인쇄비"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.086162567138672,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "신한은행",
+        "amount": 3000,
+        "memo": "계좌이체 수수료",
+        "category": "지급수수료"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.0971298217773438,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "LG전자",
+        "amount": 1200000,
+        "memo": "사무실 에어컨",
+        "category": "비품"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.955913543701172,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "국세청",
+        "amount": 50000,
+        "memo": "부가세 납부",
+        "category": "조세공과"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.466917037963867,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "맥도날드",
+        "amount": 12000,
+        "memo": "점심 식사",
+        "category": "복리후생"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.070903778076172,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "GS25",
+        "amount": 5500,
+        "memo": "사무용 문구류",
+        "category": "소모품비"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.2590160369873047,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "택시",
+        "amount": 18000,
+        "memo": "고객 미팅 이동",
+        "category": "여비교통비"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.0017623901367188,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "CGV",
+        "amount": 32000,
+        "memo": "팀 단합 영화관람",
+        "category": "복리후생"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.0551681518554688,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "쿠팡",
+        "amount": 67000,
+        "memo": "사무실 간식",
+        "category": "복리후생"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 1.940011978149414,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "카카오페이",
+        "amount": 2200,
+        "memo": "송금 수수료",
+        "category": "지급수수료"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 3.1821727752685547,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "삼성전자",
+        "amount": 890000,
+        "memo": "업무용 모니터",
+        "category": "비품"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.1440982818603516,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "네이버페이",
+        "amount": 4500,
+        "memo": "결제 수수료",
+        "category": "지급수수료"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.150297164916992,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "이마트",
+        "amount": 45000,
+        "memo": "사무실 생수",
+        "category": "복리후생"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.2051334381103516,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    },
+    {
+      "success": true,
+      "input": {
+        "vendor": "우리은행",
+        "amount": 1500,
+        "memo": "계좌 관리비",
+        "category": "지급수수료"
+      },
+      "output": {
+        "account_code": "기타비용",
+        "tax_type": "과세",
+        "confidence": 0.5,
+        "reasoning": "AI 응답 파싱 실패로 기본 분류 적용",
+        "demo_mode": false
+      },
+      "performance": {
+        "response_time_ms": 2.210855484008789,
+        "cost_usd": 0.000157,
+        "status_code": 200
+      }
+    }
+  ]
+}

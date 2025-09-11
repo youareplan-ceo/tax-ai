@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "name": "youareplan-easytax-ui-v8",
+  "builds": [
+    {
+      "src": "ui/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://youareplan-easytax-api-v8.onrender.com/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/ui/$1"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_BASE_URL": "https://youareplan-easytax-api-v8.onrender.com",
+    "NEXT_PUBLIC_APP_NAME": "YouArePlan EasyTax v8",
+    "NEXT_PUBLIC_APP_VERSION": "v8.0.0",
+    "NEXT_PUBLIC_COMPANY_NAME": "유아플랜 컨설팅",
+    "NEXT_PUBLIC_COMPANY_WEBSITE": "https://youareplan.co.kr"
+  }
+}
