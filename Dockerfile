@@ -40,4 +40,4 @@ ENV LOG_LEVEL=INFO
 ENV PYTHONPATH=/app
 
 # 엔트리포인트 실행 (Render $PORT 환경변수 사용)
-CMD uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8081} --workers 2 --http h11
+CMD uvicorn api.main:app --host 0.0.0.0 --port $PORT --workers 1
