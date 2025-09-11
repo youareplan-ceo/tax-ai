@@ -1,0 +1,476 @@
+{
+  "meta": {
+    "version": "v8.0.0",
+    "generated": "2025-09-11T06:00:00Z",
+    "description": "YouArePlan EasyTax 가계부형 UI 샘플 데이터",
+    "total_entries": 25,
+    "period_range": "2025-08 ~ 2025-09",
+    "classification_enabled": true
+  },
+  "entries": [
+    {
+      "id": 1001,
+      "date": "2025-09-01",
+      "vendor": "서울 비즈니스 호텔",
+      "amount": 150000,
+      "vat": 15000,
+      "memo": "거래처 미팅 숙박비",
+      "account_code": "접대비",
+      "tax_type": "과세",
+      "confidence": 0.95,
+      "classification_status": "auto",
+      "source": "csv_import",
+      "user_id": "demo"
+    },
+    {
+      "id": 1002,
+      "date": "2025-09-01",
+      "vendor": "오피스 문구점",
+      "amount": 23500,
+      "vat": 2350,
+      "memo": "A4 용지, 볼펜, 파일 구입",
+      "account_code": "사무용품비",
+      "tax_type": "과세",
+      "confidence": 0.92,
+      "classification_status": "auto",
+      "source": "receipt",
+      "user_id": "demo"
+    },
+    {
+      "id": 1003,
+      "date": "2025-09-02",
+      "vendor": "KT 통신",
+      "amount": 89000,
+      "vat": 8900,
+      "memo": "인터넷, 전화 월정액",
+      "account_code": "통신비",
+      "tax_type": "과세",
+      "confidence": 0.99,
+      "classification_status": "auto",
+      "source": "auto_billing",
+      "user_id": "demo"
+    },
+    {
+      "id": 1004,
+      "date": "2025-09-02",
+      "vendor": "가든 레스토랑",
+      "amount": 85000,
+      "vat": 8500,
+      "memo": "신규 고객 미팅",
+      "account_code": "접대비",
+      "tax_type": "과세",
+      "confidence": 0.87,
+      "classification_status": "auto",
+      "source": "receipt",
+      "user_id": "demo"
+    },
+    {
+      "id": 1005,
+      "date": "2025-09-03",
+      "vendor": "한국광고대행사",
+      "amount": 500000,
+      "vat": 50000,
+      "memo": "온라인 광고 캠페인",
+      "account_code": "광고선전비",
+      "tax_type": "과세",
+      "confidence": 0.96,
+      "classification_status": "manual",
+      "source": "invoice",
+      "user_id": "demo"
+    },
+    {
+      "id": 1006,
+      "date": "2025-09-04",
+      "vendor": "서울 주차장",
+      "amount": 12000,
+      "vat": 1200,
+      "memo": "고객 방문 주차료",
+      "account_code": "차량유지비",
+      "tax_type": "과세",
+      "confidence": 0.81,
+      "classification_status": "auto",
+      "source": "receipt",
+      "user_id": "demo"
+    },
+    {
+      "id": 1007,
+      "date": "2025-09-05",
+      "vendor": "코워킹 스페이스",
+      "amount": 200000,
+      "vat": 20000,
+      "memo": "월 임대료",
+      "account_code": "임차료",
+      "tax_type": "과세",
+      "confidence": 0.94,
+      "classification_status": "auto",
+      "source": "contract",
+      "user_id": "demo"
+    },
+    {
+      "id": 1008,
+      "date": "2025-09-06",
+      "vendor": "IT 솔루션",
+      "amount": 120000,
+      "vat": 12000,
+      "memo": "소프트웨어 라이선스",
+      "account_code": "사무용품비",
+      "tax_type": "과세",
+      "confidence": 0.89,
+      "classification_status": "auto",
+      "source": "invoice",
+      "user_id": "demo"
+    },
+    {
+      "id": 1009,
+      "date": "2025-09-07",
+      "vendor": "베이커리 카페",
+      "amount": 15000,
+      "vat": 1500,
+      "memo": "팀 미팅 간식",
+      "account_code": "접대비",
+      "tax_type": "과세",
+      "confidence": 0.78,
+      "classification_status": "auto",
+      "source": "receipt",
+      "user_id": "demo"
+    },
+    {
+      "id": 1010,
+      "date": "2025-09-08",
+      "vendor": "현대 렌터카",
+      "amount": 68000,
+      "vat": 6800,
+      "memo": "출장용 렌터카",
+      "account_code": "차량유지비",
+      "tax_type": "과세",
+      "confidence": 0.93,
+      "classification_status": "auto",
+      "source": "receipt",
+      "user_id": "demo"
+    },
+    {
+      "id": 1011,
+      "date": "2025-09-09",
+      "vendor": "ABC 고객",
+      "amount": 1200000,
+      "vat": 120000,
+      "memo": "웹사이트 제작비",
+      "account_code": "용역수입",
+      "tax_type": "과세",
+      "confidence": 0.99,
+      "classification_status": "manual",
+      "source": "invoice",
+      "user_id": "demo"
+    },
+    {
+      "id": 1012,
+      "date": "2025-09-10",
+      "vendor": "전자부품 마트",
+      "amount": 45000,
+      "vat": 4500,
+      "memo": "개발용 부품",
+      "account_code": "재료비",
+      "tax_type": "과세",
+      "confidence": 0.84,
+      "classification_status": "auto",
+      "source": "receipt",
+      "user_id": "demo"
+    },
+    {
+      "id": 1013,
+      "date": "2025-08-15",
+      "vendor": "교육 센터",
+      "amount": 250000,
+      "vat": 25000,
+      "memo": "직원 교육비",
+      "account_code": "교육훈련비",
+      "tax_type": "과세",
+      "confidence": 0.91,
+      "classification_status": "auto",
+      "source": "invoice",
+      "user_id": "demo"
+    },
+    {
+      "id": 1014,
+      "date": "2025-08-20",
+      "vendor": "보험회사",
+      "amount": 180000,
+      "vat": 0,
+      "memo": "사업자 종합보험료",
+      "account_code": "보험료",
+      "tax_type": "면세",
+      "confidence": 0.97,
+      "classification_status": "auto",
+      "source": "auto_billing",
+      "user_id": "demo"
+    },
+    {
+      "id": 1015,
+      "date": "2025-08-25",
+      "vendor": "DEF 기업",
+      "amount": 800000,
+      "vat": 80000,
+      "memo": "컨설팅 용역비",
+      "account_code": "용역수입",
+      "tax_type": "과세",
+      "confidence": 0.95,
+      "classification_status": "manual",
+      "source": "contract",
+      "user_id": "demo"
+    },
+    {
+      "id": 1016,
+      "date": "2025-08-30",
+      "vendor": "택시",
+      "amount": 25000,
+      "vat": 2500,
+      "memo": "공항 이동",
+      "account_code": "여비교통비",
+      "tax_type": "과세",
+      "confidence": 0.72,
+      "classification_status": "auto",
+      "source": "receipt",
+      "user_id": "demo"
+    },
+    {
+      "id": 1017,
+      "date": "2025-08-31",
+      "vendor": "세무사 사무소",
+      "amount": 300000,
+      "vat": 30000,
+      "memo": "세무 신고 대행료",
+      "account_code": "지급수수료",
+      "tax_type": "과세",
+      "confidence": 0.98,
+      "classification_status": "manual",
+      "source": "invoice",
+      "user_id": "demo"
+    },
+    {
+      "id": 1018,
+      "date": "2025-09-11",
+      "vendor": "클라우드 서비스",
+      "amount": 55000,
+      "vat": 5500,
+      "memo": "AWS 월 사용료",
+      "account_code": "통신비",
+      "tax_type": "과세",
+      "confidence": 0.88,
+      "classification_status": "auto",
+      "source": "auto_billing",
+      "user_id": "demo"
+    },
+    {
+      "id": 1019,
+      "date": "2025-09-11",
+      "vendor": "스타벅스",
+      "amount": 8500,
+      "vat": 850,
+      "memo": "고객 미팅 음료",
+      "account_code": "접대비",
+      "tax_type": "과세",
+      "confidence": 0.65,
+      "classification_status": "auto",
+      "source": "receipt",
+      "user_id": "demo"
+    },
+    {
+      "id": 1020,
+      "date": "2025-09-11",
+      "vendor": "GHI 파트너",
+      "amount": 950000,
+      "vat": 95000,
+      "memo": "앱 개발 프로젝트",
+      "account_code": "용역수입",
+      "tax_type": "과세",
+      "confidence": 0.99,
+      "classification_status": "manual",
+      "source": "contract",
+      "user_id": "demo"
+    }
+  ],
+  "account_codes": [
+    {
+      "code": "접대비",
+      "description": "거래처 접대, 회식, 선물 등",
+      "category": "판매관리비",
+      "deductible": true,
+      "limit_rate": 0.002,
+      "keywords": ["식당", "카페", "호텔", "선물", "회식", "미팅"]
+    },
+    {
+      "code": "사무용품비",
+      "description": "사무용품, 소프트웨어, IT장비 등",
+      "category": "판매관리비", 
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["문구", "용지", "펜", "소프트웨어", "라이선스", "IT"]
+    },
+    {
+      "code": "통신비",
+      "description": "전화, 인터넷, 모바일 통신료",
+      "category": "판매관리비",
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["KT", "SK", "LG", "인터넷", "전화", "모바일", "클라우드"]
+    },
+    {
+      "code": "광고선전비",
+      "description": "광고, 마케팅, 홍보비용",
+      "category": "판매관리비",
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["광고", "마케팅", "홍보", "배너", "SNS", "캠페인"]
+    },
+    {
+      "code": "차량유지비",
+      "description": "차량 연료, 주차, 정비, 렌터카",
+      "category": "판매관리비",
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["주유소", "주차", "렌터카", "정비", "톨게이트", "택시"]
+    },
+    {
+      "code": "임차료",
+      "description": "사무실, 창고 등 부동산 임차료",
+      "category": "판매관리비",
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["임대", "월세", "사무실", "창고", "코워킹"]
+    },
+    {
+      "code": "여비교통비",
+      "description": "출장비, 교통비, 숙박비",
+      "category": "판매관리비",
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["출장", "항공료", "기차", "버스", "숙박", "호텔"]
+    },
+    {
+      "code": "교육훈련비",
+      "description": "직원 교육, 세미나, 컨퍼런스",
+      "category": "판매관리비",
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["교육", "세미나", "컨퍼런스", "강의", "훈련"]
+    },
+    {
+      "code": "지급수수료",
+      "description": "세무사, 변호사, 컨설팅 수수료",
+      "category": "판매관리비",
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["세무사", "변호사", "컨설팅", "수수료", "대행"]
+    },
+    {
+      "code": "보험료",
+      "description": "사업자 보험료",
+      "category": "판매관리비",
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["보험", "보험료", "종합보험", "손해보험"]
+    },
+    {
+      "code": "재료비",
+      "description": "제품 생산 재료비",
+      "category": "제조원가",
+      "deductible": true,
+      "limit_rate": null,
+      "keywords": ["재료", "부품", "원료", "소재"]
+    },
+    {
+      "code": "용역수입",
+      "description": "서비스 제공 수입",
+      "category": "매출",
+      "deductible": false,
+      "limit_rate": null,
+      "keywords": ["용역", "서비스", "컨설팅", "개발", "제작"]
+    }
+  ],
+  "classification_rules": {
+    "auto_rules": [
+      {
+        "vendor_pattern": ".*식당.*|.*레스토랑.*|.*카페.*|.*커피.*",
+        "account_code": "접대비",
+        "confidence": 0.8,
+        "condition": "amount < 100000"
+      },
+      {
+        "vendor_pattern": ".*문구.*|.*오피스.*",
+        "account_code": "사무용품비", 
+        "confidence": 0.9,
+        "condition": "amount < 500000"
+      },
+      {
+        "vendor_pattern": ".*통신.*|.*KT.*|.*SK.*|.*LG.*|클라우드.*|AWS.*",
+        "account_code": "통신비",
+        "confidence": 0.95,
+        "condition": null
+      },
+      {
+        "vendor_pattern": ".*광고.*|.*마케팅.*|.*홍보.*",
+        "account_code": "광고선전비",
+        "confidence": 0.9,
+        "condition": null
+      },
+      {
+        "vendor_pattern": ".*주차.*|.*주유.*|.*렌터카.*|.*택시.*",
+        "account_code": "차량유지비",
+        "confidence": 0.85,
+        "condition": null
+      },
+      {
+        "vendor_pattern": ".*임대.*|.*월세.*|.*사무실.*|.*코워킹.*",
+        "account_code": "임차료",
+        "confidence": 0.9,
+        "condition": null
+      },
+      {
+        "vendor_pattern": ".*교육.*|.*세미나.*|.*컨퍼런스.*",
+        "account_code": "교육훈련비",
+        "confidence": 0.85,
+        "condition": null
+      },
+      {
+        "vendor_pattern": ".*세무.*|.*변호사.*|.*컨설팅.*",
+        "account_code": "지급수수료",
+        "confidence": 0.9,
+        "condition": null
+      },
+      {
+        "vendor_pattern": ".*보험.*",
+        "account_code": "보험료",
+        "confidence": 0.95,
+        "condition": null
+      }
+    ],
+    "fallback_rules": [
+      {
+        "amount_range": [1, 50000],
+        "default_account": "사무용품비",
+        "confidence": 0.6
+      },
+      {
+        "amount_range": [50001, 200000],
+        "default_account": "접대비",
+        "confidence": 0.5
+      },
+      {
+        "amount_range": [200001, 999999999],
+        "default_account": "지급수수료",
+        "confidence": 0.4
+      }
+    ]
+  },
+  "tax_settings": {
+    "vat_rate": 0.1,
+    "expense_deduction_limit": {
+      "접대비": {
+        "rate": 0.002,
+        "description": "매출액의 0.2% 한도"
+      }
+    },
+    "exempt_categories": ["보험료"],
+    "current_period": "2025-09"
+  }
+}

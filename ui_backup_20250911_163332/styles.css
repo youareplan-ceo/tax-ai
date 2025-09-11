@@ -1,28 +1,32 @@
-/* YouArePlan EasyTax - 세무 AI 코파일럿 v8 스타일 - Toss Style */
+/* YouArePlan EasyTax - 세무 AI 코파일럿 v8 스타일 */
 
-:root{
-    --bg:#f7f8fa; --card:#ffffff; --ink:#0b1023; --ink-2:#5f6a82;
-    --brand:#0066ff; --danger:#ff3b30; --success:#12c29c;
-    --radius:14px; --radius-lg:18px; --shadow:0 6px 24px rgba(17,27,56,.06);
-    --gap-1:6px; --gap-2:10px; --gap-3:14px; --gap-4:18px; --gap-5:24px;
-    /* Legacy compatibility */
-    --primary-color: var(--brand);
-    --primary-dark: #004bb3;
-    --primary-light: #4d8cff;
-    --secondary-color: var(--bg);
-    --accent-color: var(--success);
-    --warning-color: #ff9f0a;
-    --danger-color: var(--danger);
-    --text-primary: var(--ink);
-    --text-secondary: var(--ink-2);
-    --border-color: #eef1f5;
+:root {
+    --primary-color: #667eea;
+    --primary-dark: #764ba2;
+    --primary-light: #f093fb;
+    --secondary-color: #f8f9fa;
+    --accent-color: #4ecdc4;
+    --warning-color: #ff6b6b;
+    --danger-color: #dc3545;
+    --text-primary: #2c3e50;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 20px rgba(102,126,234,0.15);
+    --shadow-hover: 0 8px 30px rgba(102,126,234,0.25);
+    --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    --header-gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 60%, var(--primary-light) 100%);
+    --card-gradient: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+    --text-gradient: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
 }
 
-html,body{font-family:"SUIT Variable",system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Apple SD Gothic Neo,Pretendard,sans-serif;background:var(--bg);color:var(--ink);}
-img{max-width:100%;height:auto;} 
-*{box-sizing:border-box;}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
     background: var(--gradient-bg);
@@ -314,39 +318,26 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
 }
 
-/* Toss-style Buttons with 120ms transitions */
-.primary-btn, .btn {
-    background: var(--brand);
+.primary-btn {
+    background: var(--header-gradient);
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
-    border-radius: var(--radius);
+    border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform .12s ease, background-color .12s ease;
+    transition: all 0.3s ease;
     white-space: nowrap;
     min-width: 140px;
-    font-size: 0.9rem;
 }
 
-.primary-btn:hover, .btn:hover {
+.primary-btn:hover {
     transform: translateY(-1px);
-    background: #0052cc;
+    box-shadow: var(--shadow-hover);
 }
 
-.primary-btn:active, .btn:active {
-    transform: scale(.98);
-}
-
-.btn-secondary {
-    background: #f8f9fa;
-    color: var(--ink);
-    border: 1px solid var(--border-color);
-}
-
-.btn-secondary:hover {
-    background: #e9ecef;
-    transform: translateY(-1px);
+.primary-btn:active {
+    transform: translateY(0);
 }
 
 /* Table 스타일 */
@@ -598,48 +589,52 @@ footer {
 /* ===== 가계부형 UI 전용 스타일 ===== */
 
 /* 앱 헤더 개선 */
-/* Toss-style Header/Appbar */
-header.appbar, .app-header {
-    position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:var(--gap-3);
-    padding:18px 20px;background:#fff;box-shadow:var(--shadow);
-    min-height: 96px;
+.app-header {
+    background: var(--header-gradient);
+    color: white;
+    padding: 1.5rem 2rem;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    min-height: 110px;
+    display: flex;
+    align-items: center;
 }
 
 .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: var(--gap-3);
-    width: 100%;
-}
-
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: var(--gap-3);
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .logo-img {
-    height:88px;max-height:18vh;
-    filter: none;
-    transition: transform 0.12s ease;
+    width: auto;
+    height: 96px;
+    max-height: 18vh;
+    margin-right: 14px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: transform 0.3s ease;
 }
 
 .logo-img:hover {
-    transform: scale(1.02);
+    transform: scale(1.05);
 }
 
 .app-header h1 {
     margin: 0;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--ink);
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
 .subtitle {
-    font-size: 0.85rem;
-    color: var(--ink-2);
-    margin-left: 0;
-    font-weight: 500;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8);
+    margin-left: 0.5rem;
 }
 
 /* 탭 네비게이션 */
@@ -697,58 +692,60 @@ header.appbar, .app-header {
     animation: fadeIn 0.5s ease;
 }
 
-/* Toss-style Summary Cards */
-.summary-wrap {
-    display:grid;gap:12px;margin:14px 2px;
-}
-
+/* 요약 카드들 */
 .summary-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: var(--gap-3);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
     margin-bottom: 2rem;
 }
 
 .summary-card {
-    background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);
-    padding:16px 18px;
-    transition: all .12s ease;
-    border: 1px solid #f0f3f7;
+    background: var(--card-gradient);
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(102,126,234, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.summary-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--text-gradient);
+    opacity: 0.8;
 }
 
 .summary-card:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 32px rgba(17,27,56,.08);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
 }
 
 .summary-card h3 {
-    margin: 0 0 8px 0;
-    color: var(--ink-2);
-    font-size: 0.85rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
     font-weight: 500;
-    letter-spacing: -0.01em;
 }
 
-.summary-value, .summary-card .amount {
-    font-size:28px;font-weight:800;
-    color: var(--ink);
+.summary-card .amount {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
     margin: 0;
-    line-height: 1.1;
-}
-
-.summary-card .amount.positive {
-    color: var(--success);
-}
-
-.summary-card .amount.negative {
-    color: var(--danger);
 }
 
 .summary-card .sub-info {
     font-size: 0.8rem;
-    color: var(--ink-2);
-    margin-top: 6px;
-    font-weight: 500;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
 }
 
 /* 필터 섹션 */
@@ -1144,179 +1141,6 @@ header.appbar, .app-header {
     font-weight: 500;
 }
 
-/* Toss-style Card Layout */
-.ledger-card {
-    background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
-    padding:16px 18px;margin:12px 0;display:grid;grid-template-columns:1fr auto;gap:8px;
-    transition: transform .12s ease, box-shadow .12s ease;
-}
-
-.ledger-card:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 32px rgba(17,27,56,.08);
-}
-
-.ledger-merchant {
-    font-weight:650;
-    color: var(--ink);
-    font-size: 0.95rem;
-}
-
-.ledger-date {
-    font-size: 0.8rem;
-    color: var(--ink-2);
-    margin-top: 2px;
-}
-
-.ledger-memo {
-    font-size: 0.85rem;
-    color: var(--ink-2);
-    margin-top: 4px;
-}
-
-.ledger-amount {
-    text-align: right;
-    font-size: 1rem;
-    font-weight: 700;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.ledger-amount.pos {
-    color: var(--success);
-}
-
-.ledger-amount.neg {
-    color: var(--danger);
-}
-
-.ledger-vat {
-    font-size: 0.75rem;
-    color: var(--ink-2);
-    margin-top: 2px;
-}
-
-.ledger-tags {
-    display: flex;
-    gap: 4px;
-    margin-top: 6px;
-}
-
-.ledger-tag {
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: #f0f3f7;
-    color: var(--ink-2);
-}
-
-/* Hide table on mobile, show cards */
-@media (max-width: 768px) {
-    .ledger-table {
-        display: none;
-    }
-    
-    .ledger-cards {
-        display: block;
-    }
-}
-
-@media (min-width: 769px) {
-    .ledger-cards {
-        display: none;
-    }
-    
-    .ledger-table {
-        display: table;
-    }
-}
-
-/* Toss-style Bottom Tab Bar */
-.tabbar{
-    position:fixed;left:0;right:0;bottom:0;height:78px;background:#fff;
-    display:flex;justify-content:space-around;align-items:stretch;
-    box-shadow:0 -8px 24px rgba(17,27,56,.08);border-top:1px solid #eef1f5;
-    z-index: 100;
-}
-
-.tab-item {
-    color:var(--ink-2);font-weight:600;text-decoration:none;
-    display: flex;flex-direction: column;align-items: center;justify-content: center;
-    gap: 2px;flex: 1;transition: all .12s ease;
-    padding: 8px 4px;
-}
-
-.tab-item.active {
-    color:var(--brand);
-}
-
-.tab-item:hover {
-    background: rgba(0,102,255,0.04);
-}
-
-.tab-item:active {
-    transform: scale(0.98);
-}
-
-.tab-icon {
-    font-size: 1.1rem;
-    margin-bottom: 1px;
-}
-
-.tab-label {
-    font-size: 0.7rem;
-    font-weight: 500;
-}
-
-/* Floating Action Button */
-.fab{
-    position:fixed;right:18px;bottom:94px;width:56px;height:56px;
-    border-radius:50%;background:var(--brand);color:#fff;border:0;
-    box-shadow:var(--shadow);font-size:28px;line-height:56px;
-    cursor: pointer;z-index: 110;
-    transition: all .12s ease;
-}
-
-.fab:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 32px rgba(0,102,255,0.3);
-}
-
-.fab:active {
-    transform: scale(0.95);
-}
-
-/* Add padding bottom to main content to avoid tab bar overlap */
-.main-content {
-    padding-bottom: 100px;
-}
-
-/* Hide desktop tab navigation on mobile */
-@media (max-width: 768px) {
-    .tab-nav {
-        display: none;
-    }
-    
-    .tabbar {
-        display: flex;
-    }
-    
-    .fab {
-        display: block;
-    }
-}
-
-@media (min-width: 769px) {
-    .tabbar {
-        display: none;
-    }
-    
-    .fab {
-        display: none;
-    }
-}
-
 /* 반응형 개선 */
 @media (max-width: 768px) {
     .app-header {
@@ -1394,11 +1218,6 @@ header.appbar, .app-header {
     .logo-img {
         height: 72px;
         max-height: 14vh;
-    }
-    
-    .app-header, header.appbar {
-        padding: 14px 16px;
-        min-height: 80px;
     }
 }
 

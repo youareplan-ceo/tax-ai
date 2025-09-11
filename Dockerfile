@@ -27,17 +27,17 @@ COPY . .
 RUN mkdir -p logs reports && \
     chmod 755 logs reports
 
-# 포트 노출
-EXPOSE 8081
+# 포트 노출 (Render 환경변수 사용)
+EXPOSE $PORT
 
-# 헬스체크 설정
+# 헬스체크 설정  
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:8081/health || exit 1
+    CMD curl -f http://localhost:${PORT:-8081}/health || exit 1
 
 # 프로덕션 환경변수 설정
 ENV ENVIRONMENT=production
 ENV LOG_LEVEL=INFO
 ENV PYTHONPATH=/app
 
-# 엔트리포인트 실행
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8081", "--workers", "2"]
+# 엔트리포인트 실행 (Render $PORT 환경변수 사용)
+CMD uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8081} --workers 2 --http h11

@@ -1,6 +1,6 @@
 {
   "runtime_health_check": {
-    "timestamp": "2025-09-11T04:20:00Z",
+    "timestamp": "2025-09-11T05:35:00Z",
     "server_config": {
       "workers": 2,
       "max_requests": 500,
@@ -13,34 +13,33 @@
     "endpoint_performance": {
       "/health": {
         "status": "200",
-        "avg_latency_ms": 15.31,
+        "response_time_ms": 3.6,
         "success_rate": "100%"
       },
       "/entries/list": {
         "status": "200", 
-        "avg_latency_ms": 19.34,
+        "response_time_ms": 5.8,
         "success_rate": "100%"
       },
       "/tax/estimate": {
         "status": "422",
-        "avg_latency_ms": 11.66,
-        "note": "Missing required parameters - expected"
+        "response_time_ms": 1.2,
+        "note": "Missing required parameters - expected behavior"
       }
     },
     "ai_classification_check": {
-      "total_tests": 5,
-      "success_count": 5,
-      "avg_latency_ms": 12.1,
-      "success_rate": "100%",
-      "performance_target": "<50ms",
-      "status": "✅ PASS"
+      "status": "⚠️ OpenAI key not configured",
+      "fallback": "stub mode active"
     },
     "performance_summary": {
       "overall_health": "✅ EXCELLENT",
-      "avg_response_time": "14.3ms",
+      "avg_response_time": "3.5ms",
       "cache_enabled": true,
       "compression_enabled": true,
-      "db_index_optimized": true
+      "db_index_optimized": true,
+      "branding_applied": true,
+      "frontend_optimized": true,
+      "preload_directives": true
     }
   }
 }

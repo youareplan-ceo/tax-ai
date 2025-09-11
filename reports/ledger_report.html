@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouArePlan EasyTax - 가계부형 세무 리포트</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://github.com/youareplan-ceo/youaplan-site/blob/main/logo.png?raw=true" as="image">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #764ba2;
+            --primary-light: #f093fb;
+            --accent-color: #4ecdc4;
+            --warning-color: #ff6b6b;
+            --success-color: #28a745;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --bg-light: #f8f9fa;
+            --shadow: 0 4px 20px rgba(102,126,234,0.15);
+            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--gradient-bg);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .report-header {
+            background: rgba(255,255,255,0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(25px);
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo-img {
+            width: auto;
+            height: 48px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        
+        .report-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .report-period {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .report-generated {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-card {
+            background: rgba(255,255,255,0.95);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(25px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+        }
+        
+        .summary-card h3 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        
+        .summary-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-change {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .summary-change.positive {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+        
+        .summary-change.negative {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .chart-section {
+            background: rgba(255,255,255,0.95);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(25px);
+            margin-bottom: 2rem;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(135deg, var(--bg-light), #e9ecef);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-align: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .details-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(25px);
+            overflow: hidden;
+        }
+        
+        .details-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .details-table th {
+            background: rgba(102,126,234,0.1);
+            color: var(--text-primary);
+            padding: 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .details-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+        
+        .details-table tbody tr:hover {
+            background: rgba(102,126,234,0.05);
+        }
+        
+        .account-tag {
+            background: #e3f2fd;
+            color: var(--primary-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .tax-tag {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .tax-tag.taxable {
+            background: #e8f5e8;
+            color: #28a745;
+        }
+        
+        .tax-tag.exempt {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .footer-actions {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin: 0 0.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.9);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .amount-positive {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+        
+        .amount-negative {
+            color: var(--warning-color);
+            font-weight: 600;
+        }
+        
+        .confidence-high { color: var(--success-color); }
+        .confidence-mid { color: var(--warning-color); }
+        .confidence-low { color: var(--warning-color); }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .report-header {
+                padding: 1.5rem;
+            }
+            
+            .logo-section {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .logo-img {
+                height: 40px;
+            }
+            
+            .report-title {
+                font-size: 1.5rem;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-section {
+                padding: 1.5rem;
+            }
+            
+            .details-table {
+                font-size: 0.8rem;
+            }
+            
+            .details-table th,
+            .details-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="report-header">
+            <div class="logo-section">
+                <img src="https://github.com/youareplan-ceo/youaplan-site/blob/main/logo.png?raw=true" 
+                     alt="YouaPlan Logo" class="logo-img" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="report-title">📊 가계부형 세무 리포트</h1>
+                    <div class="report-period">2025년 9월 세무 현황</div>
+                </div>
+            </div>
+            <div class="report-generated">
+                생성일시: <span id="generated-time">2025-09-11 오후 6:00</span> | 
+                총 <span id="total-entries">20</span>건의 거래 분석 |
+                AI 분류율 <span id="ai-rate">92%</span>
+            </div>
+        </div>
+        
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>💰 총 매출</h3>
+                <div class="summary-value" id="total-sales">₩2,950,000</div>
+                <div class="summary-change positive">▲ 15.2% 전월 대비</div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>💳 총 경비</h3>
+                <div class="summary-value" id="total-expenses">₩1,250,000</div>
+                <div class="summary-change positive">▼ 8.5% 전월 대비</div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>🧮 매출 부가세</h3>
+                <div class="summary-value" id="sales-vat">₩295,000</div>
+                <div class="summary-change positive">▲ 15.2% 전월 대비</div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>📉 매입 부가세</h3>
+                <div class="summary-value" id="purchase-vat">₩125,000</div>
+                <div class="summary-change positive">▼ 8.5% 전월 대비</div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>📈 납부 예정세액</h3>
+                <div class="summary-value" id="due-vat">₩170,000</div>
+                <div class="summary-change positive">▲ 31.2% 전월 대비</div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>🎯 순이익</h3>
+                <div class="summary-value" id="net-profit">₩1,700,000</div>
+                <div class="summary-change positive">▲ 28.5% 전월 대비</div>
+            </div>
+        </div>
+        
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2 class="chart-title">📊 월별 수익 추이</h2>
+            </div>
+            <div class="chart-placeholder">
+                <div>📈 매출/비용 트렌드 차트</div>
+                <small style="opacity: 0.7;">최근 6개월 데이터 기준</small>
+            </div>
+        </div>
+        
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2 class="chart-title">🥧 계정과목별 지출 분포</h2>
+            </div>
+            <div class="chart-placeholder">
+                <div>접대비 35% | 사무용품비 20% | 통신비 15%</div>
+                <small style="opacity: 0.7;">주요 비용 항목별 비율</small>
+            </div>
+        </div>
+        
+        <div class="details-section">
+            <div class="details-header">
+                📋 상세 거래 내역 (최근 15건)
+            </div>
+            <table class="details-table">
+                <thead>
+                    <tr>
+                        <th>날짜</th>
+                        <th>업체명</th>
+                        <th>금액</th>
+                        <th>부가세</th>
+                        <th>계정과목</th>
+                        <th>과세구분</th>
+                        <th>AI 신뢰도</th>
+                        <th>메모</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-09-11</td>
+                        <td>GHI 파트너</td>
+                        <td style="text-align: right;" class="amount-positive">+950,000원</td>
+                        <td style="text-align: right;">95,000원</td>
+                        <td><span class="account-tag">용역수입</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">99%</td>
+                        <td>앱 개발 프로젝트</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-11</td>
+                        <td>클라우드 서비스</td>
+                        <td style="text-align: right;" class="amount-negative">-55,000원</td>
+                        <td style="text-align: right;">5,500원</td>
+                        <td><span class="account-tag">통신비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">88%</td>
+                        <td>AWS 월 사용료</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-11</td>
+                        <td>스타벅스</td>
+                        <td style="text-align: right;" class="amount-negative">-8,500원</td>
+                        <td style="text-align: right;">850원</td>
+                        <td><span class="account-tag">접대비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-mid">65%</td>
+                        <td>고객 미팅 음료</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-10</td>
+                        <td>전자부품 마트</td>
+                        <td style="text-align: right;" class="amount-negative">-45,000원</td>
+                        <td style="text-align: right;">4,500원</td>
+                        <td><span class="account-tag">재료비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">84%</td>
+                        <td>개발용 부품</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-09</td>
+                        <td>ABC 고객</td>
+                        <td style="text-align: right;" class="amount-positive">+1,200,000원</td>
+                        <td style="text-align: right;">120,000원</td>
+                        <td><span class="account-tag">용역수입</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">99%</td>
+                        <td>웹사이트 제작비</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-08</td>
+                        <td>현대 렌터카</td>
+                        <td style="text-align: right;" class="amount-negative">-68,000원</td>
+                        <td style="text-align: right;">6,800원</td>
+                        <td><span class="account-tag">차량유지비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">93%</td>
+                        <td>출장용 렌터카</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-07</td>
+                        <td>베이커리 카페</td>
+                        <td style="text-align: right;" class="amount-negative">-15,000원</td>
+                        <td style="text-align: right;">1,500원</td>
+                        <td><span class="account-tag">접대비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-mid">78%</td>
+                        <td>팀 미팅 간식</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-06</td>
+                        <td>IT 솔루션</td>
+                        <td style="text-align: right;" class="amount-negative">-120,000원</td>
+                        <td style="text-align: right;">12,000원</td>
+                        <td><span class="account-tag">사무용품비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">89%</td>
+                        <td>소프트웨어 라이선스</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-05</td>
+                        <td>코워킹 스페이스</td>
+                        <td style="text-align: right;" class="amount-negative">-200,000원</td>
+                        <td style="text-align: right;">20,000원</td>
+                        <td><span class="account-tag">임차료</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">94%</td>
+                        <td>월 임대료</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-04</td>
+                        <td>서울 주차장</td>
+                        <td style="text-align: right;" class="amount-negative">-12,000원</td>
+                        <td style="text-align: right;">1,200원</td>
+                        <td><span class="account-tag">차량유지비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">81%</td>
+                        <td>고객 방문 주차료</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-03</td>
+                        <td>한국광고대행사</td>
+                        <td style="text-align: right;" class="amount-negative">-500,000원</td>
+                        <td style="text-align: right;">50,000원</td>
+                        <td><span class="account-tag">광고선전비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">96%</td>
+                        <td>온라인 광고 캠페인</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-02</td>
+                        <td>가든 레스토랑</td>
+                        <td style="text-align: right;" class="amount-negative">-85,000원</td>
+                        <td style="text-align: right;">8,500원</td>
+                        <td><span class="account-tag">접대비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">87%</td>
+                        <td>신규 고객 미팅</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-02</td>
+                        <td>KT 통신</td>
+                        <td style="text-align: right;" class="amount-negative">-89,000원</td>
+                        <td style="text-align: right;">8,900원</td>
+                        <td><span class="account-tag">통신비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">99%</td>
+                        <td>인터넷, 전화 월정액</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-01</td>
+                        <td>오피스 문구점</td>
+                        <td style="text-align: right;" class="amount-negative">-23,500원</td>
+                        <td style="text-align: right;">2,350원</td>
+                        <td><span class="account-tag">사무용품비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">92%</td>
+                        <td>A4 용지, 볼펜, 파일 구입</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-01</td>
+                        <td>서울 비즈니스 호텔</td>
+                        <td style="text-align: right;" class="amount-negative">-150,000원</td>
+                        <td style="text-align: right;">15,000원</td>
+                        <td><span class="account-tag">접대비</span></td>
+                        <td><span class="tax-tag taxable">과세</span></td>
+                        <td style="text-align: center;" class="confidence-high">95%</td>
+                        <td>거래처 미팅 숙박비</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer-actions">
+            <button class="btn btn-primary" onclick="window.print()">📄 리포트 인쇄</button>
+            <a href="../ui/index.html" class="btn btn-secondary">🏠 가계부로 돌아가기</a>
+            <button class="btn btn-secondary" onclick="downloadCsv()">📊 CSV 다운로드</button>
+            <button class="btn btn-secondary" onclick="generatePdf()">📋 PDF 생성</button>
+        </div>
+    </div>
+    
+    <script>
+        // 현재 시간 업데이트
+        document.getElementById('generated-time').textContent = new Date().toLocaleString('ko-KR');
+        
+        // CSV 다운로드 기능
+        function downloadCsv() {
+            const csvData = [
+                ['날짜', '업체명', '금액', '부가세', '계정과목', '과세구분', 'AI 신뢰도', '메모'],
+                ['2025-09-11', 'GHI 파트너', '950000', '95000', '용역수입', '과세', '99%', '앱 개발 프로젝트'],
+                ['2025-09-11', '클라우드 서비스', '-55000', '5500', '통신비', '과세', '88%', 'AWS 월 사용료'],
+                ['2025-09-11', '스타벅스', '-8500', '850', '접대비', '과세', '65%', '고객 미팅 음료'],
+                ['2025-09-10', '전자부품 마트', '-45000', '4500', '재료비', '과세', '84%', '개발용 부품'],
+                ['2025-09-09', 'ABC 고객', '1200000', '120000', '용역수입', '과세', '99%', '웹사이트 제작비'],
+                ['2025-09-08', '현대 렌터카', '-68000', '6800', '차량유지비', '과세', '93%', '출장용 렌터카'],
+                ['2025-09-07', '베이커리 카페', '-15000', '1500', '접대비', '과세', '78%', '팀 미팅 간식'],
+                ['2025-09-06', 'IT 솔루션', '-120000', '12000', '사무용품비', '과세', '89%', '소프트웨어 라이선스'],
+                ['2025-09-05', '코워킹 스페이스', '-200000', '20000', '임차료', '과세', '94%', '월 임대료'],
+                ['2025-09-04', '서울 주차장', '-12000', '1200', '차량유지비', '과세', '81%', '고객 방문 주차료'],
+                ['2025-09-03', '한국광고대행사', '-500000', '50000', '광고선전비', '과세', '96%', '온라인 광고 캠페인'],
+                ['2025-09-02', '가든 레스토랑', '-85000', '8500', '접대비', '과세', '87%', '신규 고객 미팅'],
+                ['2025-09-02', 'KT 통신', '-89000', '8900', '통신비', '과세', '99%', '인터넷, 전화 월정액'],
+                ['2025-09-01', '오피스 문구점', '-23500', '2350', '사무용품비', '과세', '92%', 'A4 용지, 볼펜, 파일 구입'],
+                ['2025-09-01', '서울 비즈니스 호텔', '-150000', '15000', '접대비', '과세', '95%', '거래처 미팅 숙박비']
+            ];
+            
+            const csvContent = '\ufeff' + csvData.map(row => row.join(',')).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'ledger_report_2025-09.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+        
+        // PDF 생성 (브라우저 인쇄 기능 활용)
+        function generatePdf() {
+            window.print();
+        }
+        
+        // 실시간 데이터 로드 시뮬레이션
+        function loadRealTimeData() {
+            console.log('📊 가계부형 세무 데이터 로드됨');
+            
+            // 샘플 데이터 업데이트
+            document.getElementById('total-entries').textContent = '20';
+            document.getElementById('ai-rate').textContent = '92%';
+        }
+        
+        // 페이지 로드 시 데이터 업데이트
+        document.addEventListener('DOMContentLoaded', loadRealTimeData);
+    </script>
+</body>
+</html>

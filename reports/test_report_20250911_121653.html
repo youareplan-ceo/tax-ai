@@ -4,14 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouArePlan EasyTax v8 - 자동 테스트 리포트</title>
+    <title>YouArePlan EasyTax - 최신 세무 리포트</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://github.com/youareplan-ceo/youaplan-site/blob/main/logo.png?raw=true" as="image">
     <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #764ba2;
+            --primary-light: #f093fb;
+            --accent-color: #4ecdc4;
+            --warning-color: #ff6b6b;
+            --success-color: #28a745;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --bg-light: #f8f9fa;
+            --shadow: 0 4px 20px rgba(102,126,234,0.15);
+            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+        
+        * {
             margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--gradient-bg);
             min-height: 100vh;
         }
         .container {
