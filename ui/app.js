@@ -3,6 +3,27 @@
 
 const API = (path) => path; // API 엔드포인트 기본 경로
 
+// 초기 대시보드 진입 시 프리패치
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🚀 YouArePlan EasyTax v8 - 초기화 중...');
+    
+    // 필수 API 프리패치 (병렬 호출)
+    try {
+        const [healthCheck, apiStatus] = await Promise.all([
+            fetch('/health'),
+            fetch('/api/status')
+        ]);
+        
+        if (healthCheck.ok && apiStatus.ok) {
+            console.log('✅ API 서버 연결 확인');
+            showMessage('global-status', 'API 서버 연결됨', true);
+        }
+    } catch (error) {
+        console.error('⚠️ API 서버 연결 실패:', error);
+        showMessage('global-status', 'API 서버 연결 실패', false);
+    }
+});
+
 // 로딩 상태 관리
 function setLoading(element, isLoading) {
     const card = element.closest('.card');

@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import Optional
 from ..db.database import SessionLocal
 from ..db.models import NormalizedEntry, ClassifiedEntry
+import hashlib
 
 router = APIRouter()
 
@@ -28,7 +29,17 @@ def estimate_vat_get(user_id: str = Query(None), period: str = Query(...), db: S
 @router.post("/estimate")
 def estimate_vat_post(request: TaxEstimateRequest, db: Session = Depends(get_db)):
     """POST 메서드 세액 추정 (Smoke Test 호환)"""
-    return _calculate_vat_estimate(request.user_id, request.period, db, request.sales_amount, request.purchase_amount)
+    # Cache key generation
+    from ..main import tax_cache
+    cache_key = hashlib.md5(f"{request.user_id}_{request.period}_{request.sales_amount}_{request.purchase_amount}".encode()).hexdigest()
+    
+    # Check cache first
+    if cache_key in tax_cache:
+        return tax_cache[cache_key]
+    
+    result = _calculate_vat_estimate(request.user_id, request.period, db, request.sales_amount, request.purchase_amount)
+    tax_cache[cache_key] = result
+    return result
 
 def _calculate_vat_estimate(user_id: Optional[str], period: str, db: Session, sales_amount: Optional[float] = None, purchase_amount: Optional[float] = None):
     """공통 세액 추정 로직"""

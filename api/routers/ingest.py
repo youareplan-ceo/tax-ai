@@ -2,9 +2,28 @@ from fastapi import APIRouter, UploadFile, File, Form, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..db.database import SessionLocal
 from ..db.models import RawFile, NormalizedEntry
+from pydantic import BaseModel, field_validator
 import hashlib, os, csv, io
+from typing import List, Optional
 
 router = APIRouter()
+
+class CSVEntryModel(BaseModel):
+    date: Optional[str] = ""
+    vendor: Optional[str] = ""
+    amount: float = 0.0
+    vat: float = 0.0
+    memo: Optional[str] = ""
+    
+    @field_validator('amount', 'vat', mode='before')
+    @classmethod
+    def validate_numbers(cls, v):
+        if v is None or v == "":
+            return 0.0
+        try:
+            return float(v)
+        except (ValueError, TypeError):
+            return 0.0
 
 def get_db():
     db = SessionLocal()

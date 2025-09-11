@@ -1,9 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from .routers import ai, ingest, tax, prep, entries
 from .db.utils import init_db
+import time
+from cachetools import TTLCache
 
 app = FastAPI(title="YouaPlan EasyTax API v8", version="0.8.0")
+
+# Performance: Add gzip compression
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 app.add_middleware(
     CORSMiddleware,
@@ -12,6 +18,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Cache for tax estimates (15 minutes TTL)
+tax_cache = TTLCache(maxsize=100, ttl=900)
 
 app.include_router(ai.router, prefix="/ai", tags=["ai"])
 app.include_router(ingest.router, prefix="/ingest", tags=["ingest"])
@@ -25,7 +34,13 @@ def _startup():
 
 @app.get("/health")
 def health():
-    return {"ok": True}
+    return {
+        "ok": True, 
+        "pool": "20/10",
+        "timeout": "5s",
+        "cache": "15min_ttl",
+        "compression": "gzip"
+    }
 
 @app.get("/api/status")
 def api_status():

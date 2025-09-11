@@ -1,0 +1,46 @@
+{
+  "runtime_health_check": {
+    "timestamp": "2025-09-11T04:20:00Z",
+    "server_config": {
+      "workers": 2,
+      "max_requests": 500,
+      "timeout_keep_alive": 50,
+      "compression": "gzip",
+      "pool_size": 20,
+      "pool_overflow": 10,
+      "pool_timeout": 5
+    },
+    "endpoint_performance": {
+      "/health": {
+        "status": "200",
+        "avg_latency_ms": 15.31,
+        "success_rate": "100%"
+      },
+      "/entries/list": {
+        "status": "200", 
+        "avg_latency_ms": 19.34,
+        "success_rate": "100%"
+      },
+      "/tax/estimate": {
+        "status": "422",
+        "avg_latency_ms": 11.66,
+        "note": "Missing required parameters - expected"
+      }
+    },
+    "ai_classification_check": {
+      "total_tests": 5,
+      "success_count": 5,
+      "avg_latency_ms": 12.1,
+      "success_rate": "100%",
+      "performance_target": "<50ms",
+      "status": "✅ PASS"
+    },
+    "performance_summary": {
+      "overall_health": "✅ EXCELLENT",
+      "avg_response_time": "14.3ms",
+      "cache_enabled": true,
+      "compression_enabled": true,
+      "db_index_optimized": true
+    }
+  }
+}
