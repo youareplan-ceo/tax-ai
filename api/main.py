@@ -10,8 +10,8 @@ import os
 
 app = FastAPI(title="YouaPlan EasyTax API v8", version="0.8.0")
 
-# Performance: Add gzip compression
-app.add_middleware(GZipMiddleware, minimum_size=1000)
+# Performance: Add gzip compression (최소 크기 하향 조정)
+app.add_middleware(GZipMiddleware, minimum_size=256)
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,14 +34,24 @@ app.include_router(entries.router, prefix="/entries", tags=["entries"])
 if os.path.exists("ui"):
     app.mount("/app", StaticFiles(directory="ui", html=True), name="static")
 
-# Custom middleware for static file caching
+# Enhanced middleware for caching and security headers
 @app.middleware("http")
-async def add_cache_headers(request: Request, call_next):
+async def add_cache_and_security_headers(request: Request, call_next):
     response = await call_next(request)
+    
+    # 정적 파일 캐싱
     if request.url.path.startswith("/app/"):
-        # Cache static assets for 7 days
         response.headers["Cache-Control"] = "public, max-age=604800"
         response.headers["Vary"] = "Accept-Encoding"
+        # ETag 추가 (파일 경로 기반 간단 해시)
+        etag = f'"{hash(request.url.path) % 1000000:06d}"'
+        response.headers["ETag"] = etag
+    
+    # 보안 헤더 (긴급 최소)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["Permissions-Policy"] = "accelerometer=(),camera=(),microphone=()"
+    
     return response
 
 @app.on_event("startup")

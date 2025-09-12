@@ -6,6 +6,9 @@
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <title>YouaPlan EasyTax v8 - AI 세무 코파일럿</title>
     
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     <link href="https://cdn.jsdelivr.net/npm/suit-font@1.0.0/variable.css" rel="stylesheet">
@@ -26,13 +29,20 @@
         .fab{position:fixed;right:18px;bottom:86px;width:56px;height:56px;border-radius:50%;background:var(--brand);color:#fff;border:0;box-shadow:var(--shadow);font-size:28px;line-height:56px}
     </style>
     
-    <link rel="stylesheet" href="/app/styles.css">
+    <link rel="stylesheet" href="/app/styles.min.css" onerror="this.href='/app/styles.css';">
     <link rel="manifest" href="/app/manifest.json">
 </head>
 <body>
     <header class="appbar">
         <img class="logo-img" src="/app/assets/logo.webp" onerror="this.src='/app/assets/logo.png';" alt="YouaPlan EasyTax">
     </header>
+    
+    <!-- 서브탭 내비게이션 - 월/카테고리/현금흐름 -->
+    <nav class="subtabs" role="navigation" aria-label="서브 내비게이션">
+        <button data-v="month" class="active" aria-pressed="true">월</button>
+        <button data-v="category" aria-pressed="false">카테고리</button>
+        <button data-v="cash" aria-pressed="false">현금흐름</button>
+    </nav>
     
     <main>
         <section class="summary-wrap">
@@ -47,6 +57,15 @@
         </section>
         
         <section id="ledger">
+            <!-- 스켈레톤 UI - 로딩 중 표시 -->
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            
+            <!-- 실제 데이터 카드들 -->
             <div class="ledger-card">
                 <div>
                     <div class="ledger-merchant">카페 스타벅스</div>
@@ -64,20 +83,61 @@
         </section>
     </main>
     
-    <nav class="tabbar">
-        <a data-tab="ledger" class="active">가계부</a>
-        <a data-tab="upload">업로드</a>
-        <a data-tab="ai">자동분류</a>
-        <a data-tab="report">리포트</a>
-        <a data-tab="easy">간편신고</a>
+    <nav class="tabbar" role="tablist" aria-label="메인 내비게이션">
+        <a data-tab="ledger" class="active" role="tab" aria-selected="true" aria-label="가계부 탭">가계부</a>
+        <a data-tab="upload" role="tab" aria-selected="false" aria-label="업로드 탭">업로드</a>
+        <a data-tab="ai" role="tab" aria-selected="false" aria-label="자동분류 탭">자동분류</a>
+        <a data-tab="report" role="tab" aria-selected="false" aria-label="리포트 탭">리포트</a>
+        <a data-tab="easy" role="tab" aria-selected="false" aria-label="간편신고 탭">간편신고</a>
     </nav>
     
-    <button class="fab" aria-label="새 입력">＋</button>
+    <button class="fab" aria-label="새 가계부 입력 추가" role="button">＋</button>
 
     <script defer>
+        // 서비스워커 등록
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/app/sw.js');
         }
+        
+        // 스켈레톤 UI 숨김 및 IntersectionObserver로 지연 렌더링
+        document.addEventListener('DOMContentLoaded', function() {
+            // 2초 후 스켈레톤 숨김 (실제로는 API 로드 완료 후)
+            setTimeout(function() {
+                const skeletons = document.querySelectorAll('.ledger-skeleton');
+                skeletons.forEach(skeleton => {
+                    skeleton.style.display = 'none';
+                });
+            }, 2000);
+            
+            // IntersectionObserver로 카드 지연 로딩 시뮬레이션
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            // 가계부 카드들에 대해 관찰자 설정
+            const cards = document.querySelectorAll('.ledger-card');
+            cards.forEach(card => observer.observe(card));
+            
+            // 서브탭 클릭 이벤트
+            const subtabButtons = document.querySelectorAll('.subtabs button');
+            subtabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 기존 활성 버튼 비활성화
+                    subtabButtons.forEach(b => {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-pressed', 'false');
+                    });
+                    // 클릭된 버튼 활성화
+                    this.classList.add('active');
+                    this.setAttribute('aria-pressed', 'true');
+                });
+            });
+        });
     </script>
 </body>
 </html>
