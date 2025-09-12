@@ -29,7 +29,7 @@
         .fab{position:fixed;right:18px;bottom:86px;width:56px;height:56px;border-radius:50%;background:var(--brand);color:#fff;border:0;box-shadow:var(--shadow);font-size:28px;line-height:56px}
     </style>
     
-    <link rel="stylesheet" href="/app/styles.min.css?v=4" onerror="this.href='/app/styles.css?v=4';">
+    <link rel="stylesheet" href="/app/styles.min.css?v=5" onerror="this.href='/app/styles.css?v=5';">
     <link rel="manifest" href="/app/manifest.json">
 </head>
 <body>
@@ -125,24 +125,32 @@
             const cards = document.querySelectorAll('.ledger-card');
             cards.forEach(card => observer.observe(card));
             
-            // 서브탭/하단탭 클릭 이벤트 보장 (강화된 버전)
+            // 버튼 클릭 불가 해결 - 강화된 이벤트 바인딩
             const bind = (sel, handler) => {
                 document.querySelectorAll(sel).forEach(el => {
                     if (el.dataset._bound) return;
                     el.dataset._bound = '1';
-                    el.type = el.tagName === 'BUTTON' ? 'button' : el.type || 'button';
+                    el.type = el.tagName === 'BUTTON' ? 'button' : 'button';
+                    // form submit 충돌 차단
+                    if (el.form) el.type = 'button';
                     el.addEventListener('click', ev => {
+                        ev.preventDefault();
                         ev.stopPropagation();
+                        ev.stopImmediatePropagation();
                         handler(ev);
-                    }, { passive:true });
+                    }, { passive:false });
                 });
             };
-            bind('.subtabs button, .tabbar button', (e) => {
-                const key = e.currentTarget.dataset.v || e.currentTarget.name || e.currentTarget.dataset.tab;
-                document.querySelectorAll('.subtabs button, .tabbar button').forEach(b=>b.classList.remove('active'));
+            
+            // 탭 버튼들
+            bind('.subtabs button, .tabbar button, .tabbar a', (e) => {
+                const key = e.currentTarget.dataset.v || e.currentTarget.dataset.tab || e.currentTarget.name || '';
+                document.querySelectorAll('.subtabs button, .tabbar button, .tabbar a').forEach(b=>b.classList.remove('active'));
                 e.currentTarget.classList.add('active');
                 if (window.onTabChange) window.onTabChange(key);
             });
+            
+            // 플로팅 액션 버튼들
             bind('.fab, .btn-fab, [data-action="add"]', () => {
                 if (window.onAdd) window.onAdd(); else alert('추가 폼 연결 필요');
             });

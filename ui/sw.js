@@ -1,5 +1,5 @@
-// 서비스워커 v4 - 강화된 캐시 정책 (스타일 강제 반영)
-const CACHE_NAME = 'youaplan-easytax-v4';
+// 서비스워커 v5 - 강화된 캐시 정책 (스타일 강제 반영)
+const CACHE_NAME = 'youaplan-easytax-v5';
 const STATIC_CACHE = 'static-v2';
 const API_CACHE = 'api-v2';
 
