@@ -1,18 +1,32 @@
-/* Enhanced Toss-style design tokens and layout */
+/* 화이트(라이트) 테마 강제 */
 :root {
   --brand: #0066ff;
-  --brand-ink: #0b1023;
-  --surface: #ffffff;
-  --bg: #f6f7fb;
+  --ink: #0b1023;
   --ink-2: #606b85;
-  --radius-xl: 22px;
-  --shadow-lg: 0 10px 40px rgba(17,27,56,.08);
+  --bg: #ffffff;
+  --surface: #ffffff;
   --card: #ffffff;
-  --ink: #191f28;
+  --border: #e9edf5;
+  --accent: #eaf2ff;
+  --radius: 14px;
+  --shadow: 0 10px 30px rgba(17,27,56,.05);
   --success: #16b364;
   --danger: #f04438;
-  --radius: 14px;
-  --shadow: 0 2px 16px rgba(17,27,56,.04);
+}
+
+html, body {
+  background: #fff;
+  color: var(--ink);
+}
+
+/* 다크모드 자동 무시 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #0b1023;
+    --ink-2: #606b85;
+  }
 }
 
 /* 헤더 높이 조정 - 토스 스타일 */
@@ -218,39 +232,88 @@ main {
   }
 }
 
-/* 다크모드 지원 */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0c1018;
-    --surface: #ffffff;
-    --ink: #e9edf5;
-    --ink-2: #9aa6bf;
-    --card: #161d2b;
-    --shadow: none;
+/* 버튼 기본 스타일 통일 */
+button, .btn {
+  background: #f3f6fb;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover, .btn:hover {
+  background: #eef4ff;
+  border-color: #cfe0ff;
+}
+
+button:active, .btn:active {
+  transform: scale(.995);
+}
+
+button[disabled], .btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* 레이어 충돌 해결 - z-index 부여 */
+header.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  background: #fff;
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.summary-card, .ledger-card {
+  background: #fff;
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* 본문 하단 패딩 */
+main, .page {
+  padding-bottom: 88px;
+}
+
+/* 스크롤 캡쳐/투명 오버레이 제거 */
+.overlay, .scrim {
+  pointer-events: none;
+}
+
+.content-guard {
+  pointer-events: none;
+}
+
+/* 로고 크기 보정 */
+.logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 24px;
   }
-  
-  header.appbar,
-  .tabbar,
-  .subtabs,
-  .summary-card,
-  .ledger-card {
-    background: var(--card);
-    color: var(--ink);
-  }
-  
-  body {
-    background: var(--bg);
-    color: var(--ink);
-  }
-  
-  .subtabs {
-    border-bottom: 1px solid #2a3441;
-  }
-  
-  .subtabs button {
-    background: #1c2533;
-    color: var(--ink-2);
-  }
+}
+
+.brand {
+  text-decoration: none;
+  display: block;
 }
 
 /* 스켈레톤 UI 스타일 - 로딩 상태 */

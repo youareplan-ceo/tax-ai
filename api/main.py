@@ -2,13 +2,14 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse, FileResponse
 from .routers import ai, ingest, tax, prep, entries
 from .db.utils import init_db
 import time
 from cachetools import TTLCache
 import os
 
-app = FastAPI(title="YouaPlan EasyTax API v8", version="0.8.0")
+app = FastAPI(title="TAX AI")
 
 # Performance: Add gzip compression (최소 크기 하향 조정)
 app.add_middleware(GZipMiddleware, minimum_size=256)
@@ -30,9 +31,14 @@ app.include_router(tax.router, prefix="/tax", tags=["tax"])
 app.include_router(prep.router, prefix="/prep", tags=["prep"])
 app.include_router(entries.router, prefix="/entries", tags=["entries"])
 
-# Static files with caching
-if os.path.exists("ui"):
-    app.mount("/app", StaticFiles(directory="ui", html=True), name="static")
+# / → /app/ 로 리다이렉트
+@app.get("/", include_in_schema=False)
+def root():
+    return RedirectResponse(url="/app/")
+
+# /app 정적 파일 제공 (ui 폴더 사용)
+UI_DIR = os.path.join(os.path.dirname(__file__), "..", "ui")
+app.mount("/app", StaticFiles(directory=UI_DIR, html=True), name="app")
 
 # Enhanced middleware for caching and security headers
 @app.middleware("http")
@@ -58,15 +64,9 @@ async def add_cache_and_security_headers(request: Request, call_next):
 def _startup():
     init_db()
 
-@app.get("/health")
+@app.get("/health", include_in_schema=False)
 def health():
-    return {
-        "ok": True, 
-        "pool": "20/10",
-        "timeout": "5s",
-        "cache": "15min_ttl",
-        "compression": "gzip"
-    }
+    return {"ok": True}
 
 @app.get("/api/status")
 def api_status():
