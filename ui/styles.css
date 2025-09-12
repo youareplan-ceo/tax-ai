@@ -19,29 +19,16 @@ html, body {
   color: var(--ink);
 }
 
-/* 화이트 레이아웃 강제 - 다크모드 완전 무시 */
-html, body { background:#ffffff !important; color:#0b1023 !important; }
+/* 다크모드 자동 무시 (보강) */
+html, body { background:#ffffff; color:#0b1023; }
 @media (prefers-color-scheme:dark){
-  :root { color-scheme: only light !important; }
-  html, body { 
-    background:#ffffff !important; 
-    color:#0b1023 !important; 
-    background-color:#ffffff !important;
-  }
+  :root { color-scheme: only light; }
+  html, body { background:#ffffff; color:#0b1023; }
   :root {
-    --bg: #ffffff !important;
-    --surface: #ffffff !important;
-    --card: #ffffff !important;
-    --ink: #0b1023 !important;
-    --ink-2: #606b85 !important;
-  }
-  /* 모든 컨테이너 화이트 강제 */
-  *, *::before, *::after {
-    background-color: inherit !important;
-  }
-  .summary-card, .ledger-card, header.appbar, .tabbar {
-    background: #ffffff !important;
-    color: #0b1023 !important;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #0b1023;
+    --ink-2: #606b85;
   }
 }
 
@@ -388,17 +375,16 @@ main, .page, .content { padding-bottom: 96px; }
 button, .btn, .tabbar a { cursor: pointer !important; pointer-events: auto !important; }
 button[disabled], .btn.disabled { opacity: .45; cursor: not-allowed !important; }
 
-/* 로고 표시 고정 - 다크모드 필터 제거 */
+/* 로고만 흰색으로 변경 */
 .brand { display:flex; align-items:center; gap:8px; }
-.logo-img { 
+.logo-img {
   height: 28px; 
   width:auto; 
-  display:block; 
-  image-rendering:-webkit-optimize-contrast;
-  /* 다크모드 invert 문제 제거 */
-  filter:none !important; 
-  mix-blend-mode:normal !important;
-  -webkit-filter:none !important;
+  display:block;
+  image-rendering: -webkit-optimize-contrast;
+  filter: brightness(0) invert(1) !important;
+  mix-blend-mode: normal !important;
+  -webkit-filter: brightness(0) invert(1) !important;
   opacity: 1 !important;
 }
 @media (max-width:768px){ .logo-img{ height:24px; } }
