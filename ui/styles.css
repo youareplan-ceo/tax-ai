@@ -19,8 +19,11 @@ html, body {
   color: var(--ink);
 }
 
-/* 다크모드 자동 무시 */
-@media (prefers-color-scheme: dark) {
+/* 다크모드 자동 무시 (보강) */
+html, body { background:#ffffff; color:#0b1023; }
+@media (prefers-color-scheme:dark){
+  :root { color-scheme: only light; }
+  html, body { background:#ffffff; color:#0b1023; }
   :root {
     --bg: #ffffff;
     --surface: #ffffff;
@@ -357,3 +360,22 @@ main, .page {
         display: none;
     }
 }
+
+/* 클릭 막는 오버레이 제거 */
+.overlay, .scrim, .glass, .backdrop { pointer-events: none !important; }
+/* 헤더/탭/플로팅 버튼이 위로 오게 */
+header.appbar { position: sticky; top: 0; z-index: 100 !important; }
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 110 !important; background:#fff; }
+.fab, .btn-fab { position: fixed; right: 18px; bottom: 90px; z-index: 120 !important; }
+/* 본문이 탭바에 가리지 않도록 여백 */
+main, .page, .content { padding-bottom: 96px; }
+/* 버튼 공통 */
+button, .btn { cursor: pointer; }
+button[disabled], .btn.disabled { opacity: .45; cursor: not-allowed; }
+
+/* 로고 스타일 고정 */
+.brand { display:flex; align-items:center; gap:8px; }
+.logo-img { height: 28px; width:auto; display:block; image-rendering:-webkit-optimize-contrast; }
+@media (max-width:768px){ .logo-img{ height:24px; } }
+/* 혹시 다크모드에서 invert 걸린 경우 무효화 */
+.logo-img { filter:none !important; mix-blend-mode:normal !important; }

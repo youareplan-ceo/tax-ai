@@ -29,7 +29,7 @@
         .fab{position:fixed;right:18px;bottom:86px;width:56px;height:56px;border-radius:50%;background:var(--brand);color:#fff;border:0;box-shadow:var(--shadow);font-size:28px;line-height:56px}
     </style>
     
-    <link rel="stylesheet" href="/app/styles.min.css?v=3" onerror="this.href='/app/styles.css?v=3';">
+    <link rel="stylesheet" href="/app/styles.min.css?v=4" onerror="this.href='/app/styles.css?v=4';">
     <link rel="manifest" href="/app/manifest.json">
 </head>
 <body>
@@ -125,16 +125,26 @@
             const cards = document.querySelectorAll('.ledger-card');
             cards.forEach(card => observer.observe(card));
             
-            // 서브탭/하단탭 클릭 이벤트 보장
-            document.querySelectorAll('.subtabs button, .tabbar button').forEach(btn => {
-                btn.type = 'button';
-                btn.addEventListener('click', e => {
-                    const g = e.currentTarget.dataset.v || e.currentTarget.name || e.currentTarget.dataset.tab;
-                    document.querySelectorAll('.subtabs button, .tabbar button').forEach(b => b.classList.remove('active'));
-                    e.currentTarget.classList.add('active');
-                    // 필요한 경우 화면 전환 핸들러 호출
-                    if (window.onTabChange) window.onTabChange(g);
-                }, {passive: true});
+            // 서브탭/하단탭 클릭 이벤트 보장 (강화된 버전)
+            const bind = (sel, handler) => {
+                document.querySelectorAll(sel).forEach(el => {
+                    if (el.dataset._bound) return;
+                    el.dataset._bound = '1';
+                    el.type = el.tagName === 'BUTTON' ? 'button' : el.type || 'button';
+                    el.addEventListener('click', ev => {
+                        ev.stopPropagation();
+                        handler(ev);
+                    }, { passive:true });
+                });
+            };
+            bind('.subtabs button, .tabbar button', (e) => {
+                const key = e.currentTarget.dataset.v || e.currentTarget.name || e.currentTarget.dataset.tab;
+                document.querySelectorAll('.subtabs button, .tabbar button').forEach(b=>b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                if (window.onTabChange) window.onTabChange(key);
+            });
+            bind('.fab, .btn-fab, [data-action="add"]', () => {
+                if (window.onAdd) window.onAdd(); else alert('추가 폼 연결 필요');
             });
         });
     </script>
