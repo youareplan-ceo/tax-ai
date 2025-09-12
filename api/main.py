@@ -1,10 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.staticfiles import StaticFiles
 from .routers import ai, ingest, tax, prep, entries
 from .db.utils import init_db
 import time
 from cachetools import TTLCache
+import os
 
 app = FastAPI(title="YouaPlan EasyTax API v8", version="0.8.0")
 
@@ -27,6 +29,20 @@ app.include_router(ingest.router, prefix="/ingest", tags=["ingest"])
 app.include_router(tax.router, prefix="/tax", tags=["tax"])
 app.include_router(prep.router, prefix="/prep", tags=["prep"])
 app.include_router(entries.router, prefix="/entries", tags=["entries"])
+
+# Static files with caching
+if os.path.exists("ui"):
+    app.mount("/app", StaticFiles(directory="ui", html=True), name="static")
+
+# Custom middleware for static file caching
+@app.middleware("http")
+async def add_cache_headers(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/app/"):
+        # Cache static assets for 7 days
+        response.headers["Cache-Control"] = "public, max-age=604800"
+        response.headers["Vary"] = "Accept-Encoding"
+    return response
 
 @app.on_event("startup")
 def _startup():
