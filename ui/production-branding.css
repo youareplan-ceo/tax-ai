@@ -1,0 +1,412 @@
+/* 유아플랜 프로덕션 브랜딩 스타일 */
+
+/* 브랜드 컬러 정의 */
+:root {
+    --youareplan-primary: #0064FF;
+    --youareplan-secondary: #4785FF;
+    --youareplan-accent: #B3D9FF;
+    --youareplan-dark: #002B66;
+    --youareplan-success: #00C851;
+    --youareplan-warning: #FFB74D;
+    --youareplan-error: #FF5252;
+    --youareplan-text: #2C3E50;
+    --youareplan-gray: #7F8C8D;
+    --youareplan-light-gray: #F8F9FA;
+}
+
+/* 프로덕션 헤더 스타일 */
+.production-header {
+    background: linear-gradient(135deg, var(--youareplan-primary) 0%, var(--youareplan-secondary) 100%);
+    padding: 20px 0;
+    box-shadow: 0 4px 20px rgba(0, 100, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.production-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+    background-size: 50px 50px;
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-50px) translateY(-50px); }
+}
+
+.production-header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+}
+
+.brand-logo-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.brand-logo-image {
+    height: 50px;
+    width: auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.brand-info {
+    color: white;
+}
+
+.brand-main-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.brand-subtitle {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 4px 0 0 0;
+    color: var(--youareplan-accent);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.expertise-badge {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.expertise-badge:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+/* 신뢰성 배지 */
+.trust-badges {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.trust-badge {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 6px 12px;
+    border-radius: 15px;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.3s ease;
+}
+
+.trust-badge:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* CTA 버튼들 */
+.header-cta-section {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.cta-button {
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.cta-primary {
+    background: white;
+    color: var(--youareplan-primary);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+.cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+.cta-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.cta-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 전문가 배너 */
+.expert-banner {
+    background: linear-gradient(90deg, var(--youareplan-success) 0%, #00A043 100%);
+    padding: 12px 0;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+.expert-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* 프로덕션 푸터 */
+.production-footer {
+    background: linear-gradient(135deg, var(--youareplan-dark) 0%, #001A40 100%);
+    color: white;
+    padding: 40px 0 20px;
+    margin-top: 60px;
+}
+
+.production-footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.footer-logo {
+    height: 40px;
+    width: auto;
+}
+
+.footer-description {
+    color: var(--youareplan-accent);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer-contact-item:hover {
+    color: var(--youareplan-accent);
+}
+
+.footer-section h4 {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-link {
+    color: var(--youareplan-accent);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: white;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(179, 217, 255, 0.2);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.footer-copyright {
+    color: var(--youareplan-accent);
+    font-size: 12px;
+}
+
+.footer-legal {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-legal-link {
+    color: var(--youareplan-accent);
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.3s ease;
+}
+
+.footer-legal-link:hover {
+    color: white;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .production-header-container {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .brand-logo-section {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .header-cta-section {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-legal {
+        justify-content: center;
+    }
+}
+
+/* Beta 서비스 표시 */
+.beta-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.beta-badge::after {
+    content: 'BETA';
+    background: var(--youareplan-warning);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* 로딩 애니메이션 개선 */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--youareplan-accent);
+    border-radius: 50%;
+    border-top-color: var(--youareplan-primary);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 성공/에러 알림 스타일 개선 */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.success {
+    background: linear-gradient(135deg, var(--youareplan-success), #00A043);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, var(--youareplan-error), #E53935);
+}
+
+.notification.warning {
+    background: linear-gradient(135deg, var(--youareplan-warning), #F57C00);
+}

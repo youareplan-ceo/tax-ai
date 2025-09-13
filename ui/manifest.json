@@ -1,34 +1,57 @@
 {
-  "name": "YouaPlan EasyTax v8 - AI 세무 코파일럿",
-  "short_name": "EasyTax",
-  "description": "AI 기반 개인 세무 관리 도구",
-  "start_url": "/app/",
+  "name": "YouArePlan TAX AI - 세무 코파일럿",
+  "short_name": "TAX AI",
+  "description": "유아플랜 컨설팅의 정책자금 전문 세무 AI 코파일럿",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#f7f8fa",
-  "theme_color": "#0066ff",
+  "background_color": "#0064FF",
+  "theme_color": "#0064FF",
   "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "ko",
+  "categories": ["business", "finance", "productivity"],
   "icons": [
     {
-      "src": "/app/assets/logo.png",
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0iIzAwNjRGRiIgcng9IjI0Ii8+CiAgPHRleHQgeD0iOTYiIHk9IjEyMCIgZm9udC1mYW1pbHk9IlByZXRlbmRhcmQsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNzAiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn5K8PC90ZXh0Pgo8L3N2Zz4K",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     },
     {
-      "src": "/app/assets/logo.png",
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzAwNjRGRiIgcng9IjY0Ii8+CiAgPHRleHQgeD0iMjU2IiB5PSIzMjAiIGZvbnQtZmFtaWx5PSJQcmV0ZW5kYXJkLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4MCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfkrw8L3RleHQ+Cjwvc3ZnPgo=",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
-  "categories": ["finance", "productivity", "business"],
-  "lang": "ko",
-  "screenshots": [
+  "shortcuts": [
     {
-      "src": "/app/assets/logo.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "platform": "wide"
+      "name": "직접 입력",
+      "short_name": "입력",
+      "description": "거래 내역 직접 입력",
+      "url": "/?tab=input",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjMDBDODUxIiByeD0iMTIiLz4KICA8dGV4dCB4PSI0OCIgeT0iNjAiIGZvbnQtZmFtaWx5PSJQcmV0ZW5kYXJkLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+SjzwvdGV4dD4KPC9zdmc+Cg==",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "세액 계산",
+      "short_name": "계산",
+      "description": "실시간 세액 계산 및 분석",
+      "url": "/?tab=calculate",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRkZBNTAyIiByeD0iMTIiLz4KICA8dGV4dCB4PSI0OCIgeT0iNjAiIGZvbnQtZmFtaWx5PSJQcmV0ZW5kYXJkLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+SsDwvdGV4dD4KPC9zdmc+Cg==",
+          "sizes": "96x96"
+        }
+      ]
     }
-  ]
+  ],
+  "prefer_related_applications": false,
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
 }

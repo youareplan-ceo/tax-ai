@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
+  <!-- 배경 -->
+  <rect width="200" height="60" fill="#0064FF" rx="8"/>
+  
+  <!-- 유아플랜 텍스트 -->
+  <text x="20" y="25" font-family="Pretendard, -apple-system, sans-serif" font-size="18" font-weight="700" fill="white">YouArePlan</text>
+  <text x="20" y="45" font-family="Pretendard, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#B3D9FF">정책자금 전문 컨설팅</text>
+  
+  <!-- 아이콘 -->
+  <circle cx="170" cy="30" r="15" fill="white" opacity="0.2"/>
+  <text x="162" y="37" font-size="16" fill="white">💼</text>
+</svg>
