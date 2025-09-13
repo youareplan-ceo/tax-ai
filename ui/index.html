@@ -2,159 +2,438 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-    <meta http-equiv="x-dns-prefetch-control" content="on">
-    <title>YouaPlan EasyTax v8 - AI 세무 코파일럿</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouArePlan TAX AI - 세무 코파일럿</title>
     
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <meta http-equiv="x-dns-prefetch-control" content="on">
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <!-- 토스 스타일 Pretendard 폰트 -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
-    <link href="https://cdn.jsdelivr.net/npm/suit-font@1.0.0/variable.css" rel="stylesheet">
-    <link rel="preload" as="image" href="/app/assets/logo.webp" imagesrcset="/app/assets/logo.png">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" rel="stylesheet">
     
-    <style>
-        :root{--bg:#f7f8fa;--card:#fff;--ink:#0b1023;--ink-2:#5f6a82;--brand:#0066ff;--danger:#ff3b30;--success:#12c29c;--radius:14px;--radius-lg:18px;--shadow:0 6px 24px rgba(17,27,56,.06);--gap-2:10px;--gap-3:14px;--gap-4:18px;--gap-5:24px}
-        html,body{margin:0;font-family:"SUIT Variable",system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Pretendard,sans-serif;background:var(--bg);color:var(--ink)}
-        img{max-width:100%;height:auto} *{box-sizing:border-box}
-        header.appbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:var(--gap-3);padding:18px 20px;background:#fff;box-shadow:var(--shadow)}
-        .logo-img{height:88px;max-height:18vh} @media(max-width:768px){.logo-img{height:72px}}
-        .summary-wrap{display:grid;gap:12px;margin:14px 2px}
-        .summary-card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:16px 18px}
-        .summary-value{font-size:28px;font-weight:800}
-        .tabbar{position:fixed;left:0;right:0;bottom:0;height:64px;background:#fff;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -8px 24px rgba(17,27,56,.08);border-top:1px solid #eef1f5}
-        .tabbar a{color:var(--ink-2);font-weight:600;text-decoration:none;transition:transform .12s ease}
-        .tabbar a:active{transform:scale(.98)} .tabbar a.active{color:var(--brand)}
-        .fab{position:fixed;right:18px;bottom:86px;width:56px;height:56px;border-radius:50%;background:var(--brand);color:#fff;border:0;box-shadow:var(--shadow);font-size:28px;line-height:56px}
-    </style>
+    <!-- 토스 스타일 CSS -->
+    <link rel="stylesheet" href="styles.css">
     
-    <link rel="stylesheet" href="/app/styles.min.css?v=7" onerror="this.href='/app/styles.css?v=7';">
-    <link rel="manifest" href="/app/manifest.json">
+    <!-- 메타 태그 -->
+    <meta name="description" content="YouArePlan TAX AI - 토스 스타일의 직관적인 세무 코파일럿">
+    <meta name="keywords" content="세무, AI, 코파일럿, 유아플랜, 토스스타일">
+    <meta name="author" content="유아플랜 컨설팅">
+    
+    <!-- 파비콘 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💼</text></svg>">
 </head>
 <body>
-    <header class="appbar">
-        <a class="brand" href="/app/">
-            <img class="logo-img" src="/app/assets/logo.png" alt="YouaPlan EasyTax">
-        </a>
-    </header>
-    
-    <!-- 서브탭 내비게이션 - 월/카테고리/현금흐름 -->
-    <nav class="subtabs" role="navigation" aria-label="서브 내비게이션">
-        <button data-v="month" class="active" aria-pressed="true">월</button>
-        <button data-v="category" aria-pressed="false">카테고리</button>
-        <button data-v="cash" aria-pressed="false">현금흐름</button>
-    </nav>
-    
-    <main>
-        <section class="summary-wrap">
-            <div class="summary-card">
-                <div>이번 달 합계</div>
-                <div class="summary-value" id="sum-month">₩0</div>
+    <!-- 토스 스타일 헤더 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="brand-section">
+                <h1 class="brand-logo">YouArePlan</h1>
+                <p class="brand-subtitle">TAX AI - 세무 코파일럿</p>
             </div>
-            <div class="summary-card">
-                <div>카테고리 상위</div>
-                <div id="top-cats">—</div>
+        </div>
+    </header>
+
+    <!-- 토스 스타일 탭 내비게이션 -->
+    <div class="container">
+        <nav class="tab-navigation" role="tablist" aria-label="메인 탭">
+            <button class="tab-button active" data-tab="input" role="tab" aria-selected="true">
+                <span aria-hidden="true">📋</span> 직접입력
+            </button>
+            <button class="tab-button" data-tab="upload" role="tab" aria-selected="false">
+                <span aria-hidden="true">📁</span> 업로드
+            </button>
+            <button class="tab-button" data-tab="view" role="tab" aria-selected="false">
+                <span aria-hidden="true">📊</span> 조회
+            </button>
+            <button class="tab-button" data-tab="calculate" role="tab" aria-selected="false">
+                <span aria-hidden="true">💰</span> 계산
+            </button>
+            <button class="tab-button" data-tab="checklist" role="tab" aria-selected="false">
+                <span aria-hidden="true">✅</span> 체크리스트
+            </button>
+        </nav>
+
+        <!-- 워크플로우 진행률 가이드 -->
+        <div class="workflow-progress">
+            <div class="workflow-title">세무 처리 진행 단계</div>
+            <div class="workflow-steps">
+                <div class="workflow-step active" data-step="input">
+                    <div class="workflow-step-icon">1</div>
+                    <div class="workflow-step-label">데이터<br>입력</div>
+                </div>
+                <div class="workflow-step" data-step="review">
+                    <div class="workflow-step-icon">2</div>
+                    <div class="workflow-step-label">데이터<br>확인</div>
+                </div>
+                <div class="workflow-step" data-step="calculate">
+                    <div class="workflow-step-icon">3</div>
+                    <div class="workflow-step-label">세액<br>계산</div>
+                </div>
+                <div class="workflow-step" data-step="submit">
+                    <div class="workflow-step-icon">4</div>
+                    <div class="workflow-step-label">홈택스<br>신고</div>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 20%"></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-2 text-center">단계 1: 데이터 입력 진행 중</p>
+        </div>
+    </div>
+
+    <!-- 콘텐츠 섹션들 -->
+    <main class="container">
+        <!-- 직접 입력 섹션 -->
+        <section id="input-section" class="content-section active" role="tabpanel" aria-labelledby="input-tab">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">거래 직접 입력</h2>
+                    <span class="result-status success">준비완료</span>
+                </div>
+                <p class="card-description">
+                    거래 내역을 직접 입력하여 실시간으로 세무 데이터를 관리하세요.
+                </p>
+                
+                <!-- 거래 입력 폼 -->
+                <form class="transaction-form" id="transaction-form">
+                    <div class="form-grid">
+                        <!-- 거래일자 -->
+                        <div class="form-group">
+                            <label class="form-label" for="transaction-date">거래일자</label>
+                            <input type="date" id="transaction-date" class="input" required>
+                            <div class="form-helper">거래가 발생한 날짜를 선택하세요</div>
+                        </div>
+
+                        <!-- 거래처 -->
+                        <div class="form-group">
+                            <label class="form-label" for="business-name">거래처명</label>
+                            <input type="text" id="business-name" class="input" placeholder="거래처명을 입력하세요" required>
+                            <div class="form-helper">자주 사용하는 거래처는 자동완성됩니다</div>
+                        </div>
+                        
+                        <!-- 거래 구분 -->
+                        <div class="form-group">
+                            <label class="form-label">거래 구분</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="transaction-type" value="income" checked>
+                                    <span class="radio-button success">매출</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="transaction-type" value="expense">
+                                    <span class="radio-button error">매입</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 금액 -->
+                        <div class="form-group">
+                            <label class="form-label" for="amount">거래금액</label>
+                            <div class="amount-input-container">
+                                <input type="number" id="amount" class="input amount-input" placeholder="0" min="0" required>
+                                <span class="currency-symbol">원</span>
+                            </div>
+                            <div class="form-helper">세전 금액을 입력하세요</div>
+                        </div>
+
+                        <!-- 부가세 -->
+                        <div class="form-group">
+                            <label class="form-label">부가가치세</label>
+                            <div class="vat-container">
+                                <label class="checkbox-option">
+                                    <input type="checkbox" id="auto-vat" checked>
+                                    <span class="checkbox-mark"></span>
+                                    <span>자동계산 (10%)</span>
+                                </label>
+                                <input type="number" id="vat-amount" class="input vat-input" placeholder="0" min="0" disabled>
+                                <span class="currency-symbol">원</span>
+                            </div>
+                        </div>
+
+                        <!-- 메모 -->
+                        <div class="form-group full-width">
+                            <label class="form-label" for="memo">메모 (선택사항)</label>
+                            <textarea id="memo" class="input" placeholder="거래 내용이나 용도를 입력하세요" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 저장 버튼 -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-lg w-full">
+                            <span aria-hidden="true">💾</span>
+                            저장하기
+                        </button>
+                        <div class="next-step-guide mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <h4 class="font-semibold text-blue-800 mb-2">다음 단계</h4>
+                            <p class="text-blue-700 text-sm">거래 입력 후 '조회' 탭에서 데이터를 확인하고 '계산' 탭에서 세액을 확인하세요.</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- 최근 입력한 거래 미리보기 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">최근 입력한 거래</h3>
+                    <span class="result-status info" id="transaction-count">0건</span>
+                </div>
+                
+                <!-- 거래 요약 -->
+                <div class="transaction-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">총 매출</span>
+                        <span class="summary-amount success" id="total-income">0원</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">총 매입</span>
+                        <span class="summary-amount error" id="total-expense">0원</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">순이익</span>
+                        <span class="summary-amount" id="net-profit">0원</span>
+                    </div>
+                </div>
+                
+                <!-- 거래 목록 -->
+                <div class="recent-transactions" id="recent-transactions">
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <p class="empty-message">아직 입력된 거래가 없습니다.</p>
+                        <p class="empty-submessage">위 폼을 사용해 첫 거래를 입력해보세요.</p>
+                    </div>
+                </div>
             </div>
         </section>
-        
-        <section id="ledger">
-            <!-- 스켈레톤 UI - 로딩 중 표시 -->
-            <div class="ledger-skeleton"></div>
-            <div class="ledger-skeleton"></div>
-            <div class="ledger-skeleton"></div>
-            <div class="ledger-skeleton"></div>
-            <div class="ledger-skeleton"></div>
-            <div class="ledger-skeleton"></div>
-            
-            <!-- 실제 데이터 카드들 -->
-            <div class="ledger-card">
-                <div>
-                    <div class="ledger-merchant">카페 스타벅스</div>
-                    <div class="ledger-date">2024-09-11</div>
+
+        <!-- 업로드 섹션 -->
+        <section id="upload-section" class="content-section" role="tabpanel" aria-labelledby="upload-tab">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">파일 업로드</h2>
+                    <span class="result-status success">준비완료</span>
                 </div>
-                <div class="ledger-amount neg">-₩5,500</div>
+                <p class="card-description">
+                    CSV 또는 Excel 파일을 업로드하여 세무 데이터를 분석하세요. 
+                    AI가 자동으로 분류하고 세무 처리를 도와드립니다.
+                </p>
+                
+                <!-- 토스 스타일 드래그앤드롭 업로드 -->
+                <div class="upload-zone" id="upload-zone">
+                    <div class="upload-icon">📁</div>
+                    <h3 class="upload-title">파일을 여기에 드래그하거나 클릭하세요</h3>
+                    <p class="upload-subtitle">CSV, XLSX, XLS 파일만 지원 (최대 10MB)</p>
+                    <button class="btn btn-primary btn-lg">파일 선택</button>
+                    <input type="file" id="file-input" accept=".csv,.xlsx,.xls" style="display: none;">
+                </div>
+                
+                <!-- 업로드 결과 영역 -->
+                <div id="upload-result" class="hidden">
+                    <h3 class="card-title">업로드 완료</h3>
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-title" id="uploaded-filename">파일명.csv</span>
+                            <span class="result-status success">성공</span>
+                        </div>
+                        <div class="result-details" id="upload-details">
+                            처리된 항목: <strong id="processed-count">0</strong>개<br>
+                            처리 시간: <strong id="processing-time">0</strong>초
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="ledger-card">
-                <div>
-                    <div class="ledger-merchant">월급 입금</div>
-                    <div class="ledger-date">2024-09-01</div>
+        </section>
+
+        <!-- 조회 섹션 -->
+        <section id="view-section" class="content-section" role="tabpanel" aria-labelledby="view-tab">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">데이터 조회</h2>
+                    <span class="result-status info">대기중</span>
                 </div>
-                <div class="ledger-amount pos">+₩3,200,000</div>
+                <p class="card-description">
+                    업로드된 세무 데이터를 확인하고 필터링할 수 있습니다.
+                </p>
+                
+                <!-- 필터 컨트롤 -->
+                <div class="mb-4">
+                    <div class="flex gap-4 mb-4">
+                        <button class="btn btn-secondary">전체</button>
+                        <button class="btn btn-outline">수입</button>
+                        <button class="btn btn-outline">지출</button>
+                        <button class="btn btn-outline">VAT</button>
+                    </div>
+                </div>
+
+                <!-- 데이터 리스트 -->
+                <div class="result-list" id="data-list">
+                    <!-- 로딩 상태 -->
+                    <div class="loading-container" id="data-loading">
+                        <div class="loading-spinner"></div>
+                        <span>데이터를 불러오는 중...</span>
+                    </div>
+                    
+                    <!-- 샘플 데이터 (업로드 후 표시) -->
+                    <div class="result-item hidden" id="sample-data">
+                        <div class="result-header">
+                            <span class="result-title">거래처명 예시</span>
+                            <span class="result-status success">매출</span>
+                        </div>
+                        <div class="result-details">
+                            금액: <strong>1,000,000원</strong><br>
+                            날짜: 2024-01-15<br>
+                            세금계산서: 발행완료
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 계산 섹션 -->
+        <section id="calculate-section" class="content-section" role="tabpanel" aria-labelledby="calculate-tab">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">세무 계산</h2>
+                    <span class="result-status warning">계산필요</span>
+                </div>
+                <p class="card-description">
+                    AI가 세무 데이터를 분석하여 예상 세액을 계산합니다.
+                </p>
+
+                <!-- 계산 옵션 -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">계산 유형</h3>
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div class="card" style="padding: 1rem; cursor: pointer;" data-calc-type="vat">
+                            <h4 class="font-semibold">부가가치세</h4>
+                            <p class="text-sm text-gray-600">VAT 신고 및 환급액 계산</p>
+                        </div>
+                        <div class="card" style="padding: 1rem; cursor: pointer;" data-calc-type="income">
+                            <h4 class="font-semibold">소득세</h4>
+                            <p class="text-sm text-gray-600">종합소득세 예상액 계산</p>
+                        </div>
+                        <div class="card" style="padding: 1rem; cursor: pointer;" data-calc-type="business">
+                            <h4 class="font-semibold">사업소득</h4>
+                            <p class="text-sm text-gray-600">사업소득 기준경비 계산</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 계산 결과 -->
+                <div id="calculation-result" class="hidden">
+                    <h3 class="text-lg font-semibold mb-4">계산 결과</h3>
+                    <div class="result-list">
+                        <div class="result-item">
+                            <div class="result-header">
+                                <span class="result-title">예상 부가가치세</span>
+                                <span class="result-status success">완료</span>
+                            </div>
+                            <div class="result-details">
+                                <strong class="text-2xl">₩ 125,000</strong><br>
+                                기준: 매출세액 - 매입세액<br>
+                                신고기한: 2024년 1월 25일
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-lg w-full" id="start-calculation">
+                    <span aria-hidden="true">🧮</span>
+                    계산 시작하기
+                </button>
+            </div>
+        </section>
+
+        <!-- 체크리스트 섹션 -->
+        <section id="checklist-section" class="content-section" role="tabpanel" aria-labelledby="checklist-tab">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">세무 체크리스트</h2>
+                    <span class="result-status info">진행중</span>
+                </div>
+                <p class="card-description">
+                    세무 처리에 필요한 단계별 체크리스트를 확인하세요.
+                </p>
+
+                <!-- 체크리스트 아이템들 -->
+                <div class="result-list">
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-title">
+                                <input type="checkbox" id="check-1" class="mr-2" checked>
+                                <label for="check-1">매출 데이터 업로드</label>
+                            </span>
+                            <span class="result-status success">완료</span>
+                        </div>
+                        <div class="result-details">
+                            CSV 파일을 업로드하여 매출 데이터를 등록했습니다.
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-title">
+                                <input type="checkbox" id="check-2" class="mr-2">
+                                <label for="check-2">매입 데이터 업로드</label>
+                            </span>
+                            <span class="result-status warning">대기</span>
+                        </div>
+                        <div class="result-details">
+                            매입 관련 영수증 및 세금계산서 데이터를 업로드하세요.
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-title">
+                                <input type="checkbox" id="check-3" class="mr-2">
+                                <label for="check-3">AI 분류 검토</label>
+                            </span>
+                            <span class="result-status info">예정</span>
+                        </div>
+                        <div class="result-details">
+                            AI가 자동 분류한 항목들을 검토하고 수정하세요.
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <div class="result-header">
+                            <span class="result-title">
+                                <input type="checkbox" id="check-4" class="mr-2">
+                                <label for="check-4">세액 계산 및 신고</label>
+                            </span>
+                            <span class="result-status info">예정</span>
+                        </div>
+                        <div class="result-details">
+                            최종 세액을 계산하고 국세청 신고를 진행하세요.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 진행률 표시 -->
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-2">전체 진행률</h3>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 25%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">1단계 완료 (5단계 중)</p>
+                </div>
             </div>
         </section>
     </main>
-    
-    <nav class="tabbar" role="tablist" aria-label="메인 내비게이션">
-        <a data-tab="ledger" class="active" role="tab" aria-selected="true" aria-label="가계부 탭">가계부</a>
-        <a data-tab="upload" role="tab" aria-selected="false" aria-label="업로드 탭">업로드</a>
-        <a data-tab="ai" role="tab" aria-selected="false" aria-label="자동분류 탭">자동분류</a>
-        <a data-tab="report" role="tab" aria-selected="false" aria-label="리포트 탭">리포트</a>
-        <a data-tab="easy" role="tab" aria-selected="false" aria-label="간편신고 탭">간편신고</a>
-    </nav>
-    
-    <button class="fab" aria-label="새 가계부 입력 추가" role="button">＋</button>
 
-    <script defer>
-        // 서비스워커 등록
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/app/sw.js');
-        }
-        
-        // 스켈레톤 UI 숨김 및 IntersectionObserver로 지연 렌더링
-        document.addEventListener('DOMContentLoaded', function() {
-            // 2초 후 스켈레톤 숨김 (실제로는 API 로드 완료 후)
-            setTimeout(function() {
-                const skeletons = document.querySelectorAll('.ledger-skeleton');
-                skeletons.forEach(skeleton => {
-                    skeleton.style.display = 'none';
-                });
-            }, 2000);
-            
-            // IntersectionObserver로 카드 지연 로딩 시뮬레이션
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('fade-in');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            });
-            
-            // 가계부 카드들에 대해 관찰자 설정
-            const cards = document.querySelectorAll('.ledger-card');
-            cards.forEach(card => observer.observe(card));
-            
-            // 버튼 클릭 불가 해결 - 강화된 이벤트 바인딩
-            const bind = (sel, handler) => {
-                document.querySelectorAll(sel).forEach(el => {
-                    if (el.dataset._bound) return;
-                    el.dataset._bound = '1';
-                    el.type = el.tagName === 'BUTTON' ? 'button' : 'button';
-                    // form submit 충돌 차단
-                    if (el.form) el.type = 'button';
-                    el.addEventListener('click', ev => {
-                        ev.preventDefault();
-                        ev.stopPropagation();
-                        ev.stopImmediatePropagation();
-                        handler(ev);
-                    }, { passive:false });
-                });
-            };
-            
-            // 탭 버튼들
-            bind('.subtabs button, .tabbar button, .tabbar a', (e) => {
-                const key = e.currentTarget.dataset.v || e.currentTarget.dataset.tab || e.currentTarget.name || '';
-                document.querySelectorAll('.subtabs button, .tabbar button, .tabbar a').forEach(b=>b.classList.remove('active'));
-                e.currentTarget.classList.add('active');
-                if (window.onTabChange) window.onTabChange(key);
-            });
-            
-            // 플로팅 액션 버튼들
-            bind('.fab, .btn-fab, [data-action="add"]', () => {
-                if (window.onAdd) window.onAdd(); else alert('추가 폼 연결 필요');
-            });
-        });
-    </script>
+    <!-- 토스트 알림 컨테이너 -->
+    <div id="toast-container"></div>
+
+    <!-- 토스 스타일 푸터 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-brand">© 2025 유아플랜 컨설팅</p>
+            <p>
+                <a href="https://youareplan.co.kr" class="footer-link" target="_blank">youareplan.co.kr</a> |
+                <a href="mailto:contact@youareplan.co.kr" class="footer-link">contact@youareplan.co.kr</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
 </body>
 </html>
