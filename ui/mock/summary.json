@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "message": "오프라인 모드 - 요약 데이터",
+  "data": {
+    "total_amount": 1069500,
+    "expense_amount": -30500,
+    "income_amount": 1100000,
+    "vat_total": 97227,
+    "categories": [
+      {
+        "name": "매출",
+        "amount": 1100000,
+        "count": 1,
+        "percentage": 102.8
+      },
+      {
+        "name": "소모품비",
+        "amount": -25000,
+        "count": 1,
+        "percentage": -2.3
+      },
+      {
+        "name": "복리후생",
+        "amount": -5500,
+        "count": 1,
+        "percentage": -0.5
+      }
+    ],
+    "monthly_summary": {
+      "current_month": "2025-09",
+      "previous_month": "2025-08",
+      "growth_rate": 15.2
+    }
+  },
+  "timestamp": "2025-09-12T00:00:00Z"
+}

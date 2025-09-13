@@ -1,0 +1,11 @@
+:root{
+  --bg:#0B1420;          /* Toss-like dark navy */
+  --surface:#111C2A;     /* cards/nav background */
+  --text:#E6F0FF;        /* main text */
+  --muted:#95A3B8;       /* secondary text */
+  --accent:#2F6BFF;      /* accent */
+}
+body{ background:var(--bg); color:var(--text); }
+.card,.navbar,.tabbar,.panel{ background:var(--surface); color:var(--text); box-shadow:0 6px 16px rgba(0,0,0,.25); }
+.tabbar [data-tab].active{ color:var(--accent); }
+.logo-white{ filter:brightness(0) invert(1) contrast(1.05); } /* dark bg에서 화이트로 */

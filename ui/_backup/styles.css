@@ -1,0 +1,475 @@
+/* 토스식 다크 네이비 테마 */
+:root {
+  --bg: #0B1420;         /* 배경: 딥 네이비 */
+  --surface: #111A28;    /* 카드/탭 바 */
+  --card: #111A28;       /* 카드 배경 */
+  --text: #E6EDF7;       /* 기본 텍스트 */
+  --muted: #A8B3C7;      /* 보조 텍스트 */
+  --primary: #2B6CF6;    /* 토스 느낌의 블루 악센트 */
+  --accent: #22C1DC;     /* 보조 포인트 */
+  --divider: #1B2432;    /* 구분선 */
+  --radius: 14px;
+  --shadow: 0 4px 20px rgba(0,0,0,.15);
+  --success: #16b364;
+  --danger: #f04438;
+  
+  /* 기존 변수명 호환성 */
+  --brand: #2B6CF6;
+  --ink: #E6EDF7;
+  --ink-2: #A8B3C7;
+  --border: #1B2432;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* 다크모드 적용 */
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: dark; }
+}
+
+/* 헤더 높이 조정 - 토스 스타일 */
+header.appbar {
+  height: 88px;
+}
+
+@media (max-width: 768px) {
+  header.appbar {
+    height: 72px;
+  }
+}
+
+/* 로고 크기 조정 - 토스 무드 */
+.logo-img {
+  height: 96px;
+  max-height: 20vh;
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 78px;
+  }
+}
+
+/* 서브탭 스타일 - 월/카테고리/현금흐름 */
+.subtabs {
+  display: flex;
+  gap: 10px;
+  padding: 8px 16px;
+  background: #fff;
+  position: sticky;
+  top: 88px;
+  border-bottom: 1px solid #eef1f5;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .subtabs {
+    top: 72px;
+  }
+}
+
+.subtabs button {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 0;
+  background: #f0f3f8;
+  color: var(--ink-2);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.subtabs button.active {
+  background: var(--brand);
+  color: #fff;
+}
+
+.subtabs button:hover {
+  transform: scale(1.02);
+}
+
+/* 요약 카드 그리드 보정 */
+.summary-wrap {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* 가계부 카드 액티브 피드백 */
+.ledger-card:active {
+  transform: scale(.996);
+  transition: transform .08s ease;
+}
+
+/* Extended styles for ledger cards and responsive design */
+main {
+    padding-bottom: 80px; /* Account for fixed tabbar */
+}
+
+.ledger-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    margin: 12px 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.ledger-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(17,27,56,.1);
+}
+
+.ledger-merchant {
+    font-weight: 650;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 4px;
+}
+
+.ledger-date {
+    font-size: 14px;
+    color: var(--ink-2);
+    font-weight: 500;
+}
+
+.ledger-amount {
+    font-size: 18px;
+    font-weight: 700;
+    align-self: center;
+}
+
+.ledger-amount.pos {
+    color: var(--success);
+}
+
+.ledger-amount.neg {
+    color: var(--danger);
+}
+
+/* Enhanced responsive design */
+@media (max-width: 480px) {
+    header.appbar {
+        padding: 12px 16px;
+    }
+    
+    .logo-img {
+        height: 64px;
+    }
+    
+    .summary-wrap {
+        margin: 12px 8px;
+        gap: 8px;
+    }
+    
+    .summary-card, .ledger-card {
+        padding: 14px 16px;
+        margin: 8px 0;
+    }
+    
+    .summary-value {
+        font-size: 24px;
+    }
+    
+    .ledger-merchant {
+        font-size: 15px;
+    }
+    
+    .ledger-amount {
+        font-size: 16px;
+    }
+    
+    .tabbar {
+        font-size: 12px;
+        height: 60px;
+    }
+    
+    .fab {
+        right: 14px;
+        bottom: 76px;
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+        line-height: 52px;
+    }
+}
+
+/* Loading states and animations */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.fade-in {
+    animation: fadeIn 300ms ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Focus states for accessibility */
+.tabbar a:focus,
+.fab:focus {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+}
+
+.ledger-card:focus-within {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+}
+
+/* 접근성 - 모션 감소 대응 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* 버튼 기본 스타일 통일 */
+button, .btn {
+  background: #f3f6fb;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover, .btn:hover {
+  background: #eef4ff;
+  border-color: #cfe0ff;
+}
+
+button:active, .btn:active {
+  transform: scale(.995);
+}
+
+button[disabled], .btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* 레이어 충돌 해결 - z-index 부여 */
+header.appbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  background: #fff;
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.summary-card, .ledger-card {
+  background: #fff;
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* 본문 하단 패딩 */
+main, .page {
+  padding-bottom: 88px;
+}
+
+/* 스크롤 캡쳐/투명 오버레이 제거 */
+.overlay, .scrim {
+  pointer-events: none;
+}
+
+.content-guard {
+  pointer-events: none;
+}
+
+/* 로고 크기 보정 */
+.logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 24px;
+  }
+}
+
+.brand {
+  text-decoration: none;
+  display: block;
+}
+
+/* 스켈레톤 UI 스타일 - 로딩 상태 */
+.ledger-skeleton {
+  height: 72px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #eceff4 25%, #f5f7fb 37%, #eceff4 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s infinite;
+  margin: 12px 0;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* Print styles */
+@media print {
+    .tabbar, .fab, .subtabs {
+        display: none;
+    }
+    
+    header.appbar {
+        position: static;
+        box-shadow: none;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .ledger-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+    }
+    
+    .ledger-skeleton {
+        display: none;
+    }
+}
+
+/* 토스식 컴포넌트 스타일 */
+/* 카드 배경을 다크 테마로 적용 */
+.summary-card, .ledger-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  border: 1px solid var(--divider);
+}
+
+/* 탭바 다크 테마 적용 */
+.tabbar {
+  background: var(--surface);
+  color: var(--text);
+  border-top: 1px solid var(--divider);
+}
+
+.tabbar a {
+  color: var(--muted);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 120ms ease;
+}
+
+.tabbar a.active {
+  color: var(--primary);
+}
+
+/* 헤더 다크 테마 */
+header.appbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--divider);
+}
+
+/* 서브탭 다크 테마 */
+.subtabs {
+  background: var(--surface);
+  border-bottom: 1px solid var(--divider);
+}
+
+.subtabs button {
+  background: var(--bg);
+  color: var(--muted);
+  border: 1px solid var(--divider);
+  border-radius: 12px;
+  font-weight: 600;
+  height: 44px;
+  padding: 0 16px;
+}
+
+.subtabs button.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+/* 토스식 버튼 스타일 */
+button, .btn {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--divider);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 600;
+  height: 44px;
+  cursor: pointer;
+}
+
+button:hover, .btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+/* FAB 버튼 */
+.fab {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  box-shadow: var(--shadow);
+  font-size: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  position: fixed;
+  right: 18px;
+  bottom: 90px;
+  z-index: 1001;
+}
+
+/* z-index 최적화 */
+.overlay, .scrim, .glass, .backdrop, .modal-backdrop { pointer-events: none !important; opacity: 0 !important; }
+header.appbar { position: sticky; top: 0; z-index: 999 !important; }
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000 !important; }
+.tabbar a, .tabbar button { pointer-events: auto !important; z-index: 1002 !important; position: relative; }
+main, .page, .content { padding-bottom: 96px; }
+button, .btn, .tabbar a { cursor: pointer !important; pointer-events: auto !important; }
+button[disabled], .btn.disabled { opacity: .45; cursor: not-allowed !important; }
+
+/* 토스식 로고 화이트 처리 */
+.brand { display:flex; align-items:center; gap:8px; }
+.logo-img, .logo-white {
+  height: 28px; 
+  width: auto; 
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  filter: brightness(0) invert(1) contrast(1.05);
+  opacity: 0.95;
+}
+@media (max-width:768px){ 
+  .logo-img, .logo-white { height:24px; } 
+}
+/* 브랜드 링크 클릭 보장 */
+.brand { pointer-events: auto !important; z-index: 1003 !important; }

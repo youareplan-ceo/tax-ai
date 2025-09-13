@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "message": "오프라인 모드 - 샘플 데이터",
+  "data": [
+    {
+      "id": 1,
+      "trx_date": "2025-09-12",
+      "vendor": "스타벅스",
+      "amount": "-5500",
+      "vat": "-500",
+      "memo": "회의용 커피",
+      "account_code": "복리후생",
+      "tax_type": "불공제"
+    },
+    {
+      "id": 2,
+      "trx_date": "2025-09-11",
+      "vendor": "이마트",
+      "amount": "-25000",
+      "vat": "-2273",
+      "memo": "사무용품",
+      "account_code": "소모품비",
+      "tax_type": "과세"
+    },
+    {
+      "id": 3,
+      "trx_date": "2025-09-10",
+      "vendor": "ABC 클라이언트",
+      "amount": "1100000",
+      "vat": "100000",
+      "memo": "개발 서비스 수입",
+      "account_code": "매출",
+      "tax_type": "과세"
+    }
+  ],
+  "total": 3,
+  "page": 1,
+  "per_page": 50
+}

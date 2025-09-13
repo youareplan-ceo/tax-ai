@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <title>YouaPlan EasyTax v8 - AI 세무 코파일럿</title>
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/npm/suit-font@1.0.0/variable.css" rel="stylesheet">
+    <link rel="preload" as="image" href="/app/assets/logo.webp" imagesrcset="/app/assets/logo.png">
+    
+    <style>
+        :root{--bg:#f7f8fa;--card:#fff;--ink:#0b1023;--ink-2:#5f6a82;--brand:#0066ff;--danger:#ff3b30;--success:#12c29c;--radius:14px;--radius-lg:18px;--shadow:0 6px 24px rgba(17,27,56,.06);--gap-2:10px;--gap-3:14px;--gap-4:18px;--gap-5:24px}
+        html,body{margin:0;font-family:"SUIT Variable",system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Pretendard,sans-serif;background:var(--bg);color:var(--ink)}
+        img{max-width:100%;height:auto} *{box-sizing:border-box}
+        header.appbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:var(--gap-3);padding:18px 20px;background:#fff;box-shadow:var(--shadow)}
+        .logo-img{height:88px;max-height:18vh} @media(max-width:768px){.logo-img{height:72px}}
+        .summary-wrap{display:grid;gap:12px;margin:14px 2px}
+        .summary-card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:16px 18px}
+        .summary-value{font-size:28px;font-weight:800}
+        .tabbar{position:fixed;left:0;right:0;bottom:0;height:64px;background:#fff;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -8px 24px rgba(17,27,56,.08);border-top:1px solid #eef1f5}
+        .tabbar a{color:var(--ink-2);font-weight:600;text-decoration:none;transition:transform .12s ease}
+        .tabbar a:active{transform:scale(.98)} .tabbar a.active{color:var(--brand)}
+        .fab{position:fixed;right:18px;bottom:86px;width:56px;height:56px;border-radius:50%;background:var(--brand);color:#fff;border:0;box-shadow:var(--shadow);font-size:28px;line-height:56px}
+    </style>
+    
+    <link rel="stylesheet" href="/app/styles.min.css?v=4" onerror="this.href='/app/styles.css?v=4';">
+    <link rel="manifest" href="/app/manifest.json">
+</head>
+<body>
+    <header class="appbar">
+        <a class="brand" href="/app/">
+            <img class="logo-img logo-white" src="/app/assets/logo.png" alt="YouaPlan EasyTax">
+        </a>
+    </header>
+    
+    <!-- 서브탭 내비게이션 - 월/카테고리/현금흐름 -->
+    <nav class="subtabs" role="navigation" aria-label="서브 내비게이션">
+        <button data-v="month" class="active" aria-pressed="true">월</button>
+        <button data-v="category" aria-pressed="false">카테고리</button>
+        <button data-v="cash" aria-pressed="false">현금흐름</button>
+    </nav>
+    
+    <main>
+        <section class="summary-wrap">
+            <div class="summary-card">
+                <div>이번 달 합계</div>
+                <div class="summary-value" id="sum-month">₩0</div>
+            </div>
+            <div class="summary-card">
+                <div>카테고리 상위</div>
+                <div id="top-cats">—</div>
+            </div>
+        </section>
+        
+        <section id="ledger">
+            <!-- 스켈레톤 UI - 로딩 중 표시 -->
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            <div class="ledger-skeleton"></div>
+            
+            <!-- 실제 데이터 카드들 -->
+            <div class="ledger-card">
+                <div>
+                    <div class="ledger-merchant">카페 스타벅스</div>
+                    <div class="ledger-date">2024-09-11</div>
+                </div>
+                <div class="ledger-amount neg">-₩5,500</div>
+            </div>
+            <div class="ledger-card">
+                <div>
+                    <div class="ledger-merchant">월급 입금</div>
+                    <div class="ledger-date">2024-09-01</div>
+                </div>
+                <div class="ledger-amount pos">+₩3,200,000</div>
+            </div>
+        </section>
+    </main>
+    
+    <nav class="tabbar" role="tablist" aria-label="메인 내비게이션">
+        <a id="tab-ledger" data-tab="ledger" class="active" role="tab" aria-selected="true" aria-label="가계부 탭">가계부</a>
+        <a id="tab-upload" data-tab="upload" role="tab" aria-selected="false" aria-label="업로드 탭">업로드</a>
+        <a id="tab-classify" data-tab="ai" role="tab" aria-selected="false" aria-label="자동분류 탭">자동분류</a>
+        <a id="tab-report" data-tab="report" role="tab" aria-selected="false" aria-label="리포트 탭">리포트</a>
+        <a id="tab-quick" data-tab="easy" role="tab" aria-selected="false" aria-label="간편신고 탭">간편신고</a>
+    </nav>
+    
+    <button class="fab" aria-label="새 가계부 입력 추가" role="button">＋</button>
+
+    <script defer>
+        // 서비스워커 등록 v4 (캐시 갱신)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/app/sw.js?v=4').then(function(registration) {
+                console.log('SW registered:', registration);
+                // 기존 캐시 강제 갱신
+                if (registration.waiting) {
+                    registration.waiting.postMessage({ command: 'SKIP_WAITING' });
+                }
+            });
+        }
+        
+        // 스켈레톤 UI 숨김 및 IntersectionObserver로 지연 렌더링
+        document.addEventListener('DOMContentLoaded', function() {
+            // 초기 데이터 로딩
+            loadTabContent('ledger'); // 기본 탭 데이터 로드
+            loadTabContent('report'); // 요약 데이터 로드
+            
+            // 2초 후 스켈레톤 숨김 (실제로는 API 로드 완료 후)
+            setTimeout(function() {
+                const skeletons = document.querySelectorAll('.ledger-skeleton');
+                skeletons.forEach(skeleton => {
+                    skeleton.style.display = 'none';
+                });
+            }, 2000);
+            
+            // IntersectionObserver로 카드 지연 로딩 시뮬레이션
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            // 가계부 카드들에 대해 관찰자 설정
+            const cards = document.querySelectorAll('.ledger-card');
+            cards.forEach(card => observer.observe(card));
+            
+            // 토스식 즉시 반응 탭 전환 (API와 분리)
+            function setActiveTab(tabId) {
+                // 1. 즉시 UI 전환 (API 대기 없음)
+                document.querySelectorAll('.tabbar a').forEach(tab => {
+                    tab.classList.remove('active');
+                    tab.setAttribute('aria-selected', 'false');
+                });
+                
+                const activeTab = document.querySelector(`#tab-${tabId}`) || document.querySelector(`[data-tab="${tabId}"]`);
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                    activeTab.setAttribute('aria-selected', 'true');
+                }
+                
+                // 2. 콘텐츠 로딩 (비동기, 실패해도 UI 유지)
+                loadTabContent(tabId).catch(error => {
+                    console.warn(`탭 ${tabId} 로딩 실패:`, error);
+                    // 실패해도 탭 전환은 유지
+                });
+            }
+            
+            async function loadTabContent(tabId) {
+                try {
+                    switch(tabId) {
+                        case 'ledger':
+                            const entriesData = await safeGet('/api/entries/list', '/app/mock/entries.json');
+                            if (entriesData?.data) {
+                                updateLedgerCards(entriesData.data);
+                            }
+                            break;
+                        case 'upload':
+                            // 업로드 화면 준비
+                            break;
+                        case 'ai':
+                            // AI 분류 화면
+                            break;
+                        case 'report':
+                            const summaryData = await safeGet('/api/entries/summary', '/app/mock/summary.json');
+                            if (summaryData?.data) {
+                                updateSummaryCards(summaryData.data);
+                            }
+                            break;
+                        case 'easy':
+                            // 간편신고 화면
+                            break;
+                    }
+                } catch (error) {
+                    // 오프라인/백엔드 실패 대비 - UI는 정상 유지
+                    console.info(`오프라인 모드로 ${tabId} 탭 사용`);
+                }
+            }
+            
+            // 안전한 API 호출 (오프라인 대응)
+            async function safeGet(url, mockUrl = null) {
+                try {
+                    const response = await fetch(url, { 
+                        credentials: 'include',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return await response.json();
+                } catch (error) {
+                    console.info(`API 실패, Mock 데이터 사용: ${url}`, error.message);
+                    if (mockUrl) {
+                        try {
+                            const mockResponse = await fetch(mockUrl);
+                            return await mockResponse.json();
+                        } catch (mockError) {
+                            console.warn(`Mock 데이터 로드 실패: ${mockUrl}`, mockError.message);
+                            return { success: false, data: [], message: "오프라인 모드" };
+                        }
+                    }
+                    return { success: false, data: [], message: "네트워크 오류" };
+                }
+            }
+            
+            // UI 업데이트 함수들
+            function updateLedgerCards(entries) {
+                const ledgerSection = document.getElementById('ledger');
+                if (!ledgerSection) return;
+                
+                // 스켈레톤 숨김
+                const skeletons = ledgerSection.querySelectorAll('.ledger-skeleton');
+                skeletons.forEach(skeleton => skeleton.style.display = 'none');
+                
+                // 기존 카드 제거
+                const existingCards = ledgerSection.querySelectorAll('.ledger-card');
+                existingCards.forEach(card => card.remove());
+                
+                // 새 카드 생성
+                entries.forEach(entry => {
+                    const card = document.createElement('div');
+                    card.className = 'ledger-card fade-in';
+                    card.innerHTML = `
+                        <div>
+                            <div class="ledger-merchant">${entry.vendor}</div>
+                            <div class="ledger-date">${entry.trx_date}</div>
+                        </div>
+                        <div class="ledger-amount ${parseInt(entry.amount) > 0 ? 'pos' : 'neg'}">
+                            ${parseInt(entry.amount) > 0 ? '+' : ''}₩${Math.abs(parseInt(entry.amount)).toLocaleString()}
+                        </div>
+                    `;
+                    ledgerSection.appendChild(card);
+                });
+            }
+            
+            function updateSummaryCards(summaryData) {
+                // 이번 달 합계 업데이트
+                const sumElement = document.getElementById('sum-month');
+                if (sumElement && summaryData.total_amount) {
+                    sumElement.textContent = `₩${summaryData.total_amount.toLocaleString()}`;
+                }
+                
+                // 카테고리 상위 업데이트
+                const topCatsElement = document.getElementById('top-cats');
+                if (topCatsElement && summaryData.categories) {
+                    const topCategories = summaryData.categories
+                        .filter(cat => cat.amount > 0)
+                        .slice(0, 2)
+                        .map(cat => cat.name)
+                        .join(', ') || '—';
+                    topCatsElement.textContent = topCategories;
+                }
+            }
+            
+            // 탭 버튼 이벤트 바인딩
+            document.querySelectorAll('#tab-ledger, #tab-upload, #tab-classify, #tab-report, #tab-quick').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const tabId = e.currentTarget.id.replace('tab-', '');
+                    setActiveTab(tabId);
+                });
+            });
+            
+            // 서브탭 이벤트 바인딩 (기존 유지)
+            document.querySelectorAll('.subtabs button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('.subtabs button').forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    const view = e.currentTarget.dataset.v;
+                    console.info(`서브탭 전환: ${view}`);
+                });
+            });
+            
+            // FAB 버튼
+            document.querySelector('.fab')?.addEventListener('click', () => {
+                alert('새 가계부 항목 추가 - 구현 예정');
+            });
+        });
+    </script>
+</body>
+</html>

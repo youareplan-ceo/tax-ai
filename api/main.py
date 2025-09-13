@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse, FileResponse
-from .routers import ai, ingest, tax, prep, entries
+from .routers import ai, ingest, tax, prep, entries, debug
 from .db.utils import init_db
 import time
 from cachetools import TTLCache
@@ -30,6 +30,7 @@ app.include_router(ingest.router, prefix="/ingest", tags=["ingest"])
 app.include_router(tax.router, prefix="/tax", tags=["tax"])
 app.include_router(prep.router, prefix="/prep", tags=["prep"])
 app.include_router(entries.router, prefix="/entries", tags=["entries"])
+app.include_router(debug.router, prefix="/debug", tags=["debug"])
 
 # / → /app/ 로 리다이렉트
 @app.get("/", include_in_schema=False)
