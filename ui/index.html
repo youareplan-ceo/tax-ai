@@ -11,6 +11,7 @@
     
     <!-- 토스 스타일 CSS -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="workflow-styles.css">
     
     <!-- 메타 태그 -->
     <meta name="description" content="YouArePlan TAX AI - 토스 스타일의 직관적인 세무 코파일럿">
@@ -245,176 +246,31 @@
         <section id="view-section" class="content-section" role="tabpanel" aria-labelledby="view-tab">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">데이터 조회</h2>
-                    <span class="result-status info">대기중</span>
+                    <h2 class="card-title">📊 통합 데이터 조회</h2>
+                    <span class="result-status info">실시간 동기화</span>
                 </div>
                 <p class="card-description">
-                    업로드된 세무 데이터를 확인하고 필터링할 수 있습니다.
+                    직접입력과 CSV 업로드 데이터를 통합하여 확인하고 관리할 수 있습니다.
                 </p>
                 
-                <!-- 필터 컨트롤 -->
-                <div class="mb-4">
-                    <div class="flex gap-4 mb-4">
-                        <button class="btn btn-secondary">전체</button>
-                        <button class="btn btn-outline">수입</button>
-                        <button class="btn btn-outline">지출</button>
-                        <button class="btn btn-outline">VAT</button>
-                    </div>
-                </div>
-
-                <!-- 데이터 리스트 -->
-                <div class="result-list" id="data-list">
-                    <!-- 로딩 상태 -->
-                    <div class="loading-container" id="data-loading">
-                        <div class="loading-spinner"></div>
-                        <span>데이터를 불러오는 중...</span>
-                    </div>
-                    
-                    <!-- 샘플 데이터 (업로드 후 표시) -->
-                    <div class="result-item hidden" id="sample-data">
-                        <div class="result-header">
-                            <span class="result-title">거래처명 예시</span>
-                            <span class="result-status success">매출</span>
-                        </div>
-                        <div class="result-details">
-                            금액: <strong>1,000,000원</strong><br>
-                            날짜: 2024-01-15<br>
-                            세금계산서: 발행완료
-                        </div>
-                    </div>
+                <!-- 통합 거래 데이터 목록 -->
+                <div id="recent-transactions-list">
+                    <!-- 동적으로 렌더링됩니다 -->
                 </div>
             </div>
         </section>
 
         <!-- 계산 섹션 -->
         <section id="calculate-section" class="content-section" role="tabpanel" aria-labelledby="calculate-tab">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">세무 계산</h2>
-                    <span class="result-status warning">계산필요</span>
-                </div>
-                <p class="card-description">
-                    AI가 세무 데이터를 분석하여 예상 세액을 계산합니다.
-                </p>
-
-                <!-- 계산 옵션 -->
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold mb-4">계산 유형</h3>
-                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                        <div class="card" style="padding: 1rem; cursor: pointer;" data-calc-type="vat">
-                            <h4 class="font-semibold">부가가치세</h4>
-                            <p class="text-sm text-gray-600">VAT 신고 및 환급액 계산</p>
-                        </div>
-                        <div class="card" style="padding: 1rem; cursor: pointer;" data-calc-type="income">
-                            <h4 class="font-semibold">소득세</h4>
-                            <p class="text-sm text-gray-600">종합소득세 예상액 계산</p>
-                        </div>
-                        <div class="card" style="padding: 1rem; cursor: pointer;" data-calc-type="business">
-                            <h4 class="font-semibold">사업소득</h4>
-                            <p class="text-sm text-gray-600">사업소득 기준경비 계산</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 계산 결과 -->
-                <div id="calculation-result" class="hidden">
-                    <h3 class="text-lg font-semibold mb-4">계산 결과</h3>
-                    <div class="result-list">
-                        <div class="result-item">
-                            <div class="result-header">
-                                <span class="result-title">예상 부가가치세</span>
-                                <span class="result-status success">완료</span>
-                            </div>
-                            <div class="result-details">
-                                <strong class="text-2xl">₩ 125,000</strong><br>
-                                기준: 매출세액 - 매입세액<br>
-                                신고기한: 2024년 1월 25일
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn btn-primary btn-lg w-full" id="start-calculation">
-                    <span aria-hidden="true">🧮</span>
-                    계산 시작하기
-                </button>
+            <div id="tax-calculation-results">
+                <!-- 실시간 세무 대시보드가 동적으로 렌더링됩니다 -->
             </div>
         </section>
 
         <!-- 체크리스트 섹션 -->
         <section id="checklist-section" class="content-section" role="tabpanel" aria-labelledby="checklist-tab">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">세무 체크리스트</h2>
-                    <span class="result-status info">진행중</span>
-                </div>
-                <p class="card-description">
-                    세무 처리에 필요한 단계별 체크리스트를 확인하세요.
-                </p>
-
-                <!-- 체크리스트 아이템들 -->
-                <div class="result-list">
-                    <div class="result-item">
-                        <div class="result-header">
-                            <span class="result-title">
-                                <input type="checkbox" id="check-1" class="mr-2" checked>
-                                <label for="check-1">매출 데이터 업로드</label>
-                            </span>
-                            <span class="result-status success">완료</span>
-                        </div>
-                        <div class="result-details">
-                            CSV 파일을 업로드하여 매출 데이터를 등록했습니다.
-                        </div>
-                    </div>
-
-                    <div class="result-item">
-                        <div class="result-header">
-                            <span class="result-title">
-                                <input type="checkbox" id="check-2" class="mr-2">
-                                <label for="check-2">매입 데이터 업로드</label>
-                            </span>
-                            <span class="result-status warning">대기</span>
-                        </div>
-                        <div class="result-details">
-                            매입 관련 영수증 및 세금계산서 데이터를 업로드하세요.
-                        </div>
-                    </div>
-
-                    <div class="result-item">
-                        <div class="result-header">
-                            <span class="result-title">
-                                <input type="checkbox" id="check-3" class="mr-2">
-                                <label for="check-3">AI 분류 검토</label>
-                            </span>
-                            <span class="result-status info">예정</span>
-                        </div>
-                        <div class="result-details">
-                            AI가 자동 분류한 항목들을 검토하고 수정하세요.
-                        </div>
-                    </div>
-
-                    <div class="result-item">
-                        <div class="result-header">
-                            <span class="result-title">
-                                <input type="checkbox" id="check-4" class="mr-2">
-                                <label for="check-4">세액 계산 및 신고</label>
-                            </span>
-                            <span class="result-status info">예정</span>
-                        </div>
-                        <div class="result-details">
-                            최종 세액을 계산하고 국세청 신고를 진행하세요.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 진행률 표시 -->
-                <div class="mt-6">
-                    <h3 class="text-lg font-semibold mb-2">전체 진행률</h3>
-                    <div class="progress-container">
-                        <div class="progress-bar" style="width: 25%"></div>
-                    </div>
-                    <p class="text-sm text-gray-600 mt-2">1단계 완료 (5단계 중)</p>
-                </div>
+            <div id="checklist-content">
+                <!-- 스마트 체크리스트가 동적으로 렌더링됩니다 -->
             </div>
         </section>
     </main>
@@ -436,5 +292,8 @@
     <!-- JavaScript -->
     <script src="app.js"></script>
     <script src="api-integration.js"></script>
+    <script src="workflow-integration.js"></script>
+    <script src="tax-dashboard.js"></script>
+    <script src="smart-checklist.js"></script>
 </body>
 </html>
