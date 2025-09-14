@@ -26,8 +26,13 @@ TaxAIApp.prototype.initApiIntegration = function() {
         this.showToast('오프라인 모드로 전환되었습니다.', 'warning');
     });
     
-    // 앱 시작 시 데이터 동기화
+    // 앱 시작 시 데이터 동기화 및 프로그레스 업데이트
     this.loadDirectInputFromAPI();
+
+    // 페이지 로드 시 실제 데이터 기반 프로그레스 업데이트
+    setTimeout(() => {
+        this.updateProgressFromData();
+    }, 1500); // API 연동 완료 후 실행
 };
 
 // 백엔드 연동 거래 제출 처리
@@ -35,16 +40,25 @@ TaxAIApp.prototype.handleTransactionSubmitAPI = async function() {
     const form = document.getElementById('transaction-form');
     const formData = new FormData(form);
     const submitButton = form.querySelector('button[type="submit"]');
-    
-    // 데이터 수집
+
+    // 거래 유형 매핑: 라디오 버튼에서 선택된 값 가져오기
+    const selectedTransactionType = document.querySelector('input[name="transaction-type"]:checked');
+    const transactionType = selectedTransactionType ? selectedTransactionType.value : 'income';
+
+    // VAT 금액 처리: 입력값이 없으면 0으로 설정 (null 방지)
+    const amount = parseFloat(document.getElementById('amount').value) || 0;
+    const vatAmount = parseFloat(document.getElementById('vat-amount').value) || 0;
+
+    // 데이터 수집 - API 스키마에 맞게 매핑
     const transactionData = {
         trx_date: formData.get('transaction-date') || document.getElementById('transaction-date').value,
         vendor: formData.get('business-name') || document.getElementById('business-name').value,
-        transaction_type: formData.get('transaction-type') || 'income',
-        amount: parseFloat(document.getElementById('amount').value) || 0,
-        vat_amount: parseFloat(document.getElementById('vat-amount').value) || 0,
+        transaction_type: transactionType, // 'income' 또는 'expense'로 정확히 매핑
+        amount: amount,
+        vat_amount: vatAmount, // null 대신 0으로 기본값 설정
         memo: document.getElementById('memo').value || '',
         source: 'direct_input'
+        // business_number: document.getElementById('business-number')?.value || '' // 사업자번호는 향후 확장을 위해 보류
     };
     
     // 유효성 검사
@@ -57,6 +71,9 @@ TaxAIApp.prototype.handleTransactionSubmitAPI = async function() {
     submitButton.classList.add('loading');
     submitButton.disabled = true;
     
+    // 디버깅을 위한 로그 출력
+    console.log('📤 거래 데이터 전송 시작:', transactionData);
+
     try {
         if (this.isOnline) {
             // 온라인: 백엔드 API 호출
@@ -64,7 +81,9 @@ TaxAIApp.prototype.handleTransactionSubmitAPI = async function() {
                 method: 'POST',
                 body: JSON.stringify(transactionData)
             });
-            
+
+            console.log('📥 API 응답 수신:', response);
+
             if (response.success) {
                 // 로컬 캐시에 추가
                 const transaction = {
@@ -87,9 +106,15 @@ TaxAIApp.prototype.handleTransactionSubmitAPI = async function() {
                 
                 // 실시간 동기화 트리거
                 this.syncTaxCalculations();
+
+                // 실시간 프로그레스 업데이트 (거래 입력 후)
+                setTimeout(() => {
+                    this.updateProgressFromData();
+                }, 500);
                 
             } else {
-                throw new Error(response.message || '저장 실패');
+                console.error('❌ API 응답 실패:', response);
+                throw new Error(response.message || response.detail || '저장 실패');
             }
         } else {
             // 오프라인: 로컬 저장
@@ -109,8 +134,25 @@ TaxAIApp.prototype.handleTransactionSubmitAPI = async function() {
         this.updateProgress();
         
     } catch (error) {
-        console.error('거래 저장 오류:', error);
-        
+        console.error('❌ 거래 저장 오류:', error);
+
+        // 구체적인 에러 메시지 표시
+        let errorMessage = '거래 저장에 실패했습니다.';
+
+        if (error.message.includes('income') || error.message.includes('expense')) {
+            errorMessage = '거래 유형이 올바르지 않습니다. (income 또는 expense 필요)';
+        } else if (error.message.includes('vat_amount')) {
+            errorMessage = 'VAT 금액 형식이 올바르지 않습니다.';
+        } else if (error.message.includes('amount')) {
+            errorMessage = '거래 금액을 올바르게 입력해주세요.';
+        } else if (error.message.includes('vendor')) {
+            errorMessage = '거래처명을 입력해주세요.';
+        } else if (error.message.includes('transaction_type')) {
+            errorMessage = '거래 구분을 선택해주세요.';
+        }
+
+        this.showToast(errorMessage, 'error');
+
         // 오프라인 모드로 폴백
         await this.handleOfflineTransactionSave(transactionData);
         
@@ -380,3 +422,118 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 1000);
 });
+
+// 실제 데이터 기반 프로그레스 업데이트 함수
+TaxAIApp.prototype.updateProgressFromData = async function() {
+    console.log('📊 실제 데이터 기반 프로그레스 업데이트 시작');
+
+    try {
+        let progress = 0;
+        let statusMessage = '시작 단계';
+
+        // 1단계: 데이터 입력 완료 체크 (25%)
+        const entriesResponse = await this.apiCall('/entries/list?per_page=1');
+        const hasEntries = entriesResponse.success && entriesResponse.total > 0;
+
+        if (hasEntries) {
+            progress = 25;
+            statusMessage = '데이터 입력 완료';
+            console.log('✅ 1단계: 데이터 입력 완료 - 거래 내역 존재');
+
+            // 2단계: 분류된 데이터 확인 (50%)
+            const classifiedCount = entriesResponse.data?.filter(entry =>
+                entry.account_code && entry.tax_type
+            ).length || 0;
+
+            if (classifiedCount > 0) {
+                progress = 50;
+                statusMessage = '데이터 분류 완료';
+                console.log('✅ 2단계: 데이터 분류 완료 - 분류된 항목:', classifiedCount);
+
+                // 3단계: 세액 계산 완료 체크 (75%)
+                const currentPeriod = new Date().toISOString().substring(0, 7); // YYYY-MM
+                const taxResponse = await this.apiCall(`/tax/estimate?period=${currentPeriod}`);
+                const hasTaxCalculation = taxResponse.ok &&
+                    (taxResponse.sales_vat > 0 || taxResponse.purchase_vat > 0);
+
+                if (hasTaxCalculation) {
+                    progress = 75;
+                    statusMessage = '세액 계산 완료';
+                    console.log('✅ 3단계: 세액 계산 완료');
+
+                    // 4단계: 체크리스트 완료 체크 (100%)
+                    const prepResponse = await this.apiCall(`/prep/refresh?period=${currentPeriod}&taxType=VAT`);
+                    if (prepResponse.ok && prepResponse.generated >= 0) {
+                        // 간단한 체크리스트 완료 시뮬레이션 (실제 체크 상태를 확인하는 로직은 추후 개선)
+                        const checklistCompleted = this.checklistStatus?.finalCheck || false;
+                        if (checklistCompleted) {
+                            progress = 100;
+                            statusMessage = '모든 단계 완료 - 신고 준비 완료';
+                            console.log('✅ 4단계: 체크리스트 완료');
+                        }
+                    }
+                }
+            }
+        }
+
+        // 프로그레스 값 업데이트
+        this.progressValue = progress;
+
+        // UI 업데이트
+        this.updateProgressUI(progress, statusMessage);
+
+        console.log(`📊 프로그레스 업데이트 완료: ${progress}% - ${statusMessage}`);
+
+        return progress;
+
+    } catch (error) {
+        console.error('❌ 프로그레스 업데이트 오류:', error);
+        // 에러 발생 시 기본 프로그레스 유지
+        return this.progressValue || 0;
+    }
+};
+
+// 프로그레스 UI 업데이트 함수
+TaxAIApp.prototype.updateProgressUI = function(progress, statusMessage = '') {
+    // 메인 프로그레스 바 업데이트
+    const progressBar = document.querySelector('.progress-bar');
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+    }
+
+    // 워크플로우 프로그레스 바 업데이트
+    const workflowProgress = document.querySelector('.progress-fill');
+    if (workflowProgress) {
+        workflowProgress.style.width = `${progress}%`;
+    }
+
+    // 프로그레스 텍스트 업데이트
+    const progressText = document.querySelector('.progress-text');
+    if (progressText) {
+        progressText.textContent = `${progress}% 완료`;
+    }
+
+    // 상태 메시지 업데이트
+    const statusElement = document.querySelector('.progress-message');
+    if (statusElement && statusMessage) {
+        statusElement.textContent = statusMessage;
+    }
+
+    // 워크플로우 단계 메시지 업데이트 (HTML에서 p 태그 업데이트)
+    const workflowMessage = document.querySelector('.workflow-progress p');
+    if (workflowMessage) {
+        let stepMessage = '';
+        if (progress === 0) {
+            stepMessage = '단계 1: 데이터 입력을 시작하세요';
+        } else if (progress < 50) {
+            stepMessage = '단계 2: 데이터 검토 및 분류를 확인하세요';
+        } else if (progress < 75) {
+            stepMessage = '단계 3: 세액 계산을 진행하세요';
+        } else if (progress < 100) {
+            stepMessage = '단계 4: 체크리스트를 완료하세요';
+        } else {
+            stepMessage = '✅ 모든 단계 완료 - 홈택스 신고 준비됨';
+        }
+        workflowMessage.textContent = stepMessage;
+    }
+};

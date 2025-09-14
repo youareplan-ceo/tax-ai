@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouArePlan TAX AI - 정책자금 전문 세무 코파일럿</title>
+    <title>YouArePlan TAX AI - 쉬운 세무 가계부</title>
     
     <!-- 토스 스타일 Pretendard 폰트 -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -15,9 +15,9 @@
     <link rel="stylesheet" href="production-branding.css">
     
     <!-- 메타 태그 -->
-    <meta name="description" content="YouArePlan TAX AI - 토스 스타일의 직관적인 세무 코파일럿">
-    <meta name="keywords" content="세무, AI, 코파일럿, 유아플랜, 토스스타일">
-    <meta name="author" content="유아플랜 컨설팅">
+    <meta name="description" content="YouArePlan TAX AI - 토스 스타일의 직관적인 세무 가계부">
+    <meta name="keywords" content="세무, AI, 가계부, 유아플랜, 토스스타일">
+    <meta name="author" content="유아플랜">
     
     <!-- PWA 매니페스트 -->
     <link rel="manifest" href="manifest.json">
@@ -34,9 +34,9 @@
     <meta name="apple-mobile-web-app-title" content="TAX AI">
 </head>
 <body>
-    <!-- 전문가 배너 -->
+    <!-- 메인 배너 -->
     <div class="expert-banner">
-        💼 정책자금 전문 컨설팅 유아플랜과 함께하는 TAX AI - 세무사 검토 추천 서비스
+        💼 누구나 쉽고 편리한 세무 가계부 - YouArePlan TAX AI
     </div>
 
     <!-- 프로덕션 헤더 -->
@@ -46,7 +46,7 @@
                 <img src="assets/youareplan-logo.svg" alt="YouArePlan 로고" class="brand-logo-image">
                 <div class="brand-info">
                     <h1 class="brand-main-title beta-badge">YouArePlan TAX AI</h1>
-                    <p class="brand-subtitle">유아플랜 컨설팅과 함께하는 세무 코파일럿</p>
+                    <p class="brand-subtitle">누구나 쉽게 사용하는 세무 가계부</p>
                 </div>
             </div>
             
@@ -57,16 +57,10 @@
                 <div class="trust-badge">
                     🛡️ 보안인증
                 </div>
-                <div class="trust-badge">
-                    ⭐ 세무사 검토
-                </div>
             </div>
             
             <div class="header-cta-section">
-                <button class="cta-button cta-secondary" onclick="showExpertConsultation()">
-                    👨‍💼 전문가 상담 신청
-                </button>
-                <a href="https://youareplan.co.kr" target="_blank" class="cta-button cta-primary">
+                <a href="https://youareplan.co.kr" target="_blank" rel="noopener noreferrer" class="cta-button cta-primary">
                     🏢 유아플랜 홈페이지
                 </a>
             </div>
@@ -90,6 +84,9 @@
             </button>
             <button class="tab-button" data-tab="checklist" role="tab" aria-selected="false">
                 <span aria-hidden="true">✅</span> 체크리스트
+            </button>
+            <button class="tab-button" data-tab="guide" role="tab" aria-selected="false">
+                <span aria-hidden="true">📖</span> 가이드
             </button>
         </nav>
 
@@ -150,7 +147,14 @@
                             <input type="text" id="business-name" class="input" placeholder="거래처명을 입력하세요" required>
                             <div class="form-helper">자주 사용하는 거래처는 자동완성됩니다</div>
                         </div>
-                        
+
+                        <!-- 사업자번호 (선택사항) -->
+                        <div class="form-group">
+                            <label class="form-label" for="business-number">사업자번호 (선택)</label>
+                            <input type="text" id="business-number" class="input" placeholder="000-00-00000" pattern="[0-9]{3}-[0-9]{2}-[0-9]{5}">
+                            <div class="form-helper">세금계산서 발행 시 필요한 정보입니다</div>
+                        </div>
+
                         <!-- 거래 구분 -->
                         <div class="form-group">
                             <label class="form-label">거래 구분</label>
@@ -294,9 +298,110 @@
                     직접입력과 CSV 업로드 데이터를 통합하여 확인하고 관리할 수 있습니다.
                 </p>
                 
-                <!-- 통합 거래 데이터 목록 -->
-                <div id="recent-transactions-list">
-                    <!-- 동적으로 렌더링됩니다 -->
+                <!-- 필터 및 검색 영역 -->
+                <div class="transaction-filters">
+                    <div class="filter-row">
+                        <!-- 기간 필터 -->
+                        <div class="filter-group">
+                            <label class="filter-label">기간</label>
+                            <select id="period-filter" class="filter-select">
+                                <option value="all">전체</option>
+                                <option value="current-month" selected>이번달</option>
+                                <option value="last-month">지난달</option>
+                                <option value="current-quarter">이번 분기</option>
+                            </select>
+                        </div>
+
+                        <!-- 거래 유형 필터 -->
+                        <div class="filter-group">
+                            <label class="filter-label">구분</label>
+                            <select id="type-filter" class="filter-select">
+                                <option value="all">전체</option>
+                                <option value="income">매출</option>
+                                <option value="expense">매입</option>
+                            </select>
+                        </div>
+
+                        <!-- 검색 -->
+                        <div class="filter-group search-group">
+                            <label class="filter-label">검색</label>
+                            <div class="search-input-container">
+                                <input type="text" id="search-input" class="search-input" placeholder="거래처명으로 검색...">
+                                <button class="search-button" id="search-button">
+                                    <span aria-hidden="true">🔍</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn btn-secondary btn-sm" id="reset-filters">필터 초기화</button>
+                        <div class="results-info">
+                            <span id="results-count">검색 중...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 거래 목록 테이블 (데스크톱) -->
+                <div class="transaction-table-container desktop-only">
+                    <table class="transaction-table" id="transaction-table">
+                        <thead>
+                            <tr>
+                                <th class="sortable" data-sort="date">
+                                    날짜 <span class="sort-indicator"></span>
+                                </th>
+                                <th class="sortable" data-sort="vendor">
+                                    거래처 <span class="sort-indicator"></span>
+                                </th>
+                                <th>구분</th>
+                                <th class="sortable" data-sort="amount">
+                                    금액 <span class="sort-indicator"></span>
+                                </th>
+                                <th>부가세</th>
+                                <th>분류 상태</th>
+                                <th>액션</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-table-body">
+                            <!-- 동적으로 채워집니다 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 거래 목록 카드 (모바일) -->
+                <div class="transaction-cards mobile-only" id="transaction-cards">
+                    <!-- 동적으로 채워집니다 -->
+                </div>
+
+                <!-- 로딩 상태 -->
+                <div class="loading-state" id="transactions-loading">
+                    <div class="loading-spinner"></div>
+                    <p>거래 데이터를 불러오는 중...</p>
+                </div>
+
+                <!-- 빈 상태 -->
+                <div class="empty-state hidden" id="transactions-empty">
+                    <div class="empty-icon">📝</div>
+                    <p class="empty-message">조회된 거래가 없습니다.</p>
+                    <p class="empty-submessage">필터 조건을 변경하거나 새로운 거래를 입력해보세요.</p>
+                </div>
+
+                <!-- 페이지네이션 -->
+                <div class="pagination-container" id="pagination-container">
+                    <div class="pagination-info">
+                        <span id="pagination-info-text">1-10 / 33개</span>
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pagination-btn" id="prev-page" disabled>
+                            <span aria-hidden="true">←</span> 이전
+                        </button>
+                        <div class="pagination-numbers" id="pagination-numbers">
+                            <!-- 동적으로 생성 -->
+                        </div>
+                        <button class="pagination-btn" id="next-page">
+                            다음 <span aria-hidden="true">→</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -314,6 +419,50 @@
                 <!-- 스마트 체크리스트가 동적으로 렌더링됩니다 -->
             </div>
         </section>
+
+        <!-- 신고 가이드 섹션 -->
+        <section id="guide-section" class="content-section" role="tabpanel" aria-labelledby="guide-tab">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📖 세무 신고 가이드</h2>
+                    <p class="card-description">
+                        홈택스를 통한 세무 신고 절차를 단계별로 안내합니다. 실제 화면과 함께 진행하세요.
+                    </p>
+                </div>
+
+                <!-- 세금 종류 선택 -->
+                <div class="guide-tax-selector">
+                    <div class="selector-header">
+                        <h3>신고할 세금 종류를 선택하세요</h3>
+                    </div>
+                    <div class="tax-type-cards">
+                        <div class="tax-type-card active" data-tax-type="vat">
+                            <div class="tax-type-icon">💰</div>
+                            <div class="tax-type-title">부가가치세</div>
+                            <div class="tax-type-description">매출세액과 매입세액 신고</div>
+                            <div class="tax-type-period">분기별 신고</div>
+                        </div>
+                        <div class="tax-type-card" data-tax-type="income">
+                            <div class="tax-type-icon">📊</div>
+                            <div class="tax-type-title">종합소득세</div>
+                            <div class="tax-type-description">연간 소득에 대한 종합 신고</div>
+                            <div class="tax-type-period">연 1회 신고 (5월)</div>
+                        </div>
+                        <div class="tax-type-card" data-tax-type="year-end">
+                            <div class="tax-type-icon">📋</div>
+                            <div class="tax-type-title">연말정산</div>
+                            <div class="tax-type-description">근로소득 연말정산</div>
+                            <div class="tax-type-period">2~3월 신고</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 가이드 콘텐츠 영역 -->
+                <div id="guide-content">
+                    <!-- 선택된 세금 종류에 따른 가이드가 동적으로 렌더링됩니다 -->
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- 토스트 알림 컨테이너 -->
@@ -326,11 +475,11 @@
                 <div class="footer-brand">
                     <img src="assets/youareplan-logo.svg" alt="YouArePlan" class="footer-logo">
                     <p class="footer-description">
-                        유아플랜 컨설팅은 정책자금 전문 컨설팅 회사로, 
-                        세무 업무의 디지털 혁신을 통해 고객의 성공을 지원합니다.
+                        유아플랜은 세무 업무의 디지털 혁신을 통해
+                        누구나 쉽게 세무 가계부를 관리할 수 있도록 지원합니다.
                     </p>
                     <div class="footer-contact">
-                        <a href="https://youareplan.co.kr" target="_blank" class="footer-contact-item">
+                        <a href="https://youareplan.co.kr" target="_blank" rel="noopener noreferrer" class="footer-contact-item">
                             🌐 youareplan.co.kr
                         </a>
                         <a href="mailto:contact@youareplan.co.kr" class="footer-contact-item">
@@ -345,9 +494,9 @@
                 <div class="footer-section">
                     <h4>서비스</h4>
                     <div class="footer-links">
-                        <a href="#" class="footer-link">세무 AI 코파일럿</a>
-                        <a href="#" class="footer-link">정책자금 컨설팅</a>
-                        <a href="#" class="footer-link">세무사 연결 서비스</a>
+                        <a href="#" class="footer-link">세무 AI 가계부</a>
+                        <a href="#" class="footer-link">세무 자료 가이드</a>
+                        <a href="#" class="footer-link">세무 계산기</a>
                         <a href="#" class="footer-link">기업 세무 관리</a>
                     </div>
                 </div>
@@ -357,7 +506,7 @@
                     <div class="footer-links">
                         <a href="#" class="footer-link">사용 가이드</a>
                         <a href="#" class="footer-link">FAQ</a>
-                        <a href="#" class="footer-link">전문가 상담</a>
+                        <a href="#" class="footer-link">세무 가이드</a>
                         <a href="#" class="footer-link">기술 지원</a>
                     </div>
                 </div>
@@ -375,7 +524,7 @@
             
             <div class="footer-bottom">
                 <div class="footer-copyright">
-                    © 2025 유아플랜 컨설팅. All rights reserved. | 사업자등록번호: 123-45-67890
+                    © 2025 유아플랜. All rights reserved. | 사업자등록번호: 123-45-67890
                 </div>
                 <div class="footer-legal">
                     <a href="#" class="footer-legal-link">이용약관</a>
@@ -397,6 +546,8 @@
     <script src="error-handling.js"></script>
     <script src="receipt-ocr.js"></script>
     <script src="legal-compliance.js"></script>
+    <script src="transaction-list.js"></script>
+    <script src="tax-guide.js"></script>
     
     <!-- PWA 서비스 워커 등록 -->
     <script>

@@ -77,7 +77,7 @@ class LegalComplianceSystem {
                     <ol>
                         <li>회사는 서비스를 통해 제공되는 정보의 정확성을 보장하지 않습니다.</li>
                         <li>회사는 이용자가 서비스를 이용하여 얻은 정보로 인한 손해에 대해 책임지지 않습니다.</li>
-                        <li>최종 세무 신고는 반드시 세무 전문가의 검토를 거쳐야 합니다.</li>
+                        <li>최종 세무 신고 시에는 전체 내용을 다시 한 번 확인하시기 바랍니다.</li>
                     </ol>
                 </section>
 
@@ -122,7 +122,7 @@ class LegalComplianceSystem {
                     <h2>2. 수집하는 개인정보 항목</h2>
                     <h3>필수 정보</h3>
                     <ul>
-                        <li>성명, 연락처 (전문가 상담 신청 시)</li>
+                        <li>성명, 연락처 (문의 신청 시)</li>
                         <li>세무 데이터 (거래 정보, 금액 등)</li>
                     </ul>
                     
@@ -196,14 +196,14 @@ class LegalComplianceSystem {
 
                 <div class="warning-box">
                     <h2>⚠️ 중요 고지사항</h2>
-                    <p>본 서비스는 <strong>베타 버전</strong>으로 제공되며, 세무 전문가의 검토 없이는 실제 세무 신고에 사용하지 마시기 바랍니다.</p>
+                    <p>본 서비스는 <strong>베타 버전</strong>으로 제공되며, 참고용으로만 사용하시고 실제 세무 신고 시에는 전체 내용을 다시 한 번 확인하시기 바랍니다.</p>
                 </div>
 
                 <section>
                     <h2>1. 서비스 성격</h2>
                     <ul>
                         <li>본 서비스는 세무 업무 보조 도구로서, 최종 세무 결정을 대체하지 않습니다.</li>
-                        <li>모든 세무 관련 결정은 반드시 세무 전문가와 상담 후 진행하시기 바랍니다.</li>
+                        <li>세무 관련 중요한 결정은 신중히 검토하시기 바랍니다.</li>
                         <li>서비스에서 제공하는 정보는 참고 용도이며, 법적 조언이 아닙니다.</li>
                     </ul>
                 </section>
@@ -227,10 +227,10 @@ class LegalComplianceSystem {
                 </section>
 
                 <section>
-                    <h2>4. 세무 전문가 상담 권고</h2>
+                    <h2>4. 세무 가이드 및 주의사항</h2>
                     <p class="highlight">
-                        복잡한 세무 상황이나 중요한 세무 결정의 경우 반드시 세무사, 공인회계사 등 
-                        세무 전문가의 검토와 상담을 받으시기 바랍니다.
+                        복잡한 세무 상황이나 중요한 세무 결정의 경우 관련 가이드와 자료를
+                        충분히 검토하고 신중하게 결정하시기 바랍니다.
                     </p>
                 </section>
 
@@ -598,7 +598,7 @@ class LegalComplianceSystem {
                     <p style="margin: 0 0 12px; font-weight: 600; color: #E65100;">중요 고지사항:</p>
                     <ul style="margin: 0; padding-left: 20px; color: #BF360C; line-height: 1.6;">
                         <li>본 서비스는 <strong>베타 버전</strong>입니다</li>
-                        <li>실제 세무 신고 전 <strong>반드시 세무 전문가 검토</strong> 필요</li>
+                        <li>실제 세무 신고 전 <strong>내용 전체 재검토</strong> 필요</li>
                         <li>계산 결과는 <strong>참고용</strong>이며 법적 효력이 없습니다</li>
                         <li>중요한 데이터는 <strong>별도 백업</strong>을 권장합니다</li>
                     </ul>
@@ -687,7 +687,7 @@ class LegalComplianceSystem {
                     <span style="font-size: 20px;">⚖️</span>
                     <div>
                         <strong>법적 고지:</strong> 
-                        계산 결과는 참고용이며, 실제 세무 신고 시에는 반드시 세무 전문가의 검토를 받으시기 바랍니다.
+                        계산 결과는 참고용이며, 실제 세무 신고 시에는 내용을 다시 한 번 확인하시기 바랍니다.
                         <button onclick="legalCompliance.showLegalModal('면책조항', legalCompliance.disclaimerContent)" 
                                 style="background: none; border: 1px solid rgba(255,255,255,0.5); color: white; padding: 4px 8px; border-radius: 4px; margin-left: 8px; font-size: 12px; cursor: pointer;">
                             자세히 보기
@@ -711,7 +711,7 @@ class LegalComplianceSystem {
 
     showCalculationWarning() {
         this.showNotification(
-            '입력된 데이터는 참고용입니다. 정확한 세무 신고를 위해 세무 전문가와 상담하세요.',
+            '입력된 데이터는 참고용입니다. 실제 세무 신고 시에는 가이드를 참고하여 내용을 다시 한 번 확인하세요.',
             'warning',
             8000
         );

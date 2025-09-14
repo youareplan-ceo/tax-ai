@@ -120,10 +120,18 @@ class TaxAIApp {
             'upload': '파일 업로드',
             'view': '데이터 조회',
             'calculate': '세무 계산',
-            'checklist': '체크리스트'
+            'checklist': '체크리스트',
+            'guide': '신고 가이드'
         };
         
         this.showToast(`${tabNames[tabId]} 탭으로 이동했습니다.`, 'info');
+
+        // 탭 변경 시 프로그레스 업데이트 (실제 데이터 기반)
+        if (this.updateProgressFromData) {
+            setTimeout(() => {
+                this.updateProgressFromData();
+            }, 300);
+        }
     }
 
     // 거래 입력 이벤트
@@ -679,24 +687,35 @@ class TaxAIApp {
     initializeComponents() {
         // 키보드 접근성
         this.initKeyboardNavigation();
-        
+
         // 반응형 처리
         this.handleResize();
         window.addEventListener('resize', () => this.handleResize());
+
+        // 거래 목록 관리자 초기화
+        if (typeof TransactionListManager !== 'undefined') {
+            this.transactionListManager = new TransactionListManager();
+        }
+
+        // 세무 가이드 초기화
+        if (typeof this.initTaxGuide === 'function') {
+            this.initTaxGuide();
+        }
     }
 
     // 키보드 내비게이션
     initKeyboardNavigation() {
         document.addEventListener('keydown', (e) => {
             // Ctrl/Cmd + 숫자키로 탭 전환
-            if ((e.ctrlKey || e.metaKey) && e.key >= '1' && e.key <= '5') {
+            if ((e.ctrlKey || e.metaKey) && e.key >= '1' && e.key <= '6') {
                 e.preventDefault();
                 const tabMapping = {
                     '1': 'input',
                     '2': 'upload',
-                    '3': 'view', 
+                    '3': 'view',
                     '4': 'calculate',
-                    '5': 'checklist'
+                    '5': 'checklist',
+                    '6': 'guide'
                 };
                 this.switchTab(tabMapping[e.key]);
             }
